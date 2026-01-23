@@ -1,0 +1,9 @@
+path: /Users/rieno/age_estimation/yolo_obb_training  # CHANGE TO YOUR ABSOLUTE PATH
+train: images/train
+val: images/val
+
+names:
+  0: mandible_left
+  1: mandible_right
+
+nc: 2

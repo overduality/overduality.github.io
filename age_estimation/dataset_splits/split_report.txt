@@ -1,0 +1,60 @@
+================================================================================
+DENTAL AGE ESTIMATION DATASET - SPLIT REPORT
+================================================================================
+
+
+================================================================================
+TRAIN SET
+================================================================================
+Images: 735
+Patients: 372
+Age range: 4.8 - 16.6 years
+Mean age: 9.42 ± 2.91 years
+
+Age distribution by bin:
+         count       mean       std
+age_bin                            
+0          184   6.065652  0.678523
+1          185   8.039514  0.511350
+2          182   9.996264  0.701645
+3          184  13.598043  1.318715
+
+Gender distribution:
+gender
+F    428
+M    307
+Name: count, dtype: int64
+
+Side distribution:
+side
+left     372
+right    363
+Name: count, dtype: int64
+
+================================================================================
+TEST SET
+================================================================================
+Images: 185
+Patients: 93
+Age range: 4.0 - 15.8 years
+Mean age: 9.41 ± 2.91 years
+
+Age distribution by bin:
+         count       mean       std
+age_bin                            
+0           47   6.151915  0.661384
+1           46   8.015652  0.550190
+2           46   9.850000  0.623752
+3           46  13.695652  1.247867
+
+Gender distribution:
+gender
+F    105
+M     80
+Name: count, dtype: int64
+
+Side distribution:
+side
+right    93
+left     92
+Name: count, dtype: int64
