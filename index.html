@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emmanuel Rieno Bobba P. - Data Science Portfolio</title
+  <title>Overduality - Data Science Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -175,6 +175,24 @@
       background: #1d4ed8;
     }
 
+    .project-link-secondary {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 24px;
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .project-link-secondary:hover {
+      background: var(--bg-light);
+      border-color: var(--text-light);
+    }
+
     footer {
       text-align: center;
       margin-top: 100px;
@@ -213,12 +231,12 @@
 
   <div class="container">
     <header>
-      <h1>Emmanuel Rieno Bobba P.</h1>
+      <h1>Overduality</h1>
       <p class="tagline">Data Science & Machine Learning Projects</p>
       <div class="contact-links">
-        <a href="mailto:emmanuelbobba3@gmail.com">Email</a>
+        <a href="/cdn-cgi/l/email-protection#0871677d7a266d65696164486d70696578646d266b6765">Email</a>
         <a href="https://github.com/overduality" target="_blank">GitHub</a>
-        <a href="https://www.linkedin.com/in/emmanuelbobba/" target="_blank">LinkedIn</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
       </div>
     </header>
 
@@ -259,7 +277,198 @@
             <span class="tech-tag">Computer Vision</span>
           </div>
 
-          <a href="/age_estimation/" class="project-link">View Project →</a>
+          <div style="display: flex; gap: 12px;">
+            <a href="/dental-age-estimation/" class="project-link">View Project →</a>
+            <a href="https://github.com/overduality/dental-age-estimation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2: MovieLens Recommendation -->
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-meta">Recommendation Systems • Time Series • Data Analysis</div>
+          <h2 class="project-title">Dynamic Popularity-Based Recommendation System</h2>
+          <p class="project-description">
+            Multi-window volatility and surge analysis detecting trending movies in real-time using 32 million ratings. 
+            Identifies unusual activity spikes by comparing 7-day windows against 90-day baselines, achieving 3.5x average 
+            surge intensity for real-time content recommendations.
+          </p>
+
+          <div class="project-stats">
+            <div class="stat">
+              <span class="stat-value">32M</span>
+              <span class="stat-label">Ratings</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">3.5x</span>
+              <span class="stat-label">Avg Surge</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">7-day</span>
+              <span class="stat-label">Window</span>
+            </div>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">Pandas</span>
+            <span class="tech-tag">NumPy</span>
+            <span class="tech-tag">Matplotlib</span>
+            <span class="tech-tag">Time Series</span>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <a href="/movielens-recommendation/" class="project-link">View Project →</a>
+            <a href="https://github.com/overduality/movielens-recommendation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3: Insurance Claim Prediction -->
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-meta">Machine Learning • Risk Analysis • Insurance Tech</div>
+          <h2 class="project-title">Car Insurance Claim Prediction & Risk Quantification</h2>
+          <p class="project-description">
+            Two-stage ML system combining CatBoost classifier (0.86 ROC-AUC) and SGD regressor for claim severity prediction. 
+            Enables risk-based pricing with 45.5% of total loss concentrated in top 10% risk segment, optimizing premium 
+            allocation and preventing adverse selection.
+          </p>
+
+          <div class="project-stats">
+            <div class="stat">
+              <span class="stat-value">45.5%</span>
+              <span class="stat-label">Loss in Top 10%</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">0.86</span>
+              <span class="stat-label">ROC-AUC</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">$3.8K</span>
+              <span class="stat-label">Avg Severity</span>
+            </div>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">CatBoost</span>
+            <span class="tech-tag">XGBoost</span>
+            <span class="tech-tag">Scikit-learn</span>
+            <span class="tech-tag">SMOTE</span>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <a href="/insurance-claim-prediction/" class="project-link">View Project →</a>
+            <a href="https://github.com/overduality/insurance-claim-prediction" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4: ByeFraud Phishing Detection -->
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-meta">Cybersecurity • Machine Learning • Feature Engineering</div>
+          <h2 class="project-title">ByeFraud: Real-Time Phishing Detection System</h2>
+          <p class="project-description">
+            Production-grade LightGBM classifier achieving 99.81% accuracy on 1.5M URLs through advanced feature engineering. 
+            Combines 20 lexical features, 1,500 TF-IDF n-grams, and 4 domain impersonation indicators for real-time phishing 
+            detection with &lt;50ms inference latency.
+          </p>
+
+          <div class="project-stats">
+            <div class="stat">
+              <span class="stat-value">99.81%</span>
+              <span class="stat-label">Accuracy</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">1.54M</span>
+              <span class="stat-label">URLs</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">&lt;50ms</span>
+              <span class="stat-label">Latency</span>
+            </div>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">LightGBM</span>
+            <span class="tech-tag">TF-IDF</span>
+            <span class="tech-tag">SMOTE</span>
+            <span class="tech-tag">Scikit-learn</span>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <a href="/byefraud-phishing-detection/" class="project-link">View Project →</a>
+            <a href="https://github.com/overduality/byefraud-phishing-detection" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5: Worvler Wordle Solver -->
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-meta">Information Theory • Web Development • Algorithms</div>
+          <h2 class="project-title">Worvler: Information-Theoretic Wordle Solver</h2>
+          <p class="project-description">
+            React web app implementing Shannon entropy-based optimal Wordle strategy through Web Workers and precomputed 
+            pattern matrices. Achieves 100% solve rate with 3.42 average guesses using strategic information gain 
+            maximization—outperforming human players by 30%.
+          </p>
+
+          <div class="project-stats">
+            <div class="stat">
+              <span class="stat-value">3.42</span>
+              <span class="stat-label">Avg Guesses</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">6.35</span>
+              <span class="stat-label">Bits Entropy</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">100%</span>
+              <span class="stat-label">Solve Rate</span>
+            </div>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Web Workers</span>
+            <span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">Information Theory</span>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <a href="/worvler-wordle-solver/" class="project-link">View Project →</a>
+            <a href="https://github.com/overduality/worvler-wordle-solver" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
         </div>
       </div>
 
@@ -297,9 +506,4 @@
     </div>
 
     <footer>
-      <p>&copy; 2026 Emmanuel Rieno B. P. </p>
-    </footer>
-  </div>
-
-</body>
-</html>
+      <p>&copy; 2026 Overduality. Built with focus on clarity and impact.
