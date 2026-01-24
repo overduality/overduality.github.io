@@ -288,6 +288,32 @@
     .img-grid .img-full {
       margin: 0;
     }
+    
+    .img-grid-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin: 48px 0;
+    }
+
+    .img-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .img-small {
+      flex: 0 0 50%; 
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .img-small img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
 
     /* Table */
     table {
@@ -522,16 +548,27 @@
 
       <p>Initial dataset consisted of approximately 1,200 panoramic radiograph <em>screenshots</em>—not standardized DICOM files. Patient metadata (name, birth date, capture date, gender) appeared embedded as text in varying formats, positions, and languages across different imaging systems.</p>
 
-      <div class="img-grid">
+      <div class="img-grid-vertical">
+
         <div class="img-full visible">
-          <img src="/mnt/user-data/uploads/1769013037585_gambar1_port.png" alt="Original OPG">
+          <img src="images/before.png" alt="Original OPG">
           <div class="img-caption">Original panoramic radiograph with embedded metadata</div>
         </div>
-        <div class="img-full visible">
-          <img src="/mnt/user-data/uploads/1769013037585_gambar2_port.png" alt="Processed OPG">
-          <div class="img-caption">After OCR extraction and preprocessing</div>
+
+        <div class="img-row">
+          <div class="img-small visible">
+            <img src="images/after_left.png" alt="Processed OPG (Left)">
+            <div class="img-caption">After OCR (Left)</div>
+          </div>
+
+          <div class="img-small visible">
+            <img src="images/after_right.png" alt="Processed OPG (Right)">
+            <div class="img-caption">After OCR (Right and Flipped)</div>
+          </div>
         </div>
+
       </div>
+
 
       <pre><code># Apple Vision OCR Pipeline
 from apple_vision import VNRecognizeTextRequest
@@ -808,7 +845,7 @@ for fold, (train_idx, val_idx) in enumerate(
       <p>Medical AI requires transparency. Clinical adoption depends on understanding <em>what</em> the model learned and <em>why</em> it makes predictions.</p>
 
       <div class="img-full">
-        <img src="/mnt/user-data/uploads/1769013024071_gradcam_test_samples.png" alt="Grad-CAM visualization">
+        <img src="images/gradcam_test_samples.png" alt="Grad-CAM visualization">
         <div class="img-caption">Grad-CAM attention heatmaps overlaid on test samples—red indicates high attention, blue indicates low attention</div>
       </div>
 

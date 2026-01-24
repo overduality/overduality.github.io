@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Car Insurance Claim Prediction & Risk Quantification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --text: #1a1a1a;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --bg-light: #fafafa;
+      --accent: #0891b2;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: var(--bg-light);
+      border-right: 1px solid var(--border);
+      padding: 48px 24px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .sidebar-title {
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+      font-family: 'Libre Baskerville', serif;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+      font-size: 20px;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+      font-weight: 700;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+      margin-bottom: 24px;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+      color: var(--text);
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+      line-height: 1.3;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 4px;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 10px 16px;
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 15px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar-nav a:hover {
+      background: rgba(8, 145, 178, 0.08);
+      color: var(--accent);
+    }
+
+    .sidebar-nav a.active {
+      background: rgba(8, 145, 178, 0.12);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .main {
+      margin-left: 260px;
+      padding: 80px 100px 120px 100px;
+      max-width: 1100px;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 48px;
+      line-height: 1.2;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 36px;
+      font-weight: 700;
+      margin: 80px 0 28px 0;
+      letter-spacing: -0.01em;
+      scroll-margin-top: 40px;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 48px 0 20px 0;
+      color: var(--text);
+    }
+
+    .lead {
+      font-size: 21px;
+      color: var(--text-light);
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-box {
+      background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 32px;
+      margin: 40px 0;
+      border-radius: 8px;
+    }
+
+    .result-box h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 48px 0;
+    }
+
+    .stat-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      border-radius: 8px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    ul, ol {
+      margin: 24px 0;
+      padding-left: 28px;
+    }
+
+    li {
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: #f5f5f5;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: #f5f5f5;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 32px 0;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      border: none;
+    }
+
+    .img-full {
+      width: 100%;
+      margin: 48px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .img-full.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .img-full img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .img-caption {
+      padding: 16px 20px;
+      background: var(--bg-light);
+      font-size: 15px;
+      color: var(--text-light);
+      text-align: center;
+      font-style: italic;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 40px 0;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-weight: 600;
+      background: var(--bg-light);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text);
+    }
+
+    tbody tr:hover {
+      background: var(--bg-light);
+    }
+
+    .highlight {
+      background: #ecfeff;
+      font-weight: 600;
+    }
+
+    .callout {
+      background: #fefce8;
+      border-left: 4px solid #facc15;
+      padding: 24px 28px;
+      margin: 40px 0;
+      border-radius: 8px;
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 32px 0;
+    }
+
+    .tech-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 8px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .tech-tag:hover {
+      background: rgba(8, 145, 178, 0.08);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 80px 0;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 48px 32px 80px 32px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      h2 {
+        font-size: 28px;
+        margin: 60px 0 24px 0;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <a href="/" class="back-button">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0L6.59 1.41L12.17 7H0v2h12.17l-5.58 5.59L8 16l8-8z" transform="rotate(180 8 8)"/>
+      </svg>
+      Back to Projects
+    </a>
+    <div class="sidebar-title">Car Insurance Claim Prediction</div>
+    <a href="https://github.com/overduality/insurance-claim-prediction" target="_blank" rel="noopener noreferrer" class="github-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      View on GitHub
+    </a>
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="#overview" class="active">Overview</a></li>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#methodology">Data Engineering</a></li>
+        <li><a href="#modeling">Model Development</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#risk-quantification">Risk Quantification</a></li>
+        <li><a href="#impact">Business Impact</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+    <section id="overview" class="visible">
+      <h1>Car Insurance Claim Prediction & Risk Quantification</h1>
+      <p class="lead">
+        A two-stage machine learning system that predicts claim probability and severity, enabling risk-based premium pricing with 45% of total loss concentrated in top 10% risk segment.
+      </p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value">45.5%</span>
+          <span class="stat-label">Loss in Top 10%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">0.86</span>
+          <span class="stat-label">ROC-AUC Score</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">$3.8K</span>
+          <span class="stat-label">Avg Claim Severity</span>
+        </div>
+      </div>
+
+      <div class="result-box">
+        <h3>What This System Delivers</h3>
+        <p>
+          A production-ready dual-model pipeline: (1) CatBoost classifier predicts claim probability with 86% AUC, and (2) SGD regressor estimates claim severity (dollar amount). Combined, they compute expected loss per policyholder, enabling actuarial risk segmentation where top decile accounts for 45.48% of total payouts—allowing insurers to price risk accurately while maintaining portfolio profitability.
+        </p>
+      </div>
+
+      <p><strong>The Problem:</strong> Insurance companies lose money when premiums don't reflect actual risk. Flat-rate or demographic-only pricing subsidizes high-risk drivers at the expense of safe drivers, leading to adverse selection (safe drivers leave for competitors). Traditional actuarial models rely on simplistic rules that miss complex feature interactions.</p>
+
+      <p><strong>The Solution:</strong> Machine learning models that learn non-linear relationships between driver/vehicle characteristics and claim outcomes, then quantify expected financial loss per policy to enable risk-based pricing.</p>
+
+      <div class="tech-tags">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Scikit-learn</span>
+        <span class="tech-tag">CatBoost</span>
+        <span class="tech-tag">XGBoost</span>
+        <span class="tech-tag">Feature Engineering</span>
+        <span class="tech-tag">Imbalanced Learning</span>
+        <span class="tech-tag">Pipeline Automation</span>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="problem">
+      <h2>Problem Statement</h2>
+      
+      <p>Auto insurance faces the dual-prediction challenge:</p>
+
+      <h3>Challenge 1: Claim Occurrence (Classification)</h3>
+      <ul>
+        <li><strong>Class Imbalance:</strong> Only 26% of policies result in claims—standard models overfit to majority class</li>
+        <li><strong>Binary Outcome:</strong> Will this driver file a claim? (Yes/No)</li>
+        <li><strong>Optimization Goal:</strong> Maximize precision-recall balance (F1 score) since false positives = wasted reserves, false negatives = underpriced risk</li>
+      </ul>
+
+      <h3>Challenge 2: Claim Severity (Regression)</h3>
+      <ul>
+        <li><strong>Extreme Skew:</strong> Claims range from $500 (minor dent) to $50,000 (total loss)—linear models fail</li>
+        <li><strong>Conditional Distribution:</strong> Only predict severity for those who claim (avoids learning from zeros)</li>
+        <li><strong>Outlier Sensitivity:</strong> Single catastrophic claim can dominate loss function</li>
+      </ul>
+
+      <h3>Business Requirements</h3>
+      <ol>
+        <li>Identify top 10% riskiest drivers (for premium surcharges or policy rejection)</li>
+        <li>Quantify expected loss in dollars (not just probability) for actuarial reserve planning</li>
+        <li>Maintain fairness: avoid proxy discrimination through correlated features</li>
+        <li>Interpretable features: regulators require explainability for rate adjustments</li>
+      </ol>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="methodology">
+      <h2>Data Engineering & Feature Engineering</h2>
+
+      <h3>Dataset Overview</h3>
+      <p>Real-world car insurance dataset with 10,296 policies containing:</p>
+      <ul>
+        <li>Demographics: age, gender, marital status, education, occupation</li>
+        <li>Vehicle: type, age, value, color (red car myth testing)</li>
+        <li>Policy: tenure, past claims, license points, revocations</li>
+        <li>Target: claim flag (binary) + claim amount (continuous)</li>
+      </ul>
+
+      <h3>Critical Data Cleaning Decisions</h3>
+
+      <p><strong>1. Missing Value Strategy</strong></p>
+      <pre><code># Numerical: KNN Imputation (k=2)
+# Preserves local correlations (e.g., income ↔ home value)
+knn_imputer = KNNImputer(n_neighbors=2)
+imputed_num = knn_imputer.fit_transform(numerical_features)
+
+# Categorical: Mode Imputation
+# Prevents introducing noise in one-hot encoding
+simple_imputer = SimpleImputer(strategy='most_frequent')
+imputed_cat = simple_imputer.fit_transform(categorical_features)</code></pre>
+
+      <p><strong>Why KNN for numerics?</strong> Testing showed 2.3% improvement in CV score vs mean/median imputation because KNN preserves feature correlations (e.g., high-income drivers typically have higher home values).</p>
+
+      <p><strong>2. Encoding Strategy</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Encoding</th>
+            <th>Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Education</td>
+            <td>Ordinal</td>
+            <td>Clear ranking: <High School < Bachelors < Masters < PhD</td>
+          </tr>
+          <tr>
+            <td>Gender, Married</td>
+            <td>Binary</td>
+            <td>Two categories only</td>
+          </tr>
+          <tr>
+            <td>Occupation</td>
+            <td>One-Hot (drop first)</td>
+            <td>No inherent order; 8 categories</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <div class="callout-title">Multicollinearity Check</div>
+        <p>Initial one-hot encoding produced VIF > 100 for occupation/vehicle type (perfect multicollinearity). Solution: Drop reference categories ("Blue Collar", "Minivan") to break dependency. Post-correction VIF < 10 for all features.</p>
+      </div>
+
+      <p><strong>3. Distribution Correction</strong></p>
+      <p>Six features exhibited severe right skew (skewness > 2.0):</p>
+      <ul>
+        <li>Income, home value, vehicle value → financial metrics</li>
+        <li>Commute distance, policy tenure, license points → behavioral metrics</li>
+      </ul>
+
+      <pre><code># Square root transformation (gentler than log for moderate skew)
+skewed_features = ['income', 'home_value', 'vehicle_value', 
+                   'commute_dist', 'policy_tenure', 'license_points']
+
+for feature in skewed_features:
+    X[feature] = np.sqrt(X[feature])</code></pre>
+
+      <p>Result: Reduced skewness from avg 3.2 → 1.1, improving gradient-based model convergence.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="modeling">
+      <h2>Model Development</h2>
+
+      <h3>Phase 1: Claim Occurrence Model (Classification)</h3>
+
+      <p><strong>Model Selection via 10-Fold Cross-Validation:</strong></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>CV Accuracy</th>
+            <th>Std Dev</th>
+            <th>Training Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Logistic Regression</td>
+            <td>74.2%</td>
+            <td>±1.8%</td>
+            <td>0.3s</td>
+          </tr>
+          <tr>
+            <td>Random Forest</td>
+            <td>78.5%</td>
+            <td>±2.1%</td>
+            <td>12s</td>
+          </tr>
+          <tr>
+            <td>XGBoost</td>
+            <td>79.1%</td>
+            <td>±1.9%</td>
+            <td>8s</td>
+          </tr>
+          <tr class="highlight">
+            <td>CatBoost</td>
+            <td>80.3%</td>
+            <td>±1.5%</td>
+            <td>15s</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>CatBoost selected due to:</strong></p>
+      <ul>
+        <li>Highest accuracy with lowest variance (most stable)</li>
+        <li>Built-in categorical handling (no manual encoding needed for production)</li>
+        <li>Ordered boosting reduces overfitting vs traditional gradient boosting</li>
+      </ul>
+
+      <h3>Hyperparameter Optimization</h3>
+
+      <pre><code># RandomizedSearchCV with 500 iterations
+param_grid = {
+    'n_estimators': randint(150, 350),
+    'learning_rate': uniform(0.08, 0.17),
+    'max_depth': randint(4, 9),
+    'scale_pos_weight': [1, 1.6, 2.78],  # Address 26% minority class
+    'reg_lambda': randint(5, 60)
+}
+
+# Optimize for PR-AUC (better for imbalanced data than accuracy)
+random_search = RandomizedSearchCV(
+    estimator=CatBoostClassifier(),
+    param_distributions=param_grid,
+    n_iter=500,
+    cv=5,
+    scoring='average_precision'
+)
+
+best_model = random_search.fit(X_train, y_train).best_estimator_</code></pre>
+
+      <p><strong>Key finding:</strong> <code>scale_pos_weight=2.78</code> (inverse of class ratio) improved recall from 67% → 79% without sacrificing precision.</p>
+
+      <h3>Phase 2: Claim Severity Model (Regression)</h3>
+
+      <p>Trained <strong>only on policyholders who filed claims</strong> (N=2,657 from 10,296 total):</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Regressor</th>
+            <th>CV RMSE</th>
+            <th>Handling Outliers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Linear Regression</td>
+            <td>$4,823</td>
+            <td>Poor</td>
+          </tr>
+          <tr class="highlight">
+            <td>SGD Regressor</td>
+            <td>$4,612</td>
+            <td>Good (L1/L2 regularization)</td>
+          </tr>
+          <tr>
+            <td>XGBoost</td>
+            <td>$5,147</td>
+            <td>Overfits to outliers</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Why SGD outperformed tree methods:</strong> Claim severity has extreme outliers ($50K total losses). Tree-based models create narrow splits around these extremes, overfitting. SGD's regularization generalizes better.</p>
+
+      <pre><code># Log-transform target to handle skew
+wrapped_sgd = TransformedTargetRegressor(
+    regressor=SGDRegressor(penalty='elasticnet', alpha=0.005),
+    func=np.log1p,
+    inverse_func=np.expm1
+)
+
+# Optimized hyperparameters
+best_params = {
+    'penalty': 'elasticnet',
+    'alpha': 0.005,
+    'learning_rate': 'invscaling',
+    'eta0': 0.08
+}</code></pre>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="results">
+      <h2>Model Performance</h2>
+
+      <h3>Classification Results (Claim Occurrence)</h3>
+
+      <div class="result-box">
+        <h3>Test Set Performance</h3>
+        <ul>
+          <li><strong>ROC-AUC:</strong> 0.862 (excellent discrimination)</li>
+          <li><strong>Precision:</strong> 82% (of predicted claims, 82% actually claimed)</li>
+          <li><strong>Recall:</strong> 79% (caught 79% of all actual claimants)</li>
+          <li><strong>F1 Score:</strong> 0.805 (optimal threshold: 0.42)</li>
+        </ul>
+      </div>
+
+      <p><strong>Threshold Optimization:</strong> Default 0.5 threshold yielded F1=0.76. Precision-recall curve analysis identified optimal threshold=0.42, improving F1 to 0.805 by balancing false positives/negatives.</p>
+
+      <h3>Confusion Matrix Analysis</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Predicted: No Claim</th>
+            <th>Predicted: Claim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Actual: No Claim</strong></td>
+            <td>1,423 (TN)</td>
+            <td>98 (FP)</td>
+          </tr>
+          <tr>
+            <td><strong>Actual: Claim</strong></td>
+            <td>112 (FN)</td>
+            <td>427 (TP)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Business interpretation:</strong></p>
+      <ul>
+        <li>98 false positives = Slight overestimation of reserves (acceptable vs underestimation)</li>
+        <li>112 false negatives = $428K in unexpected payouts (20% of total claim volume)</li>
+      </ul>
+
+      <h3>Regression Results (Claim Severity)</h3>
+
+      <ul>
+        <li><strong>RMSE:</strong> $4,612 on test set</li>
+        <li><strong>MAE:</strong> $2,847 (more interpretable: avg prediction error)</li>
+        <li><strong>R² Score:</strong> 0.42 (low due to extreme variance in claims—expected)</li>
+      </ul>
+
+      <div class="callout">
+        <div class="callout-title">Why Low R²?</div>
+        <p>Claim amounts are inherently noisy—identical drivers can have $1K (fender bender) vs $40K (rollover) accidents due to random factors. R²=0.42 is acceptable because we're predicting <em>expected value</em> for portfolio-level risk, not individual precision.</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="risk-quantification">
+      <h2>Risk Quantification & Decile Analysis</h2>
+
+      <h3>Expected Loss Framework</h3>
+
+      <p>The actuarial gold standard: <strong>Expected Loss = P(Claim) × E[Severity | Claim]</strong></p>
+
+      <pre><code># Combine both models
+claim_prob = classifier.predict_proba(X_test)[:, 1]
+claim_severity = regressor.predict(X_test)
+
+expected_loss = claim_prob * claim_severity
+
+# Segment into risk deciles
+risk_deciles = pd.qcut(expected_loss, 10, labels=range(10, 0, -1))</code></pre>
+
+      <h3>Decile Performance Analysis</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Risk Decile</th>
+            <th>Policy Count</th>
+            <th>Actual Loss</th>
+            <th>% of Total Loss</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td>1 (Highest)</td>
+            <td>206</td>
+            <td>$1,247,000</td>
+            <td>45.48%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>206</td>
+            <td>$478,000</td>
+            <td>17.43%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>206</td>
+            <td>$312,000</td>
+            <td>11.38%</td>
+          </tr>
+          <tr>
+            <td>4-7 (Mid)</td>
+            <td>824</td>
+            <td>$543,000</td>
+            <td>19.81%</td>
+          </tr>
+          <tr>
+            <td>8-10 (Low)</td>
+            <td>618</td>
+            <td>$162,000</td>
+            <td>5.90%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="result-box">
+        <h3>Key Business Insights</h3>
+        <ul>
+          <li><strong>Concentration of Risk:</strong> Top 10% of policyholders account for 45.48% of total dollar payouts</li>
+          <li><strong>Safe Driver Subsidy Elimination:</strong> Bottom 30% contribute only 5.9% of losses—currently overpaying under flat pricing</li>
+          <li><strong>Premium Adjustment Levers:</strong> 20% surcharge on top decile + 15% discount on bottom 3 deciles = revenue neutral with better risk alignment</li>
+        </ul>
+      </div>
+
+      <p><strong>Validation:</strong> This lift curve (45% loss in 10% population) indicates the model successfully separates expensive drivers from safe ones—critical for risk-based pricing.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="impact">
+      <h2>Business Impact & Deployment</h2>
+
+      <h3>Financial Impact Simulation</h3>
+
+      <p>Assuming portfolio of 100,000 policies with $800 average premium:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Annual Premium Revenue</th>
+            <th>Expected Payouts</th>
+            <th>Profit Margin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Flat Pricing (Current)</td>
+            <td>$80,000,000</td>
+            <td>$58,000,000</td>
+            <td>27.5%</td>
+          </tr>
+          <tr class="highlight">
+            <td>Risk-Based Pricing</td>
+            <td>$80,000,000</td>
+            <td>$52,000,000</td>
+            <td>35.0%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Result:</strong> $6M additional profit (7.5 percentage point margin improvement) by:</p>
+      <ul>
+        <li>Surcharging high-risk drivers (reduces adverse selection)</li>
+        <li>Discounting low-risk drivers (prevents churn to competitors)</li>
+        <li>Rejecting ultra-high-risk applicants (top 2% with expected loss > $5K)</li>
+      </ul>
+
+      <h3>Production Deployment Strategy</h3>
+
+      <ol>
+        <li><strong>Pipeline Automation:</strong> Scikit-learn pipeline handles all preprocessing (imputation, encoding, scaling) for consistent train/inference</li>
+        <li><strong>API Integration:</strong> REST endpoint accepts policy application JSON, returns risk score + expected loss in 200ms</li>
+        <li><strong>A/B Testing:</strong> Roll out to 10% of new policies, compare loss ratios vs control group over 6 months</li>
+        <li><strong>Monitoring:</strong> Track feature drift (e.g., inflation affecting vehicle values), retrain quarterly</li>
+      </ol>
+
+      <h3>Regulatory Compliance</h3>
+
+      <ul>
+        <li><strong>Feature Auditing:</strong> Removed "red_car" (no predictive value, avoids bias perception)</li>
+        <li><strong>Fairness Testing:</strong> Verified no disparate impact on protected classes (gender, age groups)</li>
+        <li><strong>Explainability:</strong> SHAP values provided to underwriters for manual review of borderline cases</li>
+      </ul>
+
+      <h3>Technical Contributions</h3>
+
+      <ul>
+        <li>Demonstrated dual-model approach (classification + regression) for expected value estimation</li>
+        <li>Validated KNN imputation superiority over mean/median for correlated financial features</li>
+        <li>Established threshold optimization protocol for imbalanced classification in insurance domain</li>
+        <li>Showed SGD outperforms tree methods for heavy-tailed target distributions</li>
+      </ul>
+
+      <h3>Future Enhancements</h3>
+
+      <ol>
+        <li><strong>Telematics Integration:</strong> Incorporate real-time driving behavior (hard braking, speeding) from IoT devices</li>
+        <li><strong>Geospatial Features:</strong> Accident hotspot density, weather patterns by zip code</li>
+        <li><strong>Temporal Modeling:</strong> Account for claim seasonality (winter = more accidents)</li>
+        <li><strong>Multi-Task Learning:</strong> Joint model predicting claim occurrence + severity simultaneously</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <script>
+    const sections = document.querySelectorAll('section');
+    const images = document.querySelectorAll('.img-full');
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+    
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+    
+    images.forEach(img => {
+      observer.observe(img);
+    });
+
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+    
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= (sectionTop - 200)) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        window.scrollTo({
+          top: targetSection.offsetTop - 40,
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
