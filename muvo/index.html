@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muvo - Hybrid Pronunciation Scoring Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --text: #0a0a0a;
+      --text-secondary: #525252;
+      --border: #e5e5e5;
+      --bg-subtle: #fafafa;
+      --accent: #f97316;
+      --accent-light: #ffedd5;
+      --success: #22c55e;
+      --warning: #eab308;
+      --error: #ef4444;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--bg-subtle);
+      border-right: 1px solid var(--border);
+      padding: 40px 24px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .demo-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 32px;
+      margin-top: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .demo-link:hover {
+      background: #ea580c;
+      border-color: #ea580c;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      padding-left: 0rem;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 4px;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 10px 16px;
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 15px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar-nav a:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .sidebar-nav a.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main {
+      margin-left: 280px;
+      padding: 60px 80px 100px 80px;
+      max-width: 1400px;
+    }
+
+    h1 {
+      font-size: 44px;
+      line-height: 1.2;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 80px 0 32px 0;
+      letter-spacing: -0.02em;
+      scroll-margin-top: 40px;
+    }
+
+    h3 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 40px 0 20px 0;
+    }
+
+    h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .lead {
+      font-size: 20px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      line-height: 1.7;
+      max-width: 800px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin: 48px 0 60px 0;
+      align-items: start;
+    }
+
+    .hero-visual {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 80px 40px;
+      text-align: center;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.8;
+      position: sticky;
+      top: 40px;
+    }
+
+    .achievement-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 24px;
+      margin: 32px 0;
+      border-radius: 8px;
+    }
+
+    .achievement-box strong {
+      display: block;
+      margin-bottom: 16px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .achievement-box ul {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .achievement-box li {
+      margin-bottom: 10px;
+      padding-left: 24px;
+      position: relative;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .achievement-box li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Stats */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin: 60px 0;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+      background: var(--bg-subtle);
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Tech Tags */
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 32px 0;
+    }
+
+    .tech-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 6px 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .tech-tag:hover {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Challenge Grid */
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin: 48px 0;
+    }
+
+    .challenge-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .challenge-card:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
+
+    .card-number {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 32px;
+      height: 32px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .challenge-card h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+      padding-right: 40px;
+    }
+
+    .challenge-visual {
+      background: var(--bg-subtle);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 48px 24px;
+      margin: 20px 0;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+
+    .solution-list {
+      margin: 12px 0;
+      padding-left: 0;
+      list-style: none;
+      font-size: 15px;
+    }
+
+    .solution-list li {
+      padding-left: 24px;
+      position: relative;
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .solution-list li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Pipeline */
+    .pipeline-diagram {
+      background: var(--bg-subtle);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 80px 40px;
+      margin: 48px 0;
+      min-height: 320px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* Stage Cards */
+    .stage-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+
+    .stage-card h4 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+
+    /* Code */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--bg-subtle);
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 24px 0;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      border: none;
+    }
+
+    /* Failure Card */
+    .failure-card {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 3px solid var(--error);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+
+    .failure-card h4 {
+      color: var(--error);
+      margin-bottom: 20px;
+    }
+
+    /* Success Card */
+    .success-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 3px solid var(--success);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+
+    .success-card h4 {
+      color: var(--success);
+      margin-bottom: 20px;
+    }
+
+    /* Comparison Card */
+    .comparison-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .before-col {
+      border-left: 3px solid var(--error);
+      padding-left: 20px;
+    }
+
+    .after-col {
+      border-left: 3px solid var(--success);
+      padding-left: 20px;
+    }
+
+    .metric-value {
+      font-size: 48px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 8px;
+    }
+
+    .metric-value.bad {
+      color: var(--error);
+    }
+
+    .metric-value.good {
+      color: var(--success);
+    }
+
+    /* Trade-off */
+    .trade-off {
+      background: var(--bg-subtle);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    /* Impact Section */
+    .impact-section {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 48px;
+      margin: 60px 0;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .impact-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .impact-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    /* Callout */
+    .callout {
+      background: white;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 28px 32px;
+      margin: 40px 0;
+      border-radius: 8px;
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    /* Lists */
+    ul {
+      margin: 20px 0;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 80px 0;
+    }
+
+    /* Mobile */
+    @media (max-width: 1024px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 40px 24px 80px 24px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      h2 {
+        font-size: 26px;
+        margin: 60px 0 24px 0;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .hero-visual {
+        position: static;
+      }
+
+      .challenge-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .impact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .main {
+        padding: 32px 20px 60px 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-value {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a href="/" class="back-button">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 0L6.59 1.41L12.17 7H0v2h12.17l-5.58 5.59L8 16l8-8z" transform="rotate(180 8 8)"/>
+    </svg>
+    Back to Projects
+  </a>
+
+  <div class="sidebar-title">Muvo: Hybrid Pronunciation Scoring</div>
+
+  <a href="https://drive.google.com/file/d/1hHul2_ebSVWzl7s6mMVc3v5QfPE2FBhb/view" class="demo-link">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 0l8 8-8 8V0z"/>
+    </svg>
+    Watch Demo
+  </a>
+
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="#overview" class="active">Overview</a></li>
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#attempt">First Attempt</a></li>
+      <li><a href="#failure">Why It Failed</a></li>
+      <li><a href="#solution">Hybrid Solution</a></li>
+      <li><a href="#pipeline">Data Pipeline</a></li>
+      <li><a href="#impact">Impact</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="main">
+
+  <section id="overview" class="visible">
+    <h1>Building a Pronunciation Scoring System for Language Learners</h1>
+    <p class="lead">
+      When pure ML failed at 62% accuracy, I built a hybrid system combining Create ML sound classification with Apple's Speech-to-Text framework—achieving 85% accuracy for real-time pronunciation feedback.
+    </p>
+
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="achievement-box">
+          <strong>What I Built:</strong>
+          <ul>
+            <li>Hybrid scoring engine (ML + STT) for pronunciation assessment</li>
+            <li>Custom audio data pipeline with augmentation (9,299 training samples)</li>
+            <li>Real-time feedback system with 3-tier accuracy scoring</li>
+            <li>Travel-focused phrase learning (Hotel & Airport scenarios)</li>
+          </ul>
+        </div>
+
+        <div class="tech-tags">
+          <span class="tech-tag">Swift</span>
+          <span class="tech-tag">Create ML</span>
+          <span class="tech-tag">Speech Framework</span>
+          <span class="tech-tag">AVFoundation</span>
+          <span class="tech-tag">Sound Analysis</span>
+          <span class="tech-tag">MFCC</span>
+          <span class="tech-tag">Librosa</span>
+          <span class="tech-tag">Python</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div>
+          [IMG: muvo-app-mockup.png]
+          <br><br>
+          iPhone showing practice screen:
+          <br>• Sentence prompt with audio playback
+          <br>• Real-time waveform during recording
+          <br>• Instant feedback (Perfect/Almost/Try Again)
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-value">85%</span>
+        <span class="stat-label">Hybrid Accuracy</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">9.3K</span>
+        <span class="stat-label">Training Samples</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">2</span>
+        <span class="stat-label">ML Models</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">10</span>
+        <span class="stat-label">Practice Phrases</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="problem">
+    <h2>The Problem</h2>
+    <p>Language learners struggle to know if their pronunciation is correct when practicing alone. Traditional methods rely on:</p>
+
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="card-number">1</div>
+        <h4>Human Tutors</h4>
+        <ul class="solution-list">
+          <li>Expensive ($20-50/hour)</li>
+          <li>Limited availability</li>
+          <li>Subjective feedback</li>
+          <li>Intimidating for beginners</li>
+        </ul>
+      </div>
+
+      <div class="challenge-card">
+        <div class="card-number">2</div>
+        <h4>Existing Apps</h4>
+        <ul class="solution-list">
+          <li>Generic scoring algorithms</li>
+          <li>No context-specific feedback</li>
+          <li>Binary pass/fail (demotivating)</li>
+          <li>Requires internet connection</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Our Insight</div>
+      <p>Travelers don't need perfect pronunciation—they need <strong>confidence</strong> that they'll be understood in real-world scenarios (hotels, airports, restaurants). Traditional language apps over-index on grammar and vocabulary, under-index on practical speaking.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="attempt">
+    <h2>First Attempt: Pure Machine Learning</h2>
+    <p>I started with Create ML's Sound Classification, training a model to recognize correct pronunciation patterns.</p>
+
+    <div class="stage-card">
+      <h4>Data Collection Strategy</h4>
+      <p><strong>10 practical phrases</strong> across 2 categories:</p>
+      
+      <pre><code>Hotel (5 phrases):
+- "I have a reservation under my name"
+- "I'd like to check in please"
+- "Is breakfast included?"
+- "There is a problem with my room"
+- "I need a non-smoking room please"
+
+Airport (5 phrases):
+- "My luggage is missing"
+- "Where is the immigration counter?"
+- "I missed my flight"
+- "Here is my passport and ticket"
+- "I lost my boarding pass"</code></pre>
+
+      <p style="margin-top: 24px;"><strong>Recording Process:</strong></p>
+      <ul class="solution-list">
+        <li>6 people × 10 sentences = 60 base recordings</li>
+        <li>Recorded at 16kHz, mono channel, WAV format</li>
+        <li>Controlled environment (quiet room, consistent microphone)</li>
+      </ul>
+    </div>
+
+    <div class="stage-card">
+      <h4>Feature Extraction</h4>
+      <p>Used <strong>MFCC (Mel-Frequency Cepstral Coefficients)</strong> for audio representation:</p>
+
+      <pre><code>import librosa
+import numpy as np
+
+# Configuration
+SAMPLE_RATE = 16000
+N_MFCC = 13  # Standard for speech recognition
+
+# Extract MFCC features
+def extract_mfcc(audio_path):
+    y, sr = librosa.load(audio_path, sr=SAMPLE_RATE)
+    mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=N_MFCC)
+    return mfccs</code></pre>
+
+      <div class="challenge-visual" style="margin-top: 24px;">
+        [IMG: mfcc-visualization.png]
+        <br>MFCC feature map showing frequency bands over time
+      </div>
+    </div>
+
+    <div class="stage-card">
+      <h4>Data Augmentation</h4>
+      <p>To expand the dataset from 60 → 9,299 samples:</p>
+
+      <ul class="solution-list">
+        <li><strong>Time Stretching</strong> - Speed up/slow down by ±15% (preserves pitch)</li>
+        <li><strong>Pitch Shifting</strong> - Shift pitch by ±2 semitones (simulates voice variation)</li>
+        <li><strong>Delay/Echo</strong> - Add subtle echo (simulates room acoustics)</li>
+        <li><strong>Background Noise</strong> - Inject 3 common noises from Musan dataset:
+          <ul style="margin-top: 12px; padding-left: 24px;">
+            <li>Airport ambient noise</li>
+            <li>Hotel lobby chatter</li>
+            <li>Street traffic</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="challenge-visual" style="margin-top: 24px;">
+        [IMG: augmentation-examples.png]
+        <br>Waveform comparison: original vs augmented audio
+      </div>
+    </div>
+
+    <div class="stage-card">
+      <h4>Model Training</h4>
+      <p>Create ML configuration:</p>
+
+      <pre><code>Model: Sound Classifier (Create ML)
+Feature Extractor: Audio Feature Print
+- Optimized for speech classification accuracy
+- Window Duration: 0.5 seconds
+- Window Overlap: 50%
+
+Training Configuration:
+- Iterations: 75 (converged at iteration 35)
+- Validation Split: Auto
+- Model Availability: iOS 15.0+
+
+Output: 2 separate models
+- soundclafHOT (Hotel - 5 classes)
+- soundclafAIR (Airport - 5 classes)</code></pre>
+
+      <div class="challenge-visual" style="margin-top: 24px;">
+        [IMG: createml-training.png]
+        <br>Screenshot from Create ML showing training metrics
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="failure">
+    <h2>Why Pure ML Failed</h2>
+
+    <div class="failure-card">
+      <h4>⚠️ Training Accuracy: 62.4% (Not Production-Ready)</h4>
+      <p>The model couldn't reliably distinguish between correct and incorrect pronunciations.</p>
+
+      <div class="challenge-visual" style="margin-top: 24px;">
+        [IMG: training-accuracy-graph.png]
+        <br>Graph showing 62.4% training accuracy plateau
+      </div>
+    </div>
+
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="card-number">1</div>
+        <h4>Class Imbalance</h4>
+        <p class="section-label">Problem</p>
+        <p>"I have a reservation under my name" was severely underrepresented in the dataset—only 3 recordings vs 10+ for other phrases.</p>
+
+        <p class="section-label" style="margin-top: 20px;">Why It Happened</p>
+        <ul class="solution-list">
+          <li>Recording session time constraints</li>
+          <li>Participants struggled with longer sentences</li>
+          <li>Didn't validate dataset balance before training</li>
+        </ul>
+
+        <p class="section-label" style="margin-top: 20px;">Impact</p>
+        <p>Model learned to <strong>ignore this class entirely</strong>, always predicting other phrases even when correct.</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="card-number">2</div>
+        <h4>Small Dataset</h4>
+        
+        <p class="section-label">Problem</p>
+        <p>Even after augmentation (9,299 samples), the model struggled with real-world variation:</p>
+
+        <ul class="solution-list">
+          <li>Only 6 unique voices (poor speaker diversity)</li>
+          <li>Limited accent variation (all Indonesian English)</li>
+          <li>Controlled recording environment (no real-world noise)</li>
+        </ul>
+
+        <p class="section-label" style="margin-top: 20px;">Result</p>
+        <p>Model <strong>overfitted</strong> to the training speakers—failed on new voices with different accents or speaking styles.</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="card-number">3</div>
+        <h4>Binary Classification Limitation</h4>
+        
+        <p class="section-label">Problem</p>
+        <p>Sound classification returns a single label: which sentence was spoken. But we needed:</p>
+
+        <ul class="solution-list">
+          <li>Was it pronounced <em>correctly</em>?</li>
+          <li>If wrong, <em>how wrong</em>? (Almost there vs completely off)</li>
+          <li>Which <em>specific words</em> need improvement?</li>
+        </ul>
+
+        <p class="section-label" style="margin-top: 20px;">Insight</p>
+        <p>We were using <strong>the wrong model architecture</strong> for the task. Sound classification answers "what was said," not "how well was it said."</p>
+      </div>
+
+      <div class="challenge-card">
+        <div class="card-number">4</div>
+        <h4>Create ML Constraints</h4>
+        
+        <p class="section-label">Limitations</p>
+        <ul class="solution-list">
+          <li>Black box model (no control over architecture)</li>
+          <li>Fixed feature extraction (can't tune for pronunciation nuances)</li>
+          <li>No confidence scores (only binary predictions)</li>
+          <li>Can't integrate linguistic knowledge (phoneme-level analysis)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Key Learning #1</div>
+      <p><strong>Always validate your dataset before training.</strong> Spent 2 weeks collecting/augmenting data, only to discover class imbalance after model performed poorly. Now I create a dataset analysis script <em>first</em> to catch these issues early.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="solution">
+    <h2>The Hybrid Solution</h2>
+    <p>Instead of abandoning ML entirely, I combined its strengths with Apple's Speech-to-Text framework for a robust hybrid system.</p>
+
+    <div class="success-card">
+      <h4>✓ Hybrid Accuracy: 85% (Production-Ready)</h4>
+      <p>By fusing ML confidence with STT word-matching, the system became reliable enough for real users.</p>
+    </div>
+
+    <div class="comparison-card">
+      <h4>Before vs After</h4>
+      
+      <div class="comparison-grid">
+        <div class="before-col">
+          <div class="metric-value bad">62%</div>
+          <div class="stat-label">Pure ML Accuracy</div>
+          <p style="margin-top: 16px; font-size: 14px; color: var(--text-secondary);">
+            Model outputs: "I have a reservation"<br>
+            User said: "I have a reservation under my name"<br>
+            <strong>Result: False negative</strong>
+          </p>
+        </div>
+
+        <div class="after-col">
+          <div class="metric-value good">85%</div>
+          <div class="stat-label">Hybrid Accuracy</div>
+          <p style="margin-top: 16px; font-size: 14px; color: var(--text-secondary);">
+            ML: Low confidence<br>
+            STT: "I have reservation under my name" (90% word match)<br>
+            <strong>Result: Correct → Almost (60% threshold met)</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage-card">
+      <h4>Hybrid Architecture</h4>
+      
+      <div class="pipeline-diagram">
+        [IMG: hybrid-architecture.png]
+        <br><br>
+        Flowchart showing:
+        <br>User Audio → ML Classifier (high confidence?) YES → Perfect
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ NO
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Speech-to-Text → Word Matching
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;≥60% words correct? → Almost
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<60% → Try Again
+      </div>
+
+      <pre><code>// Hybrid Scoring Logic
+func evaluatePronunciation(
+    mlClassification: String?, 
+    recognizedText: String
+) -> PronunciationAccuracy {
+    
+    let target = normalizeText(currentSentence)
+    let recognized = normalizeText(recognizedText)
+    
+    // Path 1: ML Model is confident
+    if let mlResult = mlClassification, 
+       mlResult == target {
+        return .perfect  // ✓ Model recognized exact sentence
+    }
+    
+    // Path 2: Fallback to STT word matching
+    let targetWords = target.components(separatedBy: " ")
+    let matchingWords = countMatchingWords(
+        recognized: recognized, 
+        target: target
+    )
+    
+    let matchRate = Double(matchingWords) / Double(targetWords.count)
+    
+    if matchRate >= 0.6 {
+        return .almost   // ≥60% words correct
+    }
+    
+    return .tryAgain     // <60% words correct
+}</code></pre>
+    </div>
+
+    <div class="stage-card">
+      <h4>Why This Works</h4>
+      
+      <p><strong>ML Classifier Strengths:</strong></p>
+      <ul class="solution-list">
+        <li>Excellent at detecting <em>prosody</em> (rhythm, intonation, stress patterns)</li>
+        <li>Fast inference (<100ms on-device)</li>
+        <li>Works offline (no internet required)</li>
+        <li>When confident, it's usually right</li>
+      </ul>
+
+      <p style="margin-top: 24px;"><strong>Speech-to-Text Strengths:</strong></p>
+      <ul class="solution-list">
+        <li>State-of-the-art word recognition (Apple's cloud models)</li>
+        <li>Handles accents and speaking styles better</li>
+        <li>Provides word-level transcription (useful for debugging)</li>
+        <li>Confidence scores per word</li>
+      </ul>
+
+      <p style="margin-top: 24px;"><strong>Hybrid Synergy:</strong></p>
+      <ul class="solution-list">
+        <li>ML catches <em>perfect</em> pronunciation (prosody + words correct)</li>
+        <li>STT catches <em>almost</em> pronunciation (words mostly correct, prosody off)</li>
+        <li>Both reject <em>incorrect</em> pronunciation (neither confident)</li>
+      </ul>
+
+      <div class="trade-off">
+        <strong>Trade-off:</strong> Requires internet for STT fallback (~200ms latency)<br>
+        <strong>Mitigation:</strong> Show loading indicator, cache common results
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Key Learning #2</div>
+      <p><strong>When pure ML fails, intelligent fusion wins.</strong> Instead of collecting more data or trying different architectures, I leveraged existing robust systems (Apple STT) to complement my weak model. Result: 85% accuracy with <100 hours of work.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="pipeline">
+    <h2>Complete Data Pipeline</h2>
+
+    <div class="stage-card">
+      <h4>Stage 1: Data Collection</h4>
+      <ul class="solution-list">
+        <li>Recruited 6 participants (mix of male/female, ages 20-30)</li>
+        <li>Provided written + audio reference for each phrase</li>
+        <li>Recorded in quiet room with Shure SM7B microphone</li>
+        <li>10 takes per person per phrase (best 1-2 kept)</li>
+      </ul>
+
+      <div class="trade-off">
+        <strong>Lesson Learned:</strong> Record more than you think you need—many takes had background noise, stutters, or mispronunciations that had to be discarded.
+      </div>
+    </div>
+
+    <div class="stage-card">
+      <h4>Stage 2: Preprocessing</h4>
+      <pre><code>from pydub import AudioSegment
+import torchaudio
+
+TARGET_SAMPLE_RATE = 16000
+
+def preprocess_audio(input_path, output_path):
+    # Load and normalize
+    audio = AudioSegment.from_file(input_path)
+    audio = audio.set_channels(1)  # Mono
+    audio = audio.set_frame_rate(TARGET_SAMPLE_RATE)
+    
+    # Normalize volume
+    normalized = audio.normalize()
+    
+    # Trim silence (start/end)
+    trimmed = normalized.strip_silence(
+        silence_thresh=-40,  # dB
+        padding=100  # ms
+    )
+    
+    # Export
+    trimmed.export(output_path, format="wav")</code></pre>
+    </div>
+
+    <div class="stage-card">
+      <h4>Stage 3: Augmentation</h4>
+      <pre><code>import librosa
+import numpy as np
+
+def augment_audio(audio_path, output_dir):
+    y, sr = librosa.load(audio_path, sr=16000)
+    
+    # 1. Time stretching (±15%)
+    faster = librosa.effects.time_stretch(y, rate=1.15)
+    slower = librosa.effects.time_stretch(y, rate=0.85)
+    
+    # 2. Pitch shifting (±2 semitones)
+    higher = librosa.effects.pitch_shift(y, sr=sr, n_steps=2)
+    lower = librosa.effects.pitch_shift(y, sr=sr, n_steps=-2)
+    
+    # 3. Add delay/echo
+    delayed = add_echo(y, delay_ms=100, decay=0.3)
+    
+    # 4. Background noise injection
+    for noise_type in ['airport', 'hotel', 'street']:
+        noise = load_noise(noise_type)
+        noisy = y + 0.05 * noise  # SNR ~20dB
+        
+    # Save all variants...</code></pre>
+    </div>
+
+    <div class="stage-card">
+      <h4>Stage 4: Feature Extraction</h4>
+      <p>Extracted MFCCs for Create ML training:</p>
+
+      <pre><code>def extract_and_save_mfcc(audio_path, output_path):
+    y, sr = librosa.load(audio_path, sr=16000)
+    
+    # Extract 13 MFCC coefficients
+    mfccs = librosa.feature.mfcc(
+        y=y, 
+        sr=sr, 
+        n_mfcc=13,
+        n_fft=2048,
+        hop_length=512
+    )
+    
+    # Save as .npy for Create ML
+    np.save(output_path, mfccs)</code></pre>
+    </div>
+
+    <div class="stage-card">
+      <h4>Stage 5: Model Training</h4>
+      <p>Create ML automatically handled training from the augmented dataset:</p>
+
+      <div class="challenge-visual">
+        [IMG: createml-results.png]
+        <br>Final training results showing 62.4% accuracy
+      </div>
+
+      <ul class="solution-list">
+        <li>Training Data: 9,299 audio files (5 classes × ~1,860 each)</li>
+        <li>Validation: Auto-split from training data</li>
+        <li>Iterations: 75 (early stopping at 35)</li>
+        <li>Model Size: 17KB per model (very efficient)</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="impact">
+    <h2>Impact & Learnings</h2>
+
+    <div class="impact-section">
+      <h3 style="margin-top: 0;">What This Project Demonstrates</h3>
+
+      <div class="impact-grid">
+        <div class="impact-card">
+          <h4>ML Engineering</h4>
+          <ul class="solution-list">
+            <li>End-to-end audio ML pipeline (collection → deployment)</li>
+            <li>Data augmentation strategies for small datasets</li>
+            <li>Model evaluation and failure analysis</li>
+            <li>Hybrid system design (ML + rule-based)</li>
+          </ul>
+        </div>
+
+        <div class="impact-card">
+          <h4>iOS Audio Engineering</h4>
+          <ul class="solution-list">
+            <li>Real-time audio capture (AVAudioEngine)</li>
+            <li>Speech recognition integration (SFSpeechRecognizer)</li>
+            <li>Sound classification (SNAudioStreamAnalyzer)</li>
+            <li>Waveform visualization (vDSP)</li>
+          </ul>
+        </div>
+
+        <div class="impact-card">
+          <h4>Product Thinking</h4>
+          <ul class="solution-list">
+            <li>3-tier feedback system (Perfect/Almost/Try Again)</li>
+            <li>Skip mechanism after 3 failed attempts</li>
+            <li>Contextual practice (travel scenarios)</li>
+            <li>Encouragement over perfection</li>
+          </ul>
+        </div>
+
+        <div class="impact-card">
+          <h4>Practical Skills</h4>
+          <ul class="solution-list">
+            <li>Python audio processing (librosa, pydub)</li>
+            <li>MFCC feature extraction</li>
+            <li>Create ML workflow</li>
+            <li>Swift concurrency & audio streaming</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Key Learnings</div>
+      
+      <p><strong>1. Validate your data BEFORE training.</strong> Class imbalance destroyed my first model. Now I always create a dataset analysis script first—visualize class distributions, sample diversity, audio quality metrics.</p>
+
+      <p style="margin-top: 16px;"><strong>2. Small datasets + augmentation ≠ large datasets.</strong> 60 recordings → 9,299 augmented samples still only represented 6 voices. Real diversity requires more unique speakers, not more synthetic variations.</p>
+
+      <p style="margin-top: 16px;"><strong>3. Hybrid > pure ML for production systems.</strong> Combining a weak custom model (62%) with a strong off-the-shelf system (Apple STT) yielded better results than spending months improving the custom model to 70-75%.</p>
+
+      <p style="margin-top: 16px;"><strong>4. User experience > algorithm accuracy.</strong> 3-tier feedback (Perfect/Almost/Try Again) with skip-after-3-fails felt better than binary pass/fail at 90% accuracy. Users want progress, not perfection.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">What I'd Do Differently</div>
+      
+      <p><strong>Dataset:</strong> Start with 20+ speakers minimum. Partner with language schools to get diverse accents/ages/genders. Validate class balance before any preprocessing.</p>
+
+      <p style="margin-top: 16px;"><strong>Architecture:</strong> Explore phoneme-level models (wav2vec 2.0) instead of sentence-level classification. Would provide better error localization ("you mispronounced 'reservation'").</p>
+
+      <p style="margin-top: 16px;"><strong>Evaluation:</strong> User testing from day 1. Would have discovered the binary scoring issue much earlier if I'd tested with real learners instead of just looking at accuracy metrics.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Intersection Observer for fade-in animations
+  const sections = document.querySelectorAll('section');
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+  
+  sections.forEach(section => {
+    observer.observe(section);
+  });
+
+  // Active navigation highlighting
+  const navLinks = document.querySelectorAll('.sidebar-nav a');
+  
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (scrollY >= (sectionTop - 150)) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  });
+
+  // Smooth scrolling
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href');
+      const targetSection = document.querySelector(targetId);
+      window.scrollTo({
+        top: targetSection.offsetTop - 40,
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
+</artifact>
+
