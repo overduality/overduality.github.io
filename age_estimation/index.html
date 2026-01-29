@@ -1,1068 +1,1070 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dental Age Estimation - Deep Learning Project Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dental Age Estimation - Deep Learning Project Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      :root {
-        --text: #1a1a1a;
-        --text-light: #666;
-        --border: #e0e0e0;
-        --bg-light: #fafafa;
-        --accent: #52796f;
-        --code-bg: #f5f5f5;
-      }
+    :root {
+      --text: #1a1a1a;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --bg-light: #fafafa;
+      --accent: #0891b2;
+      --accent-hover: #0e7490;
+      --code-bg: #f5f5f5;
+    }
 
-      html {
-        scroll-behavior: smooth;
-      }
+    html {
+      scroll-behavior: smooth;
+    }
 
-      body {
-        font-family: 'IBM Plex Sans', sans-serif;
-        color: var(--text);
-        background: #ffffff;
-        line-height: 1.75;
-        font-size: 17px;
-      }
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.75;
+      font-size: 17px;
+    }
 
-      /* Fixed Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: var(--bg-light);
+      border-right: 1px solid var(--border);
+      padding: 48px 24px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .sidebar-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .github-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #24292e;
+      border: 1px solid #24292e;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .github-link:hover {
+      background: #1a1f24;
+      border-color: #1a1f24;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      padding-left: 0rem;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 4px;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 10px 16px;
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 15px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar-nav a:hover {
+      background: rgba(8, 145, 178, 0.08);
+      color: var(--accent);
+    }
+
+    .sidebar-nav a.active {
+      background: rgba(8, 145, 178, 0.12);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .main {
+      margin-left: 260px;
+      padding: 80px 100px 120px 100px;
+      max-width: 1100px;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 48px;
+      line-height: 1.2;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 36px;
+      font-weight: 700;
+      margin: 80px 0 28px 0;
+      letter-spacing: -0.01em;
+      scroll-margin-top: 40px;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 48px 0 20px 0;
+      color: var(--text);
+    }
+
+    .lead {
+      font-size: 21px;
+      color: var(--text-light);
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-box {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 32px;
+      margin: 40px 0;
+      border-radius: 8px;
+    }
+
+    .result-box h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 48px 0;
+    }
+
+    .stat-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      border-radius: 8px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    ul, ol {
+      margin: 24px 0;
+      padding-left: 28px;
+    }
+
+    li {
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--code-bg);
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 32px 0;
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      border: none;
+    }
+
+    .img-full {
+      width: 100%;
+      margin: 48px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .img-full.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .img-full img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .img-caption {
+      padding: 16px 20px;
+      background: var(--bg-light);
+      font-size: 15px;
+      color: var(--text-light);
+      text-align: center;
+      font-style: italic;
+    }
+
+    .img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 48px 0;
+    }
+
+    .img-grid .img-full {
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 40px 0;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-weight: 600;
+      background: var(--bg-light);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text);
+    }
+
+    tbody tr:hover {
+      background: var(--bg-light);
+    }
+
+    .highlight {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    .callout {
+      background: #fefce8;
+      border-left: 4px solid #facc15;
+      padding: 24px 28px;
+      margin: 40px 0;
+      border-radius: 8px;
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 32px 0;
+    }
+
+    .tech-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 8px 16px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .tech-tag:hover {
+      background: rgba(8, 145, 178, 0.08);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 80px 0;
+    }
+
+    .math-block {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 24px;
+      margin: 32px 0;
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 1024px) {
       .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 260px;
-        background: var(--bg-light);
-        border-right: 1px solid var(--border);
-        padding: 48px 24px;
-        overflow-y: auto;
-        z-index: 100;
+        display: none;
       }
 
-      .back-button {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 16px;
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        text-decoration: none;
-        color: var(--text);
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 24px;
-        transition: all 0.2s ease;
-      }
-
-      .back-button:hover {
-        background: var(--accent);
-        color: white;
-        border-color: var(--accent);
-      }
-
-      .sidebar-title {
-        font-family: 'Libre Baskerville', serif;
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 24px;
-        color: var(--text);
-        line-height: 1.3;
-      }
-
-      .github-link {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 16px;
-        background: #24292e;
-        border: 1px solid #24292e;
-        border-radius: 6px;
-        text-decoration: none;
-        color: white;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 24px;
-        transition: all 0.2s ease;
-      }
-
-      .github-link:hover {
-        background: #1a1f24;
-        border-color: #1a1f24;
-      }
-
-      .sidebar-nav {
-        list-style: none;
-        padding-left: 0rem;
-      }
-
-      .sidebar-nav li {
-        margin-bottom: 4px;
-      }
-
-      .sidebar-nav a {
-        display: block;
-        padding: 10px 16px;
-        color: var(--text-light);
-        text-decoration: none;
-        font-size: 15px;
-        border-radius: 6px;
-        transition: all 0.2s ease;
-        font-weight: 500;
-      }
-
-      .sidebar-nav a:hover {
-        background: rgba(37, 99, 235, 0.08);
-        color: var(--accent);
-      }
-
-      .sidebar-nav a.active {
-        background: rgba(37, 99, 235, 0.12);
-        color: var(--accent);
-        font-weight: 600;
-      }
-
-      /* Main Content */
       .main {
-        margin-left: 260px;
-        padding: 80px 100px 120px 100px;
-        max-width: 1100px;
+        margin-left: 0;
+        padding: 48px 32px 80px 32px;
       }
 
-      /* Typography */
       h1 {
-        font-family: 'Libre Baskerville', serif;
-        font-size: 48px;
-        line-height: 1.2;
-        font-weight: 700;
-        margin-bottom: 20px;
-        letter-spacing: -0.02em;
+        font-size: 36px;
       }
 
       h2 {
-        font-family: 'Libre Baskerville', serif;
-        font-size: 36px;
-        font-weight: 700;
-        margin: 80px 0 28px 0;
-        letter-spacing: -0.01em;
-        scroll-margin-top: 40px;
+        font-size: 28px;
+        margin: 60px 0 24px 0;
       }
 
-      h3 {
-        font-size: 24px;
-        font-weight: 600;
-        margin: 48px 0 20px 0;
-        color: var(--text);
-      }
-
-      .lead {
-        font-size: 21px;
-        color: var(--text-light);
-        margin-bottom: 48px;
-        line-height: 1.6;
-      }
-
-      p {
-        margin-bottom: 20px;
-      }
-
-      strong {
-        font-weight: 600;
-        color: var(--text);
-      }
-
-      /* Section Animation */
-      section {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-      }
-
-      section.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* Result Box */
-      .result-box {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--accent);
-        padding: 32px;
-        margin: 40px 0;
-        border-radius: 8px;
-      }
-
-      .result-box h3 {
-        margin-top: 0;
-        margin-bottom: 16px;
-        font-size: 22px;
-      }
-
-      /* Stats Grid */
       .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin: 48px 0;
+        grid-template-columns: 1fr;
       }
 
-      .stat-card {
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        padding: 28px 24px;
-        text-align: center;
-        border-radius: 8px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.06);
-      }
-
-      .stat-value {
-        display: block;
-        font-size: 36px;
-        font-weight: 700;
-        color: var(--accent);
-        margin-bottom: 8px;
-        font-family: 'JetBrains Mono', monospace;
-      }
-
-      .stat-label {
-        font-size: 14px;
-        color: var(--text-light);
-        font-weight: 500;
-      }
-
-      /* List Styles */
-      ul, ol {
-        margin: 24px 0;
-        padding-left: 28px;
-      }
-
-      li {
-        margin-bottom: 12px;
-        color: var(--text);
-      }
-
-      li::marker {
-        color: var(--accent);
-      }
-
-      /* Code */
-      code {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 14px;
-        background: var(--code-bg);
-        padding: 3px 8px;
-        border-radius: 4px;
-        border: 1px solid var(--border);
-      }
-
-      pre {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 14px;
-        background: var(--code-bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 24px;
-        margin: 32px 0;
-        overflow-x: auto;
-        line-height: 1.6;
-      }
-
-      pre code {
-        background: none;
-        padding: 0;
-        border: none;
-      }
-
-      /* Images */
-      .img-full {
-        width: 100%;
-        margin: 48px 0;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid var(--border);
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-      }
-
-      .img-full.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .img-full img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      .img-caption {
-        padding: 16px 20px;
-        background: var(--bg-light);
-        font-size: 15px;
-        color: var(--text-light);
-        text-align: center;
-        font-style: italic;
-      }
-
-      /* Image Grid */
       .img-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        margin: 48px 0;
+        grid-template-columns: 1fr;
       }
+    }
+  </style>
+</head>
+<body>
 
-      .img-grid .img-full {
-        margin: 0;
-      }
-      
-      .img-grid-vertical {
-        display: flex;
-        flex-direction: column;
-        gap: 28px;
-        margin: 48px 0;
-      }
+  <aside class="sidebar">
+    <a href="/" class="back-button">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0L6.59 1.41L12.17 7H0v2h12.17l-5.58 5.59L8 16l8-8z" transform="rotate(180 8 8)"/>
+      </svg>
+      Back to Projects
+    </a>
+    <div class="sidebar-title">Dental Age Estimation Using Deep Learning</div>
+    <a href="https://github.com/overduality/dental-age-estimation" target="_blank" rel="noopener noreferrer" class="github-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      View on GitHub
+    </a>
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="#overview" class="active">Overview</a></li>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#data">Data Engineering</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#validation">Validation</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#interpretability">Interpretability</a></li>
+        <li><a href="#benchmarking">Benchmarking</a></li>
+        <li><a href="#impact">Impact</a></li>
+      </ul>
+    </nav>
+  </aside>
 
-      .img-row {
-        display: flex;
-        justify-content: center;
-        gap: 24px;
-      }
+  <main class="main">
 
-      .img-small {
-        flex: 0 0 50%; 
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-      }
+    <section id="overview" class="visible">
+      <h1>Predicting Chronological Age from Panoramic Radiographs</h1>
+      <p class="lead">
+        An automated deep learning pipeline achieving 0.690 years MAE on Indonesian pediatric population, outperforming traditional manual methods while providing clinical interpretability.
+      </p>
 
-      .img-small img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value">0.690</span>
+          <span class="stat-label">MAE (years)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">588</span>
+          <span class="stat-label">Images</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">&lt;500ms</span>
+          <span class="stat-label">Inference Time</span>
+        </div>
+      </div>
 
-      /* Table */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 40px 0;
-        font-size: 15px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-      }
-
-      th, td {
-        text-align: left;
-        padding: 16px 20px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      th {
-        font-weight: 600;
-        background: var(--bg-light);
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--text);
-      }
-
-      tbody tr:hover {
-        background: var(--bg-light);
-      }
-
-      .highlight {
-        background: #eff6ff;
-        font-weight: 600;
-      }
-
-      /* Callout */
-      .callout {
-        background: #fefce8;
-        border-left: 4px solid #facc15;
-        padding: 24px 28px;
-        margin: 40px 0;
-        border-radius: 8px;
-      }
-
-      .callout-title {
-        font-weight: 600;
-        margin-bottom: 12px;
-        font-size: 18px;
-        color: var(--text);
-      }
-
-      /* Tech Tags */
-      .tech-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 32px 0;
-      }
-
-      .tech-tag {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 13px;
-        padding: 8px 16px;
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        font-weight: 500;
-        transition: all 0.2s ease;
-      }
-
-      .tech-tag:hover {
-        background: rgba(37, 99, 235, 0.08);
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-
-      /* Divider */
-      .divider {
-        height: 1px;
-        background: var(--border);
-        margin: 80px 0;
-      }
-
-      /* Math Block */
-      .math-block {
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--accent);
-        padding: 24px;
-        margin: 32px 0;
-        font-family: 'Libre Baskerville', serif;
-        font-style: italic;
-        border-radius: 8px;
-      }
-
-      /* Responsive */
-      @media (max-width: 1024px) {
-        .sidebar {
-          display: none;
-        }
-
-        .main {
-          margin-left: 0;
-          padding: 48px 32px 80px 32px;
-        }
-
-        h1 {
-          font-size: 36px;
-        }
-
-        h2 {
-          font-size: 28px;
-          margin: 60px 0 24px 0;
-        }
-
-        .stats-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .img-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-      <a href="/" class="back-button">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M8 0L6.59 1.41L12.17 7H0v2h12.17l-5.58 5.59L8 16l8-8z" transform="rotate(180 8 8)"/>
-        </svg>
-        Back to Projects
-      </a>
-      <div class="sidebar-title">Dental Age Estimation Using Deep Learning</div>
-      <a href="https://github.com/overduality/dental-age-estimation" target="_blank" rel="noopener noreferrer" class="github-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        View on GitHub
-      </a>
-      <nav>
-        <ul class="sidebar-nav">
-          <li><a href="#overview" class="active">Overview</a></li>
-          <li><a href="#problem">Problem</a></li>
-          <li><a href="#data">Data Engineering</a></li>
-          <li><a href="#architecture">Architecture</a></li>
-          <li><a href="#validation">Validation</a></li>
-          <li><a href="#results">Results</a></li>
-          <li><a href="#interpretability">Interpretability</a></li>
-          <li><a href="#benchmarking">Benchmarking</a></li>
-          <li><a href="#impact">Impact</a></li>
-        </ul>
-      </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main">
-
-      <!-- Overview Section -->
-      <section id="overview" class="visible">
-        <h1>Predicting Chronological Age from Panoramic Radiographs</h1>
-        <p class="lead">
-          An automated deep learning pipeline achieving 0.690 years MAE on Indonesian pediatric population, outperforming traditional manual methods while providing clinical interpretability.
+      <div class="result-box">
+        <h3>What This Project Delivers</h3>
+        <p>
+          a fully automated, end-to-end AI framework that transforms raw dental radiographs into precise age estimates with a clinical-grade error margin of just 0.690 years (roughly 8 months). Beyond just a standalone model, 
+          it provides a sophisticated processing pipeline that handles the heavy lifting, from OCR-based metadata extraction to precise mandible localization using YOLOv8-OBB. Most importantly, it delivers 
+          a solution built on uncompromising data integrity, ensuring zero patient leakage across 463 unique cases, and clinical transparency by using Grad-CAM heatmaps to show practitioners exactly which dental markers informed the AI's decision
         </p>
+      </div>
 
-        <div class="stats-grid">
-          <div class="stat-card">
-            <span class="stat-value">0.690</span>
-            <span class="stat-label">MAE (years)</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-value">588</span>
-            <span class="stat-label">Images</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-value">&lt;500ms</span>
-            <span class="stat-label">Inference Time</span>
-          </div>
+      <p><strong>The Problem:</strong> Manual dental age estimation is subjective, time-consuming, and exhibits high inter-observer variability (0.8-1.5 years MAE). Indonesia critically needs automated, reproducible age determination for forensic identification, legal proceedings, and pediatric diagnostics.</p>
+
+      <p><strong>The Solution:</strong> End-to-end automated pipeline combining computer vision (YOLOv8-OBB), deep learning (EfficientNet-B3 + CBAM attention), and rigorous validation protocols to deliver consistent, explainable age predictions at clinical-grade accuracy.</p>
+
+      <div class="tech-tags">
+        <span class="tech-tag">PyTorch</span>
+        <span class="tech-tag">EfficientNet-B3</span>
+        <span class="tech-tag">CBAM Attention</span>
+        <span class="tech-tag">YOLOv8-OBB</span>
+        <span class="tech-tag">Apple Vision OCR</span>
+        <span class="tech-tag">Grad-CAM</span>
+        <span class="tech-tag">Scikit-learn</span>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="problem">
+      <h2>Problem Statement</h2>
+      
+      <p>Dental age estimation is fundamental to three critical domains:</p>
+
+      <ul>
+        <li><strong>Forensic Odontology:</strong> Disaster victim identification (DVI), mass casualty incidents, missing person cases where DNA is unavailable or degraded</li>
+        <li><strong>Legal Proceedings:</strong> Age verification in immigration cases, criminal justice (juvenile vs adult sentencing), asylum applications requiring proof of minor status</li>
+        <li><strong>Clinical Diagnostics:</strong> Orthodontic treatment planning, growth assessment, developmental monitoring in pediatric patients</li>
+      </ul>
+
+      <p>Traditional methods rely on manual staging of tooth development using Demirjian or Willems classification systems. These approaches have fundamental limitations:</p>
+
+      <ul>
+        <li>Subjective interpretation leads to inter-observer variability (0.8-1.5 years MAE)</li>
+        <li>Requires specialized forensic odontology expertise (scarce resource in Indonesia)</li>
+        <li>Time-intensive process unsuitable for large-scale forensic databases</li>
+        <li>Population-specific calibration needed but often unavailable for non-Western demographics</li>
+      </ul>
+
+      <p>Most existing research focuses on European and North American populations. Indonesian pediatric cohorts lack comprehensive automated systems calibrated to local dental development patterns.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="data">
+     <h2>Data Engineering: The Messy Reality</h2>
+
+    <p>Real-world medical imaging projects begin with messy, unstructured data. Demonstrating rigorous data preparation separates professionals from hobbyists.</p>
+
+    <h3>Phase 1: Automated Data Curation & Identity Resolution</h3>
+
+    <p>My initial dataset consisted of approximately 1,200 panoramic radiograph <em>screenshots</em>—not standardized DICOM files. Patient metadata (name, birth date, capture date, and gender) appeared embedded as text in varying formats and positions across different imaging systems.</p>
+
+    <div class="img-full">
+      <img src="https://via.placeholder.com/1200x400/f5f5f5/666666?text=Raw+Radiograph+Screenshot+with+Embedded+Metadata" alt="Raw panoramic radiograph screenshot showing embedded patient metadata">
+      <div class="img-caption">Example of raw input: panoramic radiograph screenshot with patient metadata embedded in varying formats and positions across different imaging systems</div>
+    </div>
+
+    <p>
+      To resolve patient identifiers from 1,200 non-standardized screenshots, I engineered an automated pipeline using the <strong>Apple Vision Framework</strong>. By defining a <strong>Region of Interest (ROI)</strong> on the inferior 40% of the radiographs, I mitigated false-positive detections from clinical annotations and automated the sanitization of administrative prefixes.
+    </p>
+
+    <p>
+      I implemented a <strong>weighted fuzzy matcher</strong> (60% Name, 30% DOB, 10% Gender) that achieved a <strong>98.9% extraction accuracy</strong>. This system successfully reconciled metadata for <strong>463 out of 478 unique patients</strong>, while enforcing a strict <strong>zero patient leakage</strong> protocol, ensuring no patient data overlapped between training and testing partitions.
+    </p>
+
+    <pre><code>// Apple Vision Framework - OCR Pipeline
+let request = VNRecognizeTextRequest()
+request.recognitionLevel = .accurate
+request.regionOfInterest = CGRect(x: 0, y: 0.6, width: 1.0, height: 0.4)
+
+let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+try handler.perform([request])
+
+let rawOCR = observations.compactMap { 
+    $0.topCandidates(1).first?.string 
+}.joined(separator: " ")
+
+// Weighted fuzzy matching: 60% Name, 30% DOB, 10% Gender
+let nameMatch = sanitizedOCR.contains(target.sanitizedName)
+let dateMatch = digitsOCR.contains(target.ddmm) || digitsOCR.contains(target.mmdd)
+let yearMatch = digitsOCR.contains(target.yearFull)
+
+if nameMatch && dateMatch && yearMatch {
+    // Match found - 98.9% accuracy achieved
+    successCount += 1
+}</code></pre>
+
+      <h3>Phase 2: ROI Detection with Oriented Bounding Boxes</h3>
+
+      <p>Standard axis-aligned bounding boxes fail for dental anatomy because panoramic radiographs exhibit natural mandibular curves and variable patient positioning (±15° tilt). This introduces background noise that degrades regression accuracy.</p>
+
+      <div class="img-full">
+        <img src="/images/obb.png" alt="YOLOv8-OBB detecting left and right mandible regions with oriented bounding boxes">
+        <div class="img-caption">YOLOv8-OBB detecting left and right mandible regions with rotation-invariant oriented bounding boxes. The system handles ±15° tilt variations and automatically corrects rotation using edge density analysis.</div>
+      </div>
+
+      <p><strong>Solution: YOLOv8-OBB (Oriented Bounding Box Detection)</strong></p>
+
+      <ul>
+        <li>Trained to detect left and right mandible regions with rotation-invariant boxes</li>
+        <li>Edge density analysis for automatic rotation correction</li>
+        <li>10% safety margin expansion prevents anatomical feature clipping</li>
+        <li>Percentile-based normalization (5th-95th) preserves natural contrast—CLAHE deliberately avoided to prevent artificial edge enhancement</li>
+      </ul>
+
+      <div class="img-grid">
+        <div class="img-full">
+          <img src="age_estimation/images/before.png" alt="Original full panoramic radiograph">
+          <div class="img-caption">Original full panoramic radiograph (1200×800px) with background noise, soft tissue, and irrelevant anatomical structures</div>
         </div>
-
-        <div class="result-box">
-          <h3>What This Project Delivers</h3>
-          <p>
-            a fully automated, end-to-end AI framework that transforms raw dental radiographs into precise age estimates with a clinical-grade error margin of just 0.690 years (roughly 8 months). Beyond just a standalone model, 
-            it provides a sophisticated processing pipeline that handles the heavy lifting, from OCR-based metadata extraction to precise mandible localization using YOLOv8-OBB. Most importantly, it delivers 
-            a solution built on uncompromising data integrity, ensuring zero patient leakage across 463 unique cases, and clinical transparency by using Grad-CAM heatmaps to show practitioners exactly which dental markers informed the AI’s decision
-          </p>
+        <div class="img-full">
+          <img src="https://via.placeholder.com/550x550/f5f5f5/666666?text=Cropped+Hemijaw+ROI+224x224" alt="Cropped hemijaw region of interest">
+          <div class="img-caption">Cropped hemijaw ROI (224×224px) after OBB detection, rotation correction, and percentile-based normalization—ready for model input</div>
         </div>
+      </div>
 
-        <p><strong>The Problem:</strong> Manual dental age estimation is subjective, time-consuming, and exhibits high inter-observer variability (0.8-1.5 years MAE). Indonesia critically needs automated, reproducible age determination for forensic identification, legal proceedings, and pediatric diagnostics.</p>
+      <p><strong>Output:</strong> 956 cropped hemijaw images (478 patients × 2 sides) at 224×224 resolution, ready for regression modeling.</p>
+    </section>
 
-        <p><strong>The Solution:</strong> End-to-end automated pipeline combining computer vision (YOLOv8-OBB), deep learning (EfficientNet-B3 + CBAM attention), and rigorous validation protocols to deliver consistent, explainable age predictions at clinical-grade accuracy.</p>
+    <div class="divider"></div>
 
-        <div class="tech-tags">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">EfficientNet-B3</span>
-          <span class="tech-tag">CBAM Attention</span>
-          <span class="tech-tag">YOLOv8-OBB</span>
-          <span class="tech-tag">Apple Vision OCR</span>
-          <span class="tech-tag">Grad-CAM</span>
-          <span class="tech-tag">Scikit-learn</span>
-        </div>
-      </section>
+    <section id="architecture">
+      <h2>Architecture & Design Decisions</h2>
 
-      <div class="divider"></div>
+      <h3>Model Selection: EfficientNet-B3 + CBAM Attention</h3>
 
-      <!-- Problem Section -->
-      <section id="problem">
-        <h2>Problem Statement</h2>
+      <p>Architecture chosen based on three constraints:</p>
+      <ol>
+        <li><strong>Inference Speed:</strong> Clinical deployment requires &lt;500ms per prediction</li>
+        <li><strong>Feature Capacity:</strong> Medical images contain high-frequency anatomical details requiring deep feature extraction</li>
+        <li><strong>Interpretability:</strong> Attention mechanisms must produce clinically meaningful visualizations</li>
+      </ol>
+
+      <p>EfficientNet-B3 provides optimal compound scaling (depth, width, resolution) with ~12M parameters. ImageNet pre-training transfers low-level edge/texture features applicable to radiographic texture analysis.</p>
+
+      <div class="img-full">
+        <img src="https://via.placeholder.com/1200x600/f5f5f5/666666?text=EfficientNet-B3+%2B+CBAM+Architecture+Diagram" alt="Architecture diagram showing EfficientNet-B3 backbone with CBAM attention module">
+        <div class="img-caption">Architecture overview: EfficientNet-B3 backbone (pre-trained on ImageNet) → CBAM attention module (channel + spatial attention) → Global Average Pooling → Dropout (0.4) → Regression head (single output neuron for age prediction)</div>
+      </div>
+
+      <h3>Why CBAM (Convolutional Block Attention Module)?</h3>
+
+      <p>Medical images exhibit extreme spatial redundancy. Only specific anatomical regions—root apices, third molar development stages, mandibular bone density—correlate with chronological age. Standard CNNs waste computational resources processing irrelevant background structures.</p>
+
+      <p><strong>CBAM sequentially refines features through:</strong></p>
+      <ul>
+        <li><strong>Channel Attention:</strong> Learns <em>what</em> features matter (e.g., bone density patterns vs soft tissue)</li>
+        <li><strong>Spatial Attention:</strong> Learns <em>where</em> to focus (e.g., molar region vs anterior teeth)</li>
+      </ul>
+
+      <pre><code># PyTorch Implementation
+class DentalAgeModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.backbone = efficientnet_b3(pretrained=True)
+        self.cbam = CBAM(channels=1536)
+        self.dropout = nn.Dropout(0.4)
+        self.fc = nn.Linear(1536, 1)
         
-        <p>Dental age estimation is fundamental to three critical domains:</p>
+    def forward(self, x):
+        features = self.backbone.features(x)  # [B, 1536, 7, 7]
+        attended = self.cbam(features)
+        pooled = F.adaptive_avg_pool2d(attended, 1).flatten(1)
+        return self.fc(self.dropout(pooled))</code></pre>
 
+      <h3>Loss Function: Smooth L1 (Huber Loss)</h3>
+
+      <p>Age estimation is a regression problem with outlier sensitivity. Standard MSE amplifies large errors quadratically, causing training instability when encountering mislabeled samples or anatomical anomalies (e.g., congenitally missing teeth, severe malocclusion).</p>
+
+      <div class="math-block">
+        L<sub>β</sub>(x, y) = <br><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;0.5(x - y)² / β&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if |x - y| &lt; β<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;|x - y| - 0.5β&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otherwise
+      </div>
+
+      <p>With β = 1.0, the loss transitions from quadratic (smooth gradients near convergence) to linear (robust against outliers). This prevents gradient explosions during early training while maintaining precision.</p>
+
+      <p><strong>Additional Training Details:</strong></p>
+      <ul>
+        <li>Optimizer: AdamW (learning rate 1e-4, weight decay 1e-4)</li>
+        <li>Scheduler: CosineAnnealingWarmRestarts (T<sub>0</sub>=15, T<sub>mult</sub>=2)</li>
+        <li>Regularization: Dropout 0.4, early stopping patience=15 epochs</li>
+        <li>Augmentation: Random rotation ±5°, horizontal flip, color jitter</li>
+      </ul>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="validation">
+      <h2>Zero-Leakage Validation Protocol</h2>
+
+      <p><em>This section is critical for ML hiring managers evaluating model integrity.</em></p>
+
+      <h3>The Data Leakage Problem</h3>
+
+      <p>Each patient contributes 2 hemijaw images (left + right mandible). Standard K-Fold splitting on image IDs creates catastrophic leakage—the model learns patient-specific dental patterns rather than generalizable age biomarkers.</p>
+
+      <div class="callout">
+        <div class="callout-title">The Leakage Trap</div>
+        <p>If Patient A's left hemijaw appears in training and right hemijaw in validation, the model memorizes Patient A's unique dental morphology. Your 0.690 MAE becomes meaningless—it's pattern matching, not age prediction.</p>
+      </div>
+
+      <h3>Solution: Stratified Group K-Fold</h3>
+
+      <pre><code># Patient-Level Splitting
+from sklearn.model_selection import StratifiedGroupKFold
+
+sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
+
+for fold, (train_idx, val_idx) in enumerate(
+    sgkf.split(X, y_bins, groups=patient_ids)
+):
+    # Guarantee: No patient appears in both splits
+    train_patients = set(patient_ids[train_idx])
+    val_patients = set(patient_ids[val_idx])
+    assert len(train_patients & val_patients) == 0
+    
+    # Both hemijaws from same patient stay together
+    train_loader = DataLoader(...)
+    val_loader = DataLoader(...)</code></pre>
+
+      <p><strong>Age Stratification:</strong> Dataset exhibits age imbalance (more patients aged 9-12). Stratified sampling on age bins [3,6], [6,9], [9,12], [12,16] maintains distribution consistency across folds.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Split</th>
+            <th>Images</th>
+            <th>Patients</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Training (5-Fold CV)</td>
+            <td>470</td>
+            <td>~94</td>
+            <td>Model selection, hyperparameter tuning</td>
+          </tr>
+          <tr class="highlight">
+            <td>Test (Locked)</td>
+            <td>118</td>
+            <td>~23</td>
+            <td>Final unbiased evaluation (never seen)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The locked test set remained completely untouched during all development phases—architecture search, hyperparameter tuning, augmentation selection. This 20% holdout provides truly unbiased performance estimation.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="results">
+      <h2>Results</h2>
+
+      <h3>Cross-Validation Performance</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Fold</th>
+            <th>MAE (years)</th>
+            <th>RMSE (years)</th>
+            <th>Best Epoch</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fold 1</td>
+            <td>0.737</td>
+            <td>1.134</td>
+            <td>32</td>
+          </tr>
+          <tr class="highlight">
+            <td>Fold 2</td>
+            <td>0.702</td>
+            <td>0.943</td>
+            <td>45</td>
+          </tr>
+          <tr>
+            <td>Fold 3</td>
+            <td>0.879</td>
+            <td>1.644</td>
+            <td>82</td>
+          </tr>
+          <tr>
+            <td>Fold 4</td>
+            <td>0.737</td>
+            <td>1.042</td>
+            <td>28</td>
+          </tr>
+          <tr>
+            <td>Fold 5</td>
+            <td>0.860</td>
+            <td>1.416</td>
+            <td>27</td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>Mean ± Std</strong></td>
+            <td><strong>0.774 ± 0.072</strong></td>
+            <td><strong>1.138 ± 0.244</strong></td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Standard deviation of 0.072 years across folds indicates robust generalization. Early stopping ranged from epoch 27-82, demonstrating adaptive convergence.</p>
+
+      <h3>Final Test Set Performance</h3>
+
+      <div class="result-box">
+        <h3>Locked Test Set Metrics</h3>
         <ul>
-          <li><strong>Forensic Odontology:</strong> Disaster victim identification (DVI), mass casualty incidents, missing person cases where DNA is unavailable or degraded</li>
-          <li><strong>Legal Proceedings:</strong> Age verification in immigration cases, criminal justice (juvenile vs adult sentencing), asylum applications requiring proof of minor status</li>
-          <li><strong>Clinical Diagnostics:</strong> Orthodontic treatment planning, growth assessment, developmental monitoring in pediatric patients</li>
+          <li><strong>MAE:</strong> 0.690 years (outperforms manual Demirjian: 0.8-1.5 years)</li>
+          <li><strong>RMSE:</strong> 1.04 years</li>
+          <li><strong>Uncertainty (MC Dropout):</strong> 0.52 years mean</li>
+          <li><strong>Bias:</strong> -0.041 years (95% CI: [-2.08, 2.00])</li>
         </ul>
+      </div>
 
-        <p>Traditional methods rely on manual staging of tooth development using Demirjian or Willems classification systems. These approaches have fundamental limitations:</p>
+      <div class="img-full">
+        <img src="https://via.placeholder.com/1200x500/f5f5f5/666666?text=Prediction+vs+Ground+Truth+%7C+Bland-Altman+Plot" alt="Scatter plot showing predicted age vs actual age with Bland-Altman analysis">
+        <div class="img-caption">Left: Predicted vs actual age scatter plot showing strong correlation (R²=0.94). Right: Bland-Altman plot demonstrating near-zero bias (-0.041 years) with 95% limits of agreement within ±2 years, validating clinical reliability.</div>
+      </div>
 
-        <ul>
-          <li>Subjective interpretation leads to inter-observer variability (0.8-1.5 years MAE)</li>
-          <li>Requires specialized forensic odontology expertise (scarce resource in Indonesia)</li>
-          <li>Time-intensive process unsuitable for large-scale forensic databases</li>
-          <li>Population-specific calibration needed but often unavailable for non-Western demographics</li>
-        </ul>
+      <p><strong>Age-Stratified Breakdown:</strong></p>
+      <ul>
+        <li>Ages 3-6 years: MAE 0.53 (best performance—early development markers are distinct)</li>
+        <li>Ages 6-9 years: MAE 0.58</li>
+        <li>Ages 9-12 years: MAE 0.71</li>
+        <li>Ages 12-16 years: MAE 0.98 (slight degradation as dental maturation completes)</li>
+      </ul>
 
-        <p>Most existing research focuses on European and North American populations. Indonesian pediatric cohorts lack comprehensive automated systems calibrated to local dental development patterns.</p>
-      </section>
+      <p>Bland-Altman analysis shows near-zero bias (-0.041 years) with 95% limits of agreement within ±2 years. Q-Q plot confirms normally distributed residuals (p &gt; 0.05), validating model assumptions.</p>
+    </section>
 
-      <div class="divider"></div>
+    <div class="divider"></div>
 
-      <!-- Data Engineering Section -->
-      <section id="data">
-       <h2>Data Engineering: The Messy Reality</h2>
+    <section id="interpretability">
+      <h2>Model Interpretability: Grad-CAM Analysis</h2>
 
-      <p>Real-world medical imaging projects begin with messy, unstructured data. Demonstrating rigorous data preparation separates professionals from hobbyists.</p>
+      <p>Medical AI requires transparency. Clinical adoption depends on understanding <em>what</em> the model learned and <em>why</em> it makes predictions.</p>
 
-      <h3>Phase 1: Automated Data Curation & Identity Resolution</h3>
+      <h3>Clinical Validation of Learned Features</h3>
 
-      <p>My initial dataset consisted of approximately 1,200 panoramic radiograph <em>screenshots</em>—not standardized DICOM files. Patient metadata (name, birth date, capture date, and gender) appeared embedded as text in varying formats and positions across different imaging systems.</p>
+      <p>Grad-CAM visualization reveals the model consistently focuses on:</p>
+      <ul>
+        <li><strong>Root apices</strong> (distal tooth root tips)—primary biomarker in Demirjian staging</li>
+        <li><strong>Third molar development</strong>—late-stage dental maturation indicator</li>
+        <li><strong>Mandibular bone density</strong>—secondary age correlate</li>
+      </ul>
 
-
-      <p>
-        To resolve patient identifiers from 1,200 non-standardized screenshots, I engineered an automated pipeline using the <strong>Apple Vision Framework</strong>. By defining a <strong>Region of Interest (ROI)</strong> on the inferior 40% of the radiographs, I mitigated false-positive detections from clinical annotations and automated the sanitization of administrative prefixes.
-      </p>
-
-      <p>
-        I implemented a <strong>weighted fuzzy matcher</strong> (60% Name, 30% DOB, 10% Gender) that achieved a <strong>98.9% extraction accuracy</strong>. This system successfully reconciled metadata for <strong>463 out of 478 unique patients</strong>, while enforcing a strict <strong>zero patient leakage</strong> protocol—ensuring no patient data overlapped between training and testing partitions.
-      </p>
-
-        <!-- <div class="callout">
-          <div class="callout-title">Engineering Decision: Apple Vision vs Tesseract</div>
-          <p>Apple Vision Framework achieved <strong>98.7% extraction accuracy</strong> compared to 87% with Tesseract OCR on validation set. However, 722 images (60%) failed automatic extraction due to extreme variability in text positioning and required manual Phase 2 processing.</p>
-          <p><strong>Final clean dataset: 478 unique patient records</strong></p>
-        </div> -->
-
-        <h3>Phase 2: ROI Detection with Oriented Bounding Boxes</h3>
-
-        <p>Standard axis-aligned bounding boxes fail for dental anatomy because panoramic radiographs exhibit natural mandibular curves and variable patient positioning (±15° tilt). This introduces background noise that degrades regression accuracy.</p>
-
-        <p><strong>Solution: YOLOv8-OBB (Oriented Bounding Box Detection)</strong></p>
-
-        <ul>
-          <li>Trained to detect left and right mandible regions with rotation-invariant boxes</li>
-          <li>Edge density analysis for automatic rotation correction</li>
-          <li>10% safety margin expansion prevents anatomical feature clipping</li>
-          <li>Percentile-based normalization (5th-95th) preserves natural contrast—CLAHE deliberately avoided to prevent artificial edge enhancement</li>
-        </ul>
-
-        <p><strong>Output:</strong> 956 cropped hemijaw images (478 patients × 2 sides) at 224×224 resolution, ready for regression modeling.</p>
-      </section>
-
-      <div class="divider"></div>
-
-      <!-- Architecture Section -->
-      <section id="architecture">
-        <h2>Architecture & Design Decisions</h2>
-
-        <h3>Model Selection: EfficientNet-B3 + CBAM Attention</h3>
-
-        <p>Architecture chosen based on three constraints:</p>
-        <ol>
-          <li><strong>Inference Speed:</strong> Clinical deployment requires &lt;500ms per prediction</li>
-          <li><strong>Feature Capacity:</strong> Medical images contain high-frequency anatomical details requiring deep feature extraction</li>
-          <li><strong>Interpretability:</strong> Attention mechanisms must produce clinically meaningful visualizations</li>
-        </ol>
-
-        <p>EfficientNet-B3 provides optimal compound scaling (depth, width, resolution) with ~12M parameters. ImageNet pre-training transfers low-level edge/texture features applicable to radiographic texture analysis.</p>
-
-        <h3>Why CBAM (Convolutional Block Attention Module)?</h3>
-
-        <p>Medical images exhibit extreme spatial redundancy. Only specific anatomical regions—root apices, third molar development stages, mandibular bone density—correlate with chronological age. Standard CNNs waste computational resources processing irrelevant background structures.</p>
-
-        <p><strong>CBAM sequentially refines features through:</strong></p>
-        <ul>
-          <li><strong>Channel Attention:</strong> Learns <em>what</em> features matter (e.g., bone density patterns vs soft tissue)</li>
-          <li><strong>Spatial Attention:</strong> Learns <em>where</em> to focus (e.g., molar region vs anterior teeth)</li>
-        </ul>
-
-        <pre><code># PyTorch Implementation
-  class DentalAgeModel(nn.Module):
-      def __init__(self):
-          super().__init__()
-          self.backbone = efficientnet_b3(pretrained=True)
-          self.cbam = CBAM(channels=1536)
-          self.dropout = nn.Dropout(0.4)
-          self.fc = nn.Linear(1536, 1)
-          
-      def forward(self, x):
-          features = self.backbone.features(x)  # [B, 1536, 7, 7]
-          attended = self.cbam(features)
-          pooled = F.adaptive_avg_pool2d(attended, 1).flatten(1)
-          return self.fc(self.dropout(pooled))</code></pre>
-
-        <h3>Loss Function: Smooth L1 (Huber Loss)</h3>
-
-        <p>Age estimation is a regression problem with outlier sensitivity. Standard MSE amplifies large errors quadratically, causing training instability when encountering mislabeled samples or anatomical anomalies (e.g., congenitally missing teeth, severe malocclusion).</p>
-
-        <div class="math-block">
-          L<sub>β</sub>(x, y) = <br><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;0.5(x - y)² / β&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if |x - y| &lt; β<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;|x - y| - 0.5β&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otherwise
+      <div class="img-grid">
+        <div class="img-full">
+          <img src="https://via.placeholder.com/550x550/f5f5f5/666666?text=Original+Hemijaw+Image" alt="Original hemijaw radiograph">
+          <div class="img-caption">Original hemijaw input image (224×224px) showing mandibular teeth and surrounding bone structures</div>
         </div>
-
-        <p>With β = 1.0, the loss transitions from quadratic (smooth gradients near convergence) to linear (robust against outliers). This prevents gradient explosions during early training while maintaining precision.</p>
-
-        <p><strong>Additional Training Details:</strong></p>
-        <ul>
-          <li>Optimizer: AdamW (learning rate 1e-4, weight decay 1e-4)</li>
-          <li>Scheduler: CosineAnnealingWarmRestarts (T<sub>0</sub>=15, T<sub>mult</sub>=2)</li>
-          <li>Regularization: Dropout 0.4, early stopping patience=15 epochs</li>
-          <li>Augmentation: Random rotation ±5°, horizontal flip, color jitter</li>
-        </ul>
-      </section>
-
-      <div class="divider"></div>
-
-      <!-- Validation Section -->
-      <section id="validation">
-        <h2>Zero-Leakage Validation Protocol</h2>
-
-        <p><em>This section is critical for ML hiring managers evaluating model integrity.</em></p>
-
-        <h3>The Data Leakage Problem</h3>
-
-        <p>Each patient contributes 2 hemijaw images (left + right mandible). Standard K-Fold splitting on image IDs creates catastrophic leakage—the model learns patient-specific dental patterns rather than generalizable age biomarkers.</p>
-
-        <div class="callout">
-          <div class="callout-title">The Leakage Trap</div>
-          <p>If Patient A's left hemijaw appears in training and right hemijaw in validation, the model memorizes Patient A's unique dental morphology. Your 0.690 MAE becomes meaningless—it's pattern matching, not age prediction.</p>
+        <div class="img-full">
+          <img src="https://via.placeholder.com/550x550/f5f5f5/ff6b6b?text=Grad-CAM+Heatmap+Overlay" alt="Grad-CAM attention heatmap">
+          <div class="img-caption">Grad-CAM heatmap showing model attention (red = high activation). The model correctly focuses on root apices and third molar development—the exact biomarkers forensic odontologists use manually.</div>
         </div>
+      </div>
 
-        <h3>Solution: Stratified Group K-Fold</h3>
+      <div class="callout">
+        <div class="callout-title">Convergence with Clinical Practice</div>
+        <p>The model learned anatomically correct biomarkers <strong>without explicit supervision</strong>. Forensic odontologists manually assess the exact same landmarks (root development stages) when performing Demirjian classification. This convergence validates that deep learning discovered genuine age-predictive features rather than dataset artifacts.</p>
+      </div>
 
-        <pre><code># Patient-Level Splitting
-  from sklearn.model_selection import StratifiedGroupKFold
+      <p><strong>What the model ignores (correctly):</strong></p>
+      <ul>
+        <li>Image borders and padding artifacts</li>
+        <li>Soft tissue regions (tongue, cheeks, pharyngeal space)</li>
+        <li>Dental restorations (fillings, crowns)—these are treatment artifacts, not age markers</li>
+        <li>Orthodontic hardware (braces, retainers)</li>
+      </ul>
 
-  sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
+      <p>CBAM attention mechanism successfully filtered noise and allocated computational resources to age-relevant anatomy. This interpretability makes the system suitable for clinical deployment where predictions require medical justification.</p>
+    </section>
 
-  for fold, (train_idx, val_idx) in enumerate(
-      sgkf.split(X, y_bins, groups=patient_ids)
-  ):
-      # Guarantee: No patient appears in both splits
-      train_patients = set(patient_ids[train_idx])
-      val_patients = set(patient_ids[val_idx])
-      assert len(train_patients & val_patients) == 0
-      
-      # Both hemijaws from same patient stay together
-      train_loader = DataLoader(...)
-      val_loader = DataLoader(...)</code></pre>
+    <div class="divider"></div>
 
-        <p><strong>Age Stratification:</strong> Dataset exhibits age imbalance (more patients aged 9-12). Stratified sampling on age bins [3,6], [6,9], [9,12], [12,16] maintains distribution consistency across folds.</p>
+    <section id="benchmarking">
+      <h2>Benchmarking Against Literature</h2>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Split</th>
-              <th>Images</th>
-              <th>Patients</th>
-              <th>Purpose</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Training (5-Fold CV)</td>
-              <td>470</td>
-              <td>~94</td>
-              <td>Model selection, hyperparameter tuning</td>
-            </tr>
-            <tr class="highlight">
-              <td>Test (Locked)</td>
-              <td>118</td>
-              <td>~23</td>
-              <td>Final unbiased evaluation (never seen)</td>
-            </tr>
-          </tbody>
-        </table>
+      <table>
+        <thead>
+          <tr>
+            <th>Method / Study</th>
+            <th>Dataset Size</th>
+            <th>Age Range</th>
+            <th>MAE (years)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Demirjian et al. (1973)</td>
+            <td>Manual staging</td>
+            <td>5-16</td>
+            <td>0.8 - 1.5</td>
+          </tr>
+          <tr>
+            <td>Willems et al. (2001)</td>
+            <td>Manual staging</td>
+            <td>3-18</td>
+            <td>0.7 - 1.2</td>
+          </tr>
+          <tr>
+            <td>Vila-Blanco et al. (2021)</td>
+            <td>1,195 OPG</td>
+            <td>5-70</td>
+            <td>1.2</td>
+          </tr>
+          <tr>
+            <td>Guo et al. (2021)</td>
+            <td>10,257 OPG</td>
+            <td>5-18</td>
+            <td>0.9</td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>This Study (2026)</strong></td>
+            <td><strong>588 OPG</strong></td>
+            <td><strong>3-16</strong></td>
+            <td><strong>0.690</strong></td>
+          </tr>
+        </tbody>
+      </table>
 
-        <p>The locked test set remained completely untouched during all development phases—architecture search, hyperparameter tuning, augmentation selection. This 20% holdout provides truly unbiased performance estimation.</p>
-      </section>
+      <h3>Advantages of This Approach</h3>
+      <ul>
+        <li><strong>Lowest MAE</strong> among comparable automated systems on pediatric population</li>
+        <li><strong>First study calibrated to Indonesian demographics</strong>—most research focuses on Western populations</li>
+        <li><strong>Uncertainty quantification</strong> via MC Dropout enables risk-aware clinical decisions</li>
+        <li><strong>Explainable predictions</strong> through Grad-CAM align with clinical biomarkers</li>
+        <li><strong>End-to-end automation</strong> from raw screenshots to age estimate (no manual intervention)</li>
+        <li><strong>Zero data leakage protocol</strong>—rigorous patient-level validation ensures true generalization</li>
+      </ul>
 
-      <div class="divider"></div>
+      <h3>Limitations & Future Directions</h3>
+      <ul>
+        <li><strong>Dataset size:</strong> N=588 from single institution requires multi-center validation</li>
+        <li><strong>Age range:</strong> Limited to 3-16 years—adolescent variability increases uncertainty beyond age 16</li>
+        <li><strong>Population specificity:</strong> Trained on Indonesian cohort; generalization to other ethnicities requires fine-tuning</li>
+        <li><strong>Clinical deployment:</strong> Requires DICOM integration, regulatory approval (Kemenkes certification)</li>
+      </ul>
 
-      <!-- Results Section -->
-      <section id="results">
-        <h2>Results</h2>
+      <p><strong>Next steps:</strong> Expand to 2,000+ images across 5+ Indonesian hospitals, develop PACS/RIS integration for clinical workflow, initiate regulatory approval pathway.</p>
+    </section>
 
-        <h3>Cross-Validation Performance</h3>
+    <div class="divider"></div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Fold</th>
-              <th>MAE (years)</th>
-              <th>RMSE (years)</th>
-              <th>Best Epoch</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Fold 1</td>
-              <td>0.737</td>
-              <td>1.134</td>
-              <td>32</td>
-            </tr>
-            <tr class="highlight">
-              <td>Fold 2</td>
-              <td>0.702</td>
-              <td>0.943</td>
-              <td>45</td>
-            </tr>
-            <tr>
-              <td>Fold 3</td>
-              <td>0.879</td>
-              <td>1.644</td>
-              <td>82</td>
-            </tr>
-            <tr>
-              <td>Fold 4</td>
-              <td>0.737</td>
-              <td>1.042</td>
-              <td>28</td>
-            </tr>
-            <tr>
-              <td>Fold 5</td>
-              <td>0.860</td>
-              <td>1.416</td>
-              <td>27</td>
-            </tr>
-            <tr class="highlight">
-              <td><strong>Mean ± Std</strong></td>
-              <td><strong>0.774 ± 0.072</strong></td>
-              <td><strong>1.138 ± 0.244</strong></td>
-              <td>-</td>
-            </tr>
-          </tbody>
-        </table>
+    <section id="impact">
+      <h2>Impact & Applications</h2>
 
-        <p>Standard deviation of 0.072 years across folds indicates robust generalization. Early stopping ranged from epoch 27-82, demonstrating adaptive convergence.</p>
+      <h3>Clinical Use Cases</h3>
 
-        <h3>Final Test Set Performance</h3>
+      <p><strong>1. Forensic Odontology</strong></p>
+      <ul>
+        <li>Disaster victim identification (DVI) in mass casualty incidents</li>
+        <li>Missing person cases where DNA is unavailable or degraded</li>
+        <li>Human trafficking investigations requiring victim age verification</li>
+      </ul>
 
-        <div class="result-box">
-          <h3>Locked Test Set Metrics</h3>
-          <ul>
-            <li><strong>MAE:</strong> 0.690 years (outperforms manual Demirjian: 0.8-1.5 years)</li>
-            <li><strong>RMSE:</strong> 1.04 years</li>
-            <li><strong>Uncertainty (MC Dropout):</strong> 0.52 years mean</li>
-            <li><strong>Bias:</strong> -0.041 years (95% CI: [-2.08, 2.00])</li>
-          </ul>
-        </div>
+      <p><strong>2. Legal Age Verification</strong></p>
+      <ul>
+        <li>Immigration cases disputing minor status for asylum applications</li>
+        <li>Criminal justice: juvenile vs adult sentencing decisions</li>
+        <li>Child labor investigations requiring proof of age</li>
+      </ul>
 
-        <p><strong>Age-Stratified Breakdown:</strong></p>
-        <ul>
-          <li>Ages 3-6 years: MAE 0.53 (best performance—early development markers are distinct)</li>
-          <li>Ages 6-9 years: MAE 0.58</li>
-          <li>Ages 9-12 years: MAE 0.71</li>
-          <li>Ages 12-16 years: MAE 0.98 (slight degradation as dental maturation completes)</li>
-        </ul>
+      <p><strong>3. Pediatric Clinical Practice</strong></p>
+      <ul>
+        <li>Orthodontic treatment timing optimization (e.g., when to initiate growth modification)</li>
+        <li>Growth monitoring in endocrine disorders</li>
+        <li>Developmental assessments in special needs populations</li>
+      </ul>
 
-        <p>Bland-Altman analysis shows near-zero bias (-0.041 years) with 95% limits of agreement within ±2 years. Q-Q plot confirms normally distributed residuals (p &gt; 0.05), validating model assumptions.</p>
-      </section>
+      <h3>Technical Contributions</h3>
+      <ul>
+        <li>Demonstrated OCR-based pipeline for unstructured medical imaging datasets</li>
+        <li>Validated YOLOv8-OBB for anatomical ROI detection in curved structures</li>
+        <li>Established patient-level validation as standard for medical regression tasks</li>
+        <li>Open-sourced methodology for reproducible multi-center research</li>
+      </ul>
 
-      <div class="divider"></div>
+      <h3>Deployment Roadmap</h3>
+      <ol>
+        <li><strong>Multi-Center Validation (6-12 months):</strong> Expand dataset across 5+ Indonesian hospitals, diverse geographic regions</li>
+        <li><strong>DICOM Integration (3-6 months):</strong> Build production pipeline for native radiograph formats, PACS/RIS compatibility</li>
+        <li><strong>Clinical Trial (12-18 months):</strong> Prospective validation study comparing AI vs manual staging in real clinical workflow</li>
+        <li><strong>Regulatory Approval (12-24 months):</strong> Kemenkes (Ministry of Health) certification pathway for clinical deployment</li>
+        <li><strong>API Deployment:</strong> REST API for integration with existing hospital information systems (HIS)</li>
+      </ol>
 
-      <!-- Interpretability Section -->
-      <section id="interpretability">
-        <h2>Model Interpretability: Grad-CAM Analysis</h2>
+      <div class="callout">
+        <div class="callout-title">Open Collaboration</div>
+        <p>Methodology and validation protocols published to enable multi-institutional research. Interested in collaboration for dataset sharing, validation studies, or clinical trials? Contact for data access agreements.</p>
+      </div>
+    </section>
 
-        <p>Medical AI requires transparency. Clinical adoption depends on understanding <em>what</em> the model learned and <em>why</em> it makes predictions.</p>
+  </main>
 
-        <h3>Clinical Validation of Learned Features</h3>
+  <script>
+    const sections = document.querySelectorAll('section');
+    const images = document.querySelectorAll('.img-full');
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+    
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+    
+    images.forEach(img => {
+      observer.observe(img);
+    });
 
-        <p>Grad-CAM visualization reveals the model consistently focuses on:</p>
-        <ul>
-          <li><strong>Root apices</strong> (distal tooth root tips)—primary biomarker in Demirjian staging</li>
-          <li><strong>Third molar development</strong>—late-stage dental maturation indicator</li>
-          <li><strong>Mandibular bone density</strong>—secondary age correlate</li>
-        </ul>
-
-        <div class="callout">
-          <div class="callout-title">Convergence with Clinical Practice</div>
-          <p>The model learned anatomically correct biomarkers <strong>without explicit supervision</strong>. Forensic odontologists manually assess the exact same landmarks (root development stages) when performing Demirjian classification. This convergence validates that deep learning discovered genuine age-predictive features rather than dataset artifacts.</p>
-        </div>
-
-        <p><strong>What the model ignores (correctly):</strong></p>
-        <ul>
-          <li>Image borders and padding artifacts</li>
-          <li>Soft tissue regions (tongue, cheeks, pharyngeal space)</li>
-          <li>Dental restorations (fillings, crowns)—these are treatment artifacts, not age markers</li>
-          <li>Orthodontic hardware (braces, retainers)</li>
-        </ul>
-
-        <p>CBAM attention mechanism successfully filtered noise and allocated computational resources to age-relevant anatomy. This interpretability makes the system suitable for clinical deployment where predictions require medical justification.</p>
-      </section>
-
-      <div class="divider"></div>
-
-      <!-- Benchmarking Section -->
-      <section id="benchmarking">
-        <h2>Benchmarking Against Literature</h2>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Method / Study</th>
-              <th>Dataset Size</th>
-              <th>Age Range</th>
-              <th>MAE (years)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Demirjian et al. (1973)</td>
-              <td>Manual staging</td>
-              <td>5-16</td>
-              <td>0.8 - 1.5</td>
-            </tr>
-            <tr>
-              <td>Willems et al. (2001)</td>
-              <td>Manual staging</td>
-              <td>3-18</td>
-              <td>0.7 - 1.2</td>
-            </tr>
-            <tr>
-              <td>Vila-Blanco et al. (2021)</td>
-              <td>1,195 OPG</td>
-              <td>5-70</td>
-              <td>1.2</td>
-            </tr>
-            <tr>
-              <td>Guo et al. (2021)</td>
-              <td>10,257 OPG</td>
-              <td>5-18</td>
-              <td>0.9</td>
-            </tr>
-            <tr class="highlight">
-              <td><strong>This Study (2026)</strong></td>
-              <td><strong>588 OPG</strong></td>
-              <td><strong>3-16</strong></td>
-              <td><strong>0.690</strong></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h3>Advantages of This Approach</h3>
-        <ul>
-          <li><strong>Lowest MAE</strong> among comparable automated systems on pediatric population</li>
-          <li><strong>First study calibrated to Indonesian demographics</strong>—most research focuses on Western populations</li>
-          <li><strong>Uncertainty quantification</strong> via MC Dropout enables risk-aware clinical decisions</li>
-          <li><strong>Explainable predictions</strong> through Grad-CAM align with clinical biomarkers</li>
-          <li><strong>End-to-end automation</strong> from raw screenshots to age estimate (no manual intervention)</li>
-          <li><strong>Zero data leakage protocol</strong>—rigorous patient-level validation ensures true generalization</li>
-        </ul>
-
-        <h3>Limitations & Future Directions</h3>
-        <ul>
-          <li><strong>Dataset size:</strong> N=588 from single institution requires multi-center validation</li>
-          <li><strong>Age range:</strong> Limited to 3-16 years—adolescent variability increases uncertainty beyond age 16</li>
-          <li><strong>Population specificity:</strong> Trained on Indonesian cohort; generalization to other ethnicities requires fine-tuning</li>
-          <li><strong>Clinical deployment:</strong> Requires DICOM integration, regulatory approval (Kemenkes certification)</li>
-        </ul>
-
-        <p><strong>Next steps:</strong> Expand to 2,000+ images across 5+ Indonesian hospitals, develop PACS/RIS integration for clinical workflow, initiate regulatory approval pathway.</p>
-      </section>
-
-      <div class="divider"></div>
-
-      <!-- Impact Section -->
-      <section id="impact">
-        <h2>Impact & Applications</h2>
-
-        <h3>Clinical Use Cases</h3>
-
-        <p><strong>1. Forensic Odontology</strong></p>
-        <ul>
-          <li>Disaster victim identification (DVI) in mass casualty incidents</li>
-          <li>Missing person cases where DNA is unavailable or degraded</li>
-          <li>Human trafficking investigations requiring victim age verification</li>
-        </ul>
-
-        <p><strong>2. Legal Age Verification</strong></p>
-        <ul>
-          <li>Immigration cases disputing minor status for asylum applications</li>
-          <li>Criminal justice: juvenile vs adult sentencing decisions</li>
-          <li>Child labor investigations requiring proof of age</li>
-        </ul>
-
-        <p><strong>3. Pediatric Clinical Practice</strong></p>
-        <ul>
-          <li>Orthodontic treatment timing optimization (e.g., when to initiate growth modification)</li>
-          <li>Growth monitoring in endocrine disorders</li>
-          <li>Developmental assessments in special needs populations</li>
-        </ul>
-
-        <h3>Technical Contributions</h3>
-        <ul>
-          <li>Demonstrated OCR-based pipeline for unstructured medical imaging datasets</li>
-          <li>Validated YOLOv8-OBB for anatomical ROI detection in curved structures</li>
-          <li>Established patient-level validation as standard for medical regression tasks</li>
-          <li>Open-sourced methodology for reproducible multi-center research</li>
-        </ul>
-
-        <h3>Deployment Roadmap</h3>
-        <ol>
-          <li><strong>Multi-Center Validation (6-12 months):</strong> Expand dataset across 5+ Indonesian hospitals, diverse geographic regions</li>
-          <li><strong>DICOM Integration (3-6 months):</strong> Build production pipeline for native radiograph formats, PACS/RIS compatibility</li>
-          <li><strong>Clinical Trial (12-18 months):</strong> Prospective validation study comparing AI vs manual staging in real clinical workflow</li>
-          <li><strong>Regulatory Approval (12-24 months):</strong> Kemenkes (Ministry of Health) certification pathway for clinical deployment</li>
-          <li><strong>API Deployment:</strong> REST API for integration with existing hospital information systems (HIS)</li>
-        </ol>
-
-        <div class="callout">
-          <div class="callout-title">Open Collaboration</div>
-          <p>Methodology and validation protocols published to enable multi-institutional research. Interested in collaboration for dataset sharing, validation studies, or clinical trials? Contact for data access agreements.</p>
-        </div>
-      </section>
-
-    </main>
-
-    <script>
-      // Intersection Observer for scroll animations
-      const sections = document.querySelectorAll('section');
-      const images = document.querySelectorAll('.img-full');
-      
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15
-      };
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, observerOptions);
-      
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+    
+    window.addEventListener('scroll', () => {
+      let current = '';
       sections.forEach(section => {
-        observer.observe(section);
-      });
-      
-      images.forEach(img => {
-        observer.observe(img);
-      });
-
-      // Sidebar active link on scroll
-      const navLinks = document.querySelectorAll('.sidebar-nav a');
-      
-      window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          if (scrollY >= (sectionTop - 200)) {
-            current = section.getAttribute('id');
-          }
-        });
-
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-          }
-        });
+        const sectionTop = section.offsetTop;
+        if (scrollY >= (sectionTop - 200)) {
+          current = section.getAttribute('id');
+        }
       });
 
-      // Smooth scroll on nav click
       navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = link.getAttribute('href');
-          const targetSection = document.querySelector(targetId);
-          window.scrollTo({
-            top: targetSection.offsetTop - 40,
-            behavior: 'smooth'
-          });
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        window.scrollTo({
+          top: targetSection.offsetTop - 40,
+          behavior: 'smooth'
         });
       });
-    </script>
+    });
+  </script>
 
-  </body>
-  </html
+</body>
+</html>
