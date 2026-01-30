@@ -489,12 +489,12 @@
           <span class="stat-label">MAE (years)</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">588</span>
+          <span class="stat-value">478</span>
           <span class="stat-label">Images</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">&lt;500ms</span>
-          <span class="stat-label">Inference Time</span>
+          <span class="stat-value">&lt;83%</span>
+          <span class="stat-label">of all test samples have |error| ≤ 1.0 year</span>
         </div>
       </div>
 
@@ -559,7 +559,7 @@
     <p>My initial dataset consisted of approximately 1,200 panoramic radiograph <em>screenshots</em>—not standardized DICOM files. Patient metadata (name, birth date, capture date, and gender) appeared embedded as text in varying formats and positions across different imaging systems.</p>
 
     <div class="img-full">
-      <img src="https://via.placeholder.com/1200x400/f5f5f5/666666?text=Raw+Radiograph+Screenshot+with+Embedded+Metadata" alt="Raw panoramic radiograph screenshot showing embedded patient metadata">
+      <img src="./images/before.png" alt="Raw panoramic radiograph screenshot showing embedded patient metadata">
       <div class="img-caption">Example of raw input: panoramic radiograph screenshot with patient metadata embedded in varying formats and positions across different imaging systems</div>
     </div>
 
@@ -598,7 +598,7 @@ if nameMatch && dateMatch && yearMatch {
       <p>Standard axis-aligned bounding boxes fail for dental anatomy because panoramic radiographs exhibit natural mandibular curves and variable patient positioning (±15° tilt). This introduces background noise that degrades regression accuracy.</p>
 
       <div class="img-full">
-        <img src="/images/obb.png" alt="YOLOv8-OBB detecting left and right mandible regions with oriented bounding boxes">
+        <img src="./images/obb.png" alt="YOLOv8-OBB detecting left and right mandible regions with oriented bounding boxes">
         <div class="img-caption">YOLOv8-OBB detecting left and right mandible regions with rotation-invariant oriented bounding boxes. The system handles ±15° tilt variations and automatically corrects rotation using edge density analysis.</div>
       </div>
 
@@ -613,12 +613,12 @@ if nameMatch && dateMatch && yearMatch {
 
       <div class="img-grid">
         <div class="img-full">
-          <img src="age_estimation/images/before.png" alt="Original full panoramic radiograph">
-          <div class="img-caption">Original full panoramic radiograph (1200×800px) with background noise, soft tissue, and irrelevant anatomical structures</div>
+          <img src="images/after_left.png" alt="Original full panoramic radiograph">
+          <div class="img-caption">Original full panoramic radiograph (1200 × 800 px) containing background noise, soft tissue, and irrelevant anatomical structures (left mandible). References to the complete images are shown in the first figure.</div>
         </div>
         <div class="img-full">
-          <img src="https://via.placeholder.com/550x550/f5f5f5/666666?text=Cropped+Hemijaw+ROI+224x224" alt="Cropped hemijaw region of interest">
-          <div class="img-caption">Cropped hemijaw ROI (224×224px) after OBB detection, rotation correction, and percentile-based normalization—ready for model input</div>
+          <img src="images/after_right.png" alt="Cropped hemijaw region of interest">
+          <div class="img-caption">Original full panoramic radiograph (1200 × 800 px) containing background noise, soft tissue, and irrelevant anatomical structures (right mandible flipped). References to the complete images are shown in the first figure.</div>
         </div>
       </div>
 
@@ -642,9 +642,22 @@ if nameMatch && dateMatch && yearMatch {
       <p>EfficientNet-B3 provides optimal compound scaling (depth, width, resolution) with ~12M parameters. ImageNet pre-training transfers low-level edge/texture features applicable to radiographic texture analysis.</p>
 
       <div class="img-full">
-        <img src="https://via.placeholder.com/1200x600/f5f5f5/666666?text=EfficientNet-B3+%2B+CBAM+Architecture+Diagram" alt="Architecture diagram showing EfficientNet-B3 backbone with CBAM attention module">
-        <div class="img-caption">Architecture overview: EfficientNet-B3 backbone (pre-trained on ImageNet) → CBAM attention module (channel + spatial attention) → Global Average Pooling → Dropout (0.4) → Regression head (single output neuron for age prediction)</div>
-      </div>
+    <iframe
+      src="images/architecture.html"
+      title="Architecture diagram showing EfficientNet-B3 backbone with CBAM attention module"
+      style="
+        width: 100%;
+        height: 700px;
+        border: none;
+        background: #f5f5f5;
+      ">
+    </iframe>
+
+    <div class="img-caption">
+      Architecture overview: EfficientNet-B3 backbone (pre-trained on ImageNet) → CBAM attention module (channel + spatial attention) → Global Average Pooling → Dropout (0.4) → Regression head (single output neuron for age prediction)
+    </div>
+  </div>
+
 
       <h3>Why CBAM (Convolutional Block Attention Module)?</h3>
 
@@ -656,20 +669,26 @@ if nameMatch && dateMatch && yearMatch {
         <li><strong>Spatial Attention:</strong> Learns <em>where</em> to focus (e.g., molar region vs anterior teeth)</li>
       </ul>
 
-      <pre><code># PyTorch Implementation
-class DentalAgeModel(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.backbone = efficientnet_b3(pretrained=True)
-        self.cbam = CBAM(channels=1536)
-        self.dropout = nn.Dropout(0.4)
-        self.fc = nn.Linear(1536, 1)
-        
-    def forward(self, x):
-        features = self.backbone.features(x)  # [B, 1536, 7, 7]
-        attended = self.cbam(features)
-        pooled = F.adaptive_avg_pool2d(attended, 1).flatten(1)
-        return self.fc(self.dropout(pooled))</code></pre>
+      <pre><code class="language-python">class EfficientNetB3_CBAM(nn.Module):
+          def __init__(self, pretrained=True, dropout=0.4):
+              super().__init__()
+              self.backbone = timm.create_model('efficientnet_b3', 
+                                                pretrained=pretrained, 
+                                                num_classes=0,
+                                                global_pool='')
+              self.num_features = self.backbone.num_features  # 1536
+              self.cbam = CBAM(self.num_features, reduction=16)
+              self.global_pool = nn.AdaptiveAvgPool2d(1)
+              self.dropout = nn.Dropout(dropout)
+              self.fc = nn.Linear(self.num_features, 1)
+              
+          def forward(self, x):
+              features = self.backbone(x)          # [B, 1536, 7, 7]
+              attended = self.cbam(features)       # Attention-refined features
+              pooled = self.global_pool(attended)  # [B, 1536, 1, 1]
+              out = self.dropout(pooled.flatten(1))
+              return self.fc(out).squeeze(-1)
+      </code></pre>
 
       <h3>Loss Function: Smooth L1 (Huber Loss)</h3>
 
@@ -746,7 +765,7 @@ for fold, (train_idx, val_idx) in enumerate(
             <td>Model selection, hyperparameter tuning</td>
           </tr>
           <tr class="highlight">
-            <td>Test (Locked)</td>
+            <td>Test </td>
             <td>118</td>
             <td>~23</td>
             <td>Final unbiased evaluation (never seen)</td>
@@ -754,12 +773,14 @@ for fold, (train_idx, val_idx) in enumerate(
         </tbody>
       </table>
 
-      <p>The locked test set remained completely untouched during all development phases—architecture search, hyperparameter tuning, augmentation selection. This 20% holdout provides truly unbiased performance estimation.</p>
+      <p>The test set was stratified by age group and patient gender, with balanced left/right hemijaw representation, and underwent identical quality filtering as the training set.
+        The  test set remained completely untouched during all development phases—architecture search, hyperparameter tuning, augmentation selection. This 20% holdout provides truly unbiased performance estimation.</p>
     </section>
 
     <div class="divider"></div>
 
     <section id="results">
+
       <h2>Results</h2>
 
       <h3>Cross-Validation Performance</h3>
@@ -818,29 +839,41 @@ for fold, (train_idx, val_idx) in enumerate(
       <h3>Final Test Set Performance</h3>
 
       <div class="result-box">
-        <h3>Locked Test Set Metrics</h3>
+        <h3>Comprehensive Test Set Analysis</h3>
         <ul>
-          <li><strong>MAE:</strong> 0.690 years (outperforms manual Demirjian: 0.8-1.5 years)</li>
+          <li><strong>MAE:</strong> 0.690 years (outperforms manual Demirjian methods in Southeast Asian populations, typically 0.8–1.5 years MAE)</li>
           <li><strong>RMSE:</strong> 1.04 years</li>
-          <li><strong>Uncertainty (MC Dropout):</strong> 0.52 years mean</li>
-          <li><strong>Bias:</strong> -0.041 years (95% CI: [-2.08, 2.00])</li>
+          <li><strong>Bias:</strong> −0.041 years (95% CI: [−2.08, +2.00] years)</li>
+          <li><strong>Uncertainty (MC Dropout):</strong> mean predicted uncertainty = 0.52 years</li>
+          <li><strong>Clinical Accuracy:</strong> 83% of predictions fall within ±1.0 year of true age — meeting forensic reliability thresholds</li>
         </ul>
       </div>
 
       <div class="img-full">
-        <img src="https://via.placeholder.com/1200x500/f5f5f5/666666?text=Prediction+vs+Ground+Truth+%7C+Bland-Altman+Plot" alt="Scatter plot showing predicted age vs actual age with Bland-Altman analysis">
-        <div class="img-caption">Left: Predicted vs actual age scatter plot showing strong correlation (R²=0.94). Right: Bland-Altman plot demonstrating near-zero bias (-0.041 years) with 95% limits of agreement within ±2 years, validating clinical reliability.</div>
+        <img src="./images/test_set_evaluation.png">
+        <div class="img-caption">Comprehensive test set evaluation: (Top row) Predictions with uncertainty (R²=0.94), Bland-Altman plot (mean bias: -0.041), Error distribution (MAE: 0.690). (Bottom row) Uncertainty calibration, age-stratified error analysis, and Q-Q plot confirming normal residual distribution.</div>
       </div>
 
-      <p><strong>Age-Stratified Breakdown:</strong></p>
+      <p><strong>Detailed Analysis:</strong></p>
+      
       <ul>
-        <li>Ages 3-6 years: MAE 0.53 (best performance—early development markers are distinct)</li>
-        <li>Ages 6-9 years: MAE 0.58</li>
-        <li>Ages 9-12 years: MAE 0.71</li>
-        <li>Ages 12-16 years: MAE 0.98 (slight degradation as dental maturation completes)</li>
+        <li><strong>Predictions with Uncertainty:</strong> Strong correlation (R²=0.94) between predicted and actual age with uncertainty estimates that correlate with prediction confidence.</li>
+        <li><strong>Bland-Altman Plot:</strong> Near-zero bias (-0.041 years) with 95% limits of agreement within ±2.08 years, confirming clinical reliability.</li>
+        <li><strong>Error Distribution:</strong> 83% of errors within ±1 year, with most concentrated around zero error (peak at MAE: 0.690).</li>
+        <li><strong>Uncertainty Calibration:</strong> Predicted uncertainty correlates with actual error magnitude (r=0.67), validating confidence estimates.</li>
+        <li><strong>Age-Stratified Performance:</strong> 
+          <ul>
+            <li>Ages 3-6 years: MAE 0.53 (best performance—early development markers are distinct)</li>
+            <li>Ages 6-9 years: MAE 0.58</li>
+            <li>Ages 9-12 years: MAE 0.71</li>
+            <li>Ages 12-16 years: MAE 0.98 (slight degradation as dental maturation completes)</li>
+          </ul>
+        </li>
+        <li><strong>Normality Check:</strong> Q-Q plot confirms normally distributed residuals (p > 0.05), validating model assumptions.</li>
       </ul>
 
-      <p>Bland-Altman analysis shows near-zero bias (-0.041 years) with 95% limits of agreement within ±2 years. Q-Q plot confirms normally distributed residuals (p &gt; 0.05), validating model assumptions.</p>
+      <p>This comprehensive evaluation demonstrates the model's clinical reliability with near-zero bias, predictable error distribution, and age-appropriate performance. The uncertainty calibration provides clinicians with confidence metrics for individual predictions, enhancing practical utility in dental age estimation.</p>
+
     </section>
 
     <div class="divider"></div>
@@ -859,13 +892,14 @@ for fold, (train_idx, val_idx) in enumerate(
         <li><strong>Mandibular bone density</strong>—secondary age correlate</li>
       </ul>
 
-      <div class="img-grid">
+      <!-- <div class="img-grid">
         <div class="img-full">
           <img src="https://via.placeholder.com/550x550/f5f5f5/666666?text=Original+Hemijaw+Image" alt="Original hemijaw radiograph">
           <div class="img-caption">Original hemijaw input image (224×224px) showing mandibular teeth and surrounding bone structures</div>
-        </div>
+        </div> -->
+
         <div class="img-full">
-          <img src="https://via.placeholder.com/550x550/f5f5f5/ff6b6b?text=Grad-CAM+Heatmap+Overlay" alt="Grad-CAM attention heatmap">
+          <img src="./images/gradcam_test_samples.png" alt="Grad-CAM attention heatmap">
           <div class="img-caption">Grad-CAM heatmap showing model attention (red = high activation). The model correctly focuses on root apices and third molar development—the exact biomarkers forensic odontologists use manually.</div>
         </div>
       </div>
@@ -927,7 +961,7 @@ for fold, (train_idx, val_idx) in enumerate(
           </tr>
           <tr class="highlight">
             <td><strong>This Study (2026)</strong></td>
-            <td><strong>588 OPG</strong></td>
+            <td><strong>478 OPG</strong></td>
             <td><strong>3-16</strong></td>
             <td><strong>0.690</strong></td>
           </tr>
@@ -946,7 +980,7 @@ for fold, (train_idx, val_idx) in enumerate(
 
       <h3>Limitations & Future Directions</h3>
       <ul>
-        <li><strong>Dataset size:</strong> N=588 from single institution requires multi-center validation</li>
+        <li><strong>Dataset size:</strong> N=478 from single institution requires multi-center validation</li>
         <li><strong>Age range:</strong> Limited to 3-16 years—adolescent variability increases uncertainty beyond age 16</li>
         <li><strong>Population specificity:</strong> Trained on Indonesian cohort; generalization to other ethnicities requires fine-tuning</li>
         <li><strong>Clinical deployment:</strong> Requires DICOM integration, regulatory approval (Kemenkes certification)</li>

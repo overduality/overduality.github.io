@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EfficientNet-B3 + CBAM Architecture</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .arch-container { height: 160px; }
+    .label-vertical { writing-mode: vertical-rl; transform: rotate(180deg); }
+    .block-border { border: 2px solid black; }
+  </style>
+</head>
+<body class="bg-white p-12">
+
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl font-black text-gray-900 tracking-tighter">EFFICIENTNET-B3 + CBAM</h1>
+    </div>
+
+    <div class="flex items-center justify-center gap-1 mb-20 overflow-x-auto py-4">
+      
+      <div class="flex flex-col items-center mr-4">
+        <span class="text-[10px] font-bold mb-2">INPUT</span>
+        <div class="w-[2px] h-32 bg-gray-300"></div>
+        <span class="text-[9px] font-mono text-gray-400 mt-2">224x224x3</span>
+      </div>
+
+      <div class="flex arch-container">
+        <div class="w-16 block-border flex items-center justify-center bg-white">
+          <span class="text-[10px] font-bold text-center leading-tight">Stage 1-2<br>Conv</span>
+        </div>
+        <div class="w-16 block-border -ml-[2px] flex items-center justify-center bg-white">
+          <span class="text-[10px] font-bold text-center leading-tight">Stage 3-5<br>MBConv</span>
+        </div>
+        <div class="w-10 block-border -ml-[2px] flex items-center justify-center bg-yellow-400">
+          <span class="label-vertical text-[10px] font-black">POOLING</span>
+        </div>
+      </div>
+
+      <div class="w-4"></div>
+
+      <div class="flex arch-container">
+        <div class="w-16 block-border flex items-center justify-center bg-white">
+          <span class="text-[10px] font-bold text-center leading-tight">Stage 6-7<br>MBConv</span>
+        </div>
+        <div class="w-16 block-border -ml-[2px] flex items-center justify-center bg-white">
+          <span class="text-[10px] font-bold text-center leading-tight">Stage 8<br>Conv</span>
+        </div>
+        <div class="w-10 block-border -ml-[2px] flex items-center justify-center bg-yellow-400">
+          <span class="label-vertical text-[10px] font-black">POOLING</span>
+        </div>
+      </div>
+
+      <div class="w-4"></div>
+
+      <div class="flex arch-container">
+        <div class="w-16 block-border flex flex-col bg-blue-50">
+          <div class="flex-1 flex items-center justify-center border-b border-blue-200">
+            <span class="text-[9px] font-bold">Channel</span>
+          </div>
+          <div class="flex-1 flex items-center justify-center">
+            <span class="text-[9px] font-bold">Spatial</span>
+          </div>
+        </div>
+        <div class="w-12 block-border -ml-[2px] flex items-center justify-center bg-blue-600 text-white">
+          <span class="label-vertical text-[10px] font-black">CBAM</span>
+        </div>
+      </div>
+
+      <div class="flex arch-container mx-2">
+        <div class="w-12 block-border flex items-center justify-center bg-gray-100">
+          <span class="label-vertical text-[10px] font-black text-gray-600">GAP</span>
+        </div>
+      </div>
+
+      <div class="flex arch-container">
+        <div class="w-14 block-border flex items-center justify-center bg-green-400">
+          <span class="label-vertical text-[9px] font-black text-center leading-none">DROPOUT 0.4</span>
+        </div>
+        <div class="w-14 block-border -ml-[2px] flex items-center justify-center bg-green-500">
+          <span class="label-vertical text-[10px] font-black">DENSE</span>
+        </div>
+        <div class="w-14 block-border -ml-[2px] flex items-center justify-center bg-green-700 text-white">
+          <span class="label-vertical text-[10px] font-black">OUTPUT</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center ml-4">
+        <span class="text-[10px] font-bold mb-2">RESULT</span>
+        <div class="w-[2px] h-32 bg-gray-800"></div>
+        <span class="text-[10px] font-bold mt-2">AGE (continuous) </span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border-2 border-black rounded-xl overflow-hidden shadow-[12px_12px_0px_0px_rgba(0,0,0,0.05)]">
+      <div class="p-8 bg-gray-50 border-r-2 border-black">
+        <h3 class="font-black text-sm mb-4 tracking-widest uppercase text-gray-600">Backbone</h3>
+        <ul class="text-sm space-y-2">
+          <li><span class="font-bold">EfficientNet-B3:</span> 12M Params</li>
+          <li><span class="font-bold">Scaling:</span> d=1.2, w=1.1, r=300</li>
+          <li><span class="font-bold">Pre-training:</span> ImageNet-1K</li>
+        </ul>
+      </div>
+      <div class="p-8 bg-white border-r-2 border-black">
+        <h3 class="font-black text-sm mb-4 tracking-widest uppercase text-gray-600">Attention (CBAM)</h3>
+        <ul class="text-sm space-y-2">
+          <li><span class="font-bold">Channel:</span> Learns 'What' (Tissue)</li>
+          <li><span class="font-bold">Spatial:</span> Learns 'Where' (Roots)</li>
+          <li><span class="font-bold">Refinement:</span> 7x7 Feature Map</li>
+        </ul>
+      </div>
+      <div class="p-8 bg-gray-50">
+        <h3 class="font-black text-sm mb-4 tracking-widest uppercase text-gray-600">Training</h3>
+        <ul class="text-sm space-y-2">
+          <li><span class="font-bold">Loss:</span> Smooth L1 (Huber)</li>
+          <li><span class="font-bold">Optimizer:</span> AdamW</li>
+          <li><span class="font-bold">MAE:</span> 0.690 Years</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

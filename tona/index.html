@@ -1,4 +1,3 @@
-<artifact identifier="tona-portfolio" type="text/html" title="Tona Portfolio - Minimalist Design">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +19,7 @@
       --text-secondary: #525252;
       --border: #e5e5e5;
       --bg-subtle: #fafafa;
-      --accent: #6366f1;
+      --accent: #C57CFF;
       --accent-light: #eef2ff;
     }
 
@@ -37,7 +36,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Sidebar */
     .sidebar {
       position: fixed;
       left: 0;
@@ -54,7 +52,7 @@
     .sidebar-title {
       font-size: 18px;
       font-weight: 700;
-      margin-bottom: 24px;
+      margin-bottom: 8px;
       color: var(--text);
       letter-spacing: -0.02em;
     }
@@ -100,6 +98,7 @@
       font-size: 14px;
       font-weight: 500;
       margin-bottom: 32px;
+      margin-top: 24px;
       transition: all 0.2s ease;
     }
 
@@ -110,7 +109,7 @@
 
     .sidebar-nav {
       list-style: none;
-      padding-left: 0rem;
+      padding-left: 0;
     }
 
     .sidebar-nav li {
@@ -120,7 +119,7 @@
     .sidebar-nav a {
       display: block;
       padding: 10px 16px;
-      color: var(--text-light);
+      color: var(--text-secondary);
       text-decoration: none;
       font-size: 15px;
       border-radius: 6px;
@@ -129,7 +128,7 @@
     }
 
     .sidebar-nav a:hover {
-      background: rgba(99, 102, 241, 0.08);
+      background: var(--accent-light);
       color: var(--accent);
     }
 
@@ -139,7 +138,6 @@
       font-weight: 600;
     }
 
-    /* Main Content */
     .main {
       margin-left: 280px;
       padding: 60px 80px 100px 80px;
@@ -199,7 +197,6 @@
       transform: translateY(0);
     }
 
-    /* Hero */
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -209,21 +206,65 @@
     }
 
     .hero-visual {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
+      background: transparent;
       border-radius: 12px;
-      padding: 80px 40px;
+      padding: 40px;
       text-align: center;
-      min-height: 400px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: var(--text-secondary);
-      font-size: 14px;
-      line-height: 1.8;
       position: sticky;
-      top: 40px;
+      top: 0px;
+    }
+
+    .image-carousel {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .carousel-container {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-dot.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 4px;
     }
 
     .achievement-box {
@@ -264,7 +305,6 @@
       font-weight: 600;
     }
 
-    /* Stats */
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -302,7 +342,6 @@
       font-weight: 500;
     }
 
-    /* Tech Tags */
     .tech-tags {
       display: flex;
       flex-wrap: wrap;
@@ -327,7 +366,124 @@
       color: var(--accent);
     }
 
-    /* Challenge Grid */
+    .tech-stack-images {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tech-stack-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .tech-images-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .tech-image-card {
+      background: white;
+      /* border: 1px solid var(--border); */
+      border-radius: 12px;
+      padding: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      aspect-ratio: 1 / 1;
+    }
+
+    .tech-image-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .tech-image-card img {
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    .tech-image-card:hover img {
+      filter: grayscale(0%);
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .big-demo-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px 48px;
+      background: linear-gradient(135deg, #C57CFF 0%, #a00df2 100%);
+      border-radius: 16px;
+      text-decoration: none;
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 40px auto;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .big-demo-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transition: left 0.6s;
+    }
+
+    .big-demo-button:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 14px 36px rgba(99, 102, 241, 0.4);
+    }
+
+    .big-demo-button:hover::before {
+      left: 100%;
+    }
+
+    .big-demo-button:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .big-demo-button .demo-icon {
+      font-size: 42px;
+      font-weight: bold;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .big-demo-button:hover .demo-icon {
+      transform: translateX(4px) scale(1.15);
+    }
+
+    .big-demo-button-wrapper {
+      text-align: center;
+      margin: 60px 0;
+    }
+
     .challenge-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -377,9 +533,8 @@
       background: var(--bg-subtle);
       border: 2px dashed var(--border);
       border-radius: 8px;
-      padding: 48px 24px;
+      padding: 24px;
       margin: 20px 0;
-      min-height: 180px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -387,6 +542,12 @@
       color: var(--text-secondary);
       font-size: 13px;
       line-height: 1.7;
+    }
+
+    .challenge-visual img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
     }
 
     .section-label {
@@ -422,7 +583,6 @@
       font-weight: 600;
     }
 
-    /* Pipeline */
     .pipeline-diagram {
       background: var(--bg-subtle);
       border: 2px dashed var(--border);
@@ -439,7 +599,6 @@
       line-height: 1.8;
     }
 
-    /* Stage Cards */
     .stage-card {
       background: white;
       border: 1px solid var(--border);
@@ -456,7 +615,6 @@
       color: var(--accent);
     }
 
-    /* Code */
     code {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -484,7 +642,6 @@
       border: none;
     }
 
-    /* Decision Cards */
     .decision-card {
       background: white;
       border: 1px solid var(--border);
@@ -508,7 +665,6 @@
       font-size: 14px;
     }
 
-    /* Impact Section */
     .impact-section {
       background: var(--bg-subtle);
       border: 1px solid var(--border);
@@ -538,7 +694,6 @@
       color: var(--accent);
     }
 
-    /* Callout */
     .callout {
       background: white;
       border: 1px solid var(--border);
@@ -555,7 +710,6 @@
       color: var(--text);
     }
 
-    /* Lists */
     ul {
       margin: 20px 0;
       padding-left: 24px;
@@ -575,8 +729,113 @@
       background: var(--border);
       margin: 80px 0;
     }
+  .sidebar-logo-container {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px 0;
+    animation: slideUpLogo 0.6s ease-out 0.3s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-    /* Mobile */
+  .sidebar-logo-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes slideUpLogo {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .logo-wrapper {
+    width: auto;
+    height: auto;
+    background: linear-gradient(135deg, var(--accent) 0%, #be0cea 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(241, 100, 227, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .logo-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.5s ease;
+  }
+
+  .logo-wrapper:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 12px 32px rgba(245, 22, 249, 0.5);
+  }
+
+  .logo-wrapper:hover::before {
+    transform: scale(1);
+  }
+
+  .sidebar-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    transition: all 0.3s ease;
+  }
+
+  .logo-wrapper:hover .sidebar-logo {
+    transform: scale(1.1);
+  }
+
+  .logo-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideUpLogoText 0.4s ease-out 0.5s forwards;
+  }
+
+  @keyframes slideUpLogoText {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Optional: Pulse animation for attention */
+  @keyframes logoPulse {
+    0%, 100% {
+      box-shadow: 0 8px 24px rgba(177, 22, 249, 0.3);
+    }
+    50% {
+      box-shadow: 0 8px 32px rgba(241, 22, 249, 0.6);
+    }
+  }
+
+.sidebar-logo-container:hover .logo-wrapper {
+  animation: logoPulse 1.5s ease-in-out;
+}
     @media (max-width: 1024px) {
       .sidebar {
         display: none;
@@ -605,7 +864,8 @@
         position: static;
       }
 
-      .challenge-grid {
+      .challenge-grid,
+      .impact-grid {
         grid-template-columns: 1fr;
       }
 
@@ -614,8 +874,8 @@
         gap: 16px;
       }
 
-      .impact-grid {
-        grid-template-columns: 1fr;
+      .tech-images-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
@@ -628,12 +888,17 @@
         font-size: 28px;
       }
 
-      .stats-bar {
+      .stats-bar,
+      .tech-images-grid {
         grid-template-columns: 1fr;
       }
 
       .stat-value {
         font-size: 28px;
+      }
+
+      .tech-image-card {
+        padding: 20px;
       }
     }
   </style>
@@ -650,10 +915,7 @@
 
   <div class="sidebar-title">Tona: Skin Tone Analysis Engine</div>
 
-  <a href="https://drive.google.com/file/d/1Ag3tdGWKsX_Kq4XnbO8wpjG2mUiT6GH7/view"
-     target="_blank"
-     rel="noopener noreferrer"
-     class="demo-link">
+  <a href="https://drive.google.com/file/d/1Ag3tdGWKsX_Kq4XnbO8wpjG2mUiT6GH7/view" target="_blank" rel="noopener noreferrer" class="demo-link">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
       <path d="M8 0l8 8-8 8V0z"/>
     </svg>
@@ -670,6 +932,14 @@
       <li><a href="#impact">Impact</a></li>
     </ul>
   </nav>
+
+<div class="sidebar-logo-container">
+  <div class="logo-wrapper">
+    <img src="./images/tona_logo.png" alt="Tona Logo" class="sidebar-logo">
+  </div>
+  <div class="logo-label">Tona</div>
+</div>
+
 </aside>
 
 <main class="main">
@@ -677,20 +947,20 @@
   <section id="overview" class="visible">
     <h1>Building a Skin Tone Analysis Engine for iOS</h1>
     <p class="lead">
-      Designed and implemented a real-time computer vision pipeline that analyzes skin tone from camera photos, handling the full Fitzpatrick scale with medical-grade color accuracy.
+      Designed and implemented a real-time computer vision pipeline that analyzes skin tone from camera photos, handling the full Fitzpatrick scale with high color accuracy.
     </p>
 
-    <div class="hero-grid">
-      <div class="hero-content">
-        <div class="achievement-box">
-          <strong>Core Engineering Challenges Solved:</strong>
-          <ul>
-            <li>Works across full Fitzpatrick scale (very dark L* 20-35 to very light L* 75-90)</li>
-            <li>Handles variable lighting conditions (HDR correction, white balance normalization)</li>
-            <li>Real-time performance (<500ms) with 4,500+ sample points per frame</li>
-            <li>Rotation-aware analysis (±25° face angles with geometric correction)</li>
-          </ul>
-        </div>
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="achievement-box">
+        <strong>Core Engineering Challenges Solved:</strong>
+        <ul>
+          <li>Works across full Fitzpatrick scale (very dark L* 20-35 to very light L* 75-90)</li>
+          <li>Handles variable lighting conditions (HDR correction, white balance normalization)</li>
+          <li>Real-time performance (<1s) with 4,500+ sample points per frame</li>
+          <li>Human-in-the-loop validation (8 shade options + live preview for user preference)</li>
+        </ul>
+      </div>
 
         <div class="tech-tags">
           <span class="tech-tag">Swift</span>
@@ -701,16 +971,52 @@
           <span class="tech-tag">Delta E 2000</span>
           <span class="tech-tag">SwiftUI</span>
         </div>
+
+        <div class="tech-stack-images">
+          <div class="tech-stack-title">Tech Stack</div>
+          <div class="tech-images-grid">
+            <div class="tech-image-card">
+              <img src="./images/8Y8pNGvXNyntsjraJrQWCk-1200-80.png" alt="Swift Logo">
+            </div>
+            <div class="tech-image-card">
+              <img src="./images/createwithswift.com-generating-person-segmentation-with-the-vision-framework.png" alt="Vision Framework Logo">
+            </div>
+            <!-- <div class="tech-image-card">
+              <img src="./images/coreimage-logo.png" alt="Core Image Logo">
+            </div>
+            <div class="tech-image-card">
+              <img src="./images/swiftui-logo.png" alt="SwiftUI Logo">
+            </div> -->
+          </div>
+        </div>
       </div>
 
       <div class="hero-visual">
-        <div>
-          [IMG: tona-hero-demo.png]
-          <br><br>
-          3-panel iPhone mockup showing:
-          <br>• Live camera with face detection overlay
-          <br>• Analysis progress indicator
-          <br>• Results screen with matched shades
+        <div class="image-carousel">
+          <div class="carousel-container" id="carouselContainer">
+            <div class="carousel-slide">
+              <img src="./images/Frame 511.png" alt="Tona app interface showing multiple skin tone analysis" style="width: 100%; height: auto;">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/Frame 512.png" alt="Tona app interface showing multiple skin tone analysis" style="width: 100%; height: auto;">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/mockup_many.png" alt="Tona app interface showing multiple skin tone analysis" style="width: 100%; height: auto;">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/mockup_hand_women.png" alt="Tona app interface showing hand skin tone analysis" style="width: 100%; height: auto;">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/IMG_5907.jpg" alt="Tona app interface showing hand skin tone analysis" style="width: 100%; height: auto;">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/IMG_5906.jpg" alt="Tona app interface showing hand skin tone analysis" style="width: 100%; height: auto;">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/IMG_5908.jpg" alt="Tona app interface showing hand skin tone analysis" style="width: 100%; height: auto;">
+            </div>
+          </div>
+          <div class="carousel-dots" id="carouselDots"></div>
         </div>
       </div>
     </div>
@@ -721,7 +1027,7 @@
         <span class="stat-label">Samples per Frame</span>
       </div>
       <div class="stat-item">
-        <span class="stat-value">1.4K+</span>
+        <span class="stat-value">150K+</span>
         <span class="stat-label">Foundation Database</span>
       </div>
       <div class="stat-item">
@@ -729,29 +1035,33 @@
         <span class="stat-label">Fitzpatrick Range</span>
       </div>
       <div class="stat-item">
-        <span class="stat-value">&lt;500ms</span>
+        <span class="stat-value">&lt;1s</span>
         <span class="stat-label">Analysis Time</span>
       </div>
     </div>
   </section>
 
+  <div class="big-demo-button-wrapper">
+    <a href="https://drive.google.com/file/d/1Ag3tdGWKsX_Kq4XnbO8wpjG2mUiT6GH7/view" target="_blank" rel="noopener noreferrer" class="big-demo-button">
+      <span class="demo-icon">▶</span>
+      <span>Watch Full Demo</span>
+    </a>
+  </div>
+
   <div class="divider"></div>
 
   <section id="challenge">
     <h2>The Engineering Challenge</h2>
-    <p>Consumer cameras don't capture "true" color—they produce aesthetically optimized renderings. Building accurate skin tone analysis requires solving color science, geometry, and performance simultaneously.</p>
+    <p>Consumer cameras don't capture "true" color, they produce aesthetically optimized renderings. Building accurate skin tone analysis requires solving color science, geometry, and performance simultaneously.</p>
 
     <div class="challenge-grid">
       <div class="challenge-card">
         <div class="card-number">1</div>
         <h4>Color Science Complexity</h4>
         
-        <div class="challenge-visual">
-          [IMG: color-pipeline.png]
-          <br><br>
-          Diagram: sRGB → XYZ → CIELAB
-          <br>transformation flow
-        </div>
+        <!-- <div class="challenge-visual">
+          Diagram: sRGB → XYZ → CIELAB transformation flow
+        </div> -->
 
         <p class="section-label">Challenge</p>
         <ul class="solution-list">
@@ -769,41 +1079,42 @@
       </div>
 
       <div class="challenge-card">
-        <div class="card-number">2</div>
-        <h4>Geometric Variability</h4>
+  <div class="card-number">2</div>
+  <h4>Geometric Variability & User Guidance</h4>
 
-        <div class="challenge-visual">
-          [IMG: face-rotation.png]
-          <br><br>
-          Examples: Frontal, 15° tilt, 25° rotation
-          <br>with ROI overlay visualization
-        </div>
+  <!-- <div class="challenge-visual">
+    Diagram: Apple of cheek ROI visualization with optimal face angle (15° rotation) vs frontal view showing suboptimal sampling regions
+  </div> -->
 
-        <p class="section-label">Challenge</p>
-        <ul class="solution-list">
-          <li>Head roll (tilt) up to 25° common in selfies</li>
-          <li>Face yaw (rotation) changes cheek visibility</li>
-          <li>Facial expressions alter landmark positions</li>
-        </ul>
+  <p class="section-label">Challenge</p>
+  <ul class="solution-list">
+    <li>Optimal skin tone sampling occurs on the <strong>apple of the cheek</strong> (most representative, least affected by shadows/specular highlights)</li>
+    <li>Frontal face position obscures this region behind jawline/nose shadows</li>
+    <li>Users naturally hold phones frontally, optimal analysis requires ~15° head rotation</li>
+    <li><strong>Current limitation:</strong> No real-time guidance to help users position face optimally</li>
+  </ul>
 
-        <p class="section-label">Solution</p>
-        <ul class="solution-list">
-          <li>Rotation-aware ROI placement using Vision landmarks</li>
-          <li>Dominant cheek detection for yaw >15°</li>
-          <li>Adaptive sampling density by face orientation</li>
-        </ul>
-      </div>
+  <p class="section-label">Solution (In Progress)</p>
+  <ul class="solution-list">
+    <li>Rotation-aware ROI placement using Vision landmarks (enough for POC)</li>
+    <li>Face angle detection with quality scoring (completed)</li>
+    <li><strong> ONGOING:</strong> Real-time visual guidance UI (arrow overlays + haptic feedback)</li>
+    <li><strong> ONGOING:</strong> "Rotate slightly left/right" voice prompts for accessibility</li>
+    <li><strong> ONGOING:</strong> Confidence scoring that degrades gracefully for suboptimal angles</li>
+  </ul>
+
+  <div class="trade-off" style="margin-top: 20px; background: #fffbeb; border-left-color: #f59e0b;">
+    <strong>Development Status:</strong> Core analysis works at all angles, but accuracy can be improved when users rotate face to expose apple of cheek.
+  </div>
+</div>
 
       <div class="challenge-card">
         <div class="card-number">3</div>
         <h4>Extreme Skin Tones</h4>
 
-        <div class="challenge-visual">
-          [IMG: fitzpatrick-range.png]
-          <br><br>
-          Gradient showing Fitzpatrick I-VI
-          <br>with L* values annotated
-        </div>
+        <!-- <div class="challenge-visual">
+         Gradient  showing Fitzpatrick I-VI with L* values annotated
+        </div> -->
 
         <p class="section-label">Challenge</p>
         <ul class="solution-list">
@@ -826,7 +1137,7 @@
 
         <p class="section-label">Challenge</p>
         <ul class="solution-list">
-          <li>Full pipeline must run <500ms on iPhone</li>
+          <li>Full pipeline must run <1s on iPhone 15</li>
           <li>4,500 samples × complex color transformations</li>
           <li>Memory constraints on mobile devices</li>
         </ul>
@@ -848,23 +1159,18 @@
     <h2>System Architecture</h2>
     <p>The analysis pipeline transforms raw camera pixels into foundation matches through five specialized stages:</p>
 
-    <div class="pipeline-diagram">
-      [IMG: pipeline-architecture.png]
-      <br><br>
-      Flowchart visualization:
-      <br>Camera Feed → Face Detection → ROI Extraction →
-      <br>Color Analysis → Statistical Fusion → Foundation Matching
-      <br><br>
-      (Each stage as a box with connecting arrows)
-    </div>
+    <!-- <div class="pipeline-diagram">
+      Flowchart visualization:<br>
+      Camera Feed → Face Detection → ROI Extraction →<br>
+      Color Analysis → Statistical Fusion → Foundation Matching
+    </div> -->
 
     <div class="stage-card">
       <h4>Stage 1: Pre-Processing & HDR Correction</h4>
       <p>Detecting and reversing Apple's HDR tone mapping to recover accurate color values.</p>
 
-      <pre><code>// Analyze luminance distribution to detect compression
-struct HDRDetectionParams {
-    let midtoneRange: Double       // p75 - p25 percentile
+      <pre><code>struct HDRDetectionParams {
+    let midtoneRange: Double
     let highlightCompression: Double
     let shadowFloor: Double
 }
@@ -872,7 +1178,6 @@ struct HDRDetectionParams {
 func detectAppleHDR(_ image: CGImage) -> CorrectionParams {
     let stats = analyzeLuminanceDistribution(image)
     
-    // Compressed midtones indicate HDR processing
     let isProcessed = stats.midtoneRange < 14.0
     
     if isProcessed {
@@ -880,11 +1185,6 @@ func detectAppleHDR(_ image: CGImage) -> CorrectionParams {
     }
     return .none
 }</code></pre>
-
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: hdr-correction.png]
-        <br>Before/After comparison: compressed vs corrected image
-      </div>
     </div>
 
     <div class="stage-card">
@@ -900,36 +1200,23 @@ func detectAppleHDR(_ image: CGImage) -> CorrectionParams {
         <li>Apply rotation matrix to ROI centers before sampling</li>
         <li>Select dominant cheek for yaw angles >15°</li>
       </ul>
-
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: roi-rotation.png]
-        <br>Comparison: Standard vs rotation-aware ROI placement
-        <br>on tilted face examples
-      </div>
     </div>
 
     <div class="stage-card">
       <h4>Stage 3: Stratified Sampling (4,500 Points)</h4>
       <p>Multi-region sampling strategy prioritizing the apple of the cheek (most representative skin tone).</p>
 
-      <pre><code>// Sample allocation strategy
-Apple of Cheek (68% of samples)
+      <pre><code>Apple of Cheek (68% of samples)
 ├─ Medial subregion  — core skin tone
 └─ Lateral subregion — validation samples
 
 Forehead (12% of samples)
 └─ Fallback for occluded cheeks
 
-// 3-layer quality filtering
 Quality Gates
 ├─ Skin Gate: YCbCr color space validation
 ├─ Shadow/Specular: Lighting artifact rejection  
 └─ Regional Consistency: Statistical outlier removal</code></pre>
-
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: sampling-regions.png]
-        <br>Face diagram with color-coded sample point distribution
-      </div>
     </div>
 
     <div class="stage-card">
@@ -945,25 +1232,21 @@ Quality Gates
       </ol>
 
       <pre><code>func robustVotingAverage(_ samples:[(lab: LabColor, weight: Double)]) -> LabColor {
-    // 1. Find mode using kernel density estimation
     let modeLab = findModeKDE(samples)
     
-    // 2. Filter inliers within ΔE threshold
     let inliers = samples.filter {
         ColorScience.deltaE2000($0.lab, modeLab) <= 7.0
     }
     
-    // 3. Weighted average of inliers
     return simpleWeightedAverage(inliers)
 }</code></pre>
     </div>
 
     <div class="stage-card">
       <h4>Stage 5: Foundation Matching</h4>
-      <p>Ranking 1,400+ foundation shades using perceptual color distance and undertone scoring.</p>
+      <p>Ranking 150+ foundation shades using perceptual color distance and undertone scoring.</p>
 
-      <pre><code>// Delta E 2000 + Undertone Analysis
-Database: 1,400+ shades with LAB values + undertone labels
+      <pre><code>Database: 150+ shades with LAB values + undertone labels
 
 Algorithm:
 1. Compute ΔE2000 for all shades (perceptual color distance)
@@ -1002,9 +1285,8 @@ Output:
       </ul>
 
       <div class="trade-off">
-        <strong>Trade-off:</strong> Complex transformations (sRGB → XYZ → LAB requires 5+ mathematical steps)
-        <br>
-        <strong>Impact:</strong> +50ms processing time, but essential for accuracy
+        <strong>Trade-off:</strong> Complex transformations (sRGB → XYZ → LAB requires 5+ mathematical steps)<br>
+        <strong>Impact:</strong> More processing time required, but essential for accuracy
       </div>
     </div>
 
@@ -1019,11 +1301,6 @@ Output:
         <li>Optimized for Apple Silicon (80-120ms on iPhone 12+)</li>
         <li>Automatic handling of different orientations</li>
       </ul>
-
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: vision-landmarks.png]
-        <br>Face with 68 landmarks annotated + ROI overlay
-      </div>
     </div>
 
     <div class="decision-card">
@@ -1046,13 +1323,6 @@ Output:
         <li>Concurrent processing using <code>DispatchQueue.concurrentPerform</code></li>
       </ul>
 
-      <div class="trade-off">
-        <strong>Result:</strong> 1600×1200 image filtered in ~45ms on A15 Bionic
-      </div>
-
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: bilateral-filter.png]
-        <br>Original vs Filtered comparison (noise reduction visible)
       </div>
     </div>
   </section>
@@ -1079,11 +1349,6 @@ Output:
           <li>Relaxed shadow detection for L* < 40</li>
           <li>Lower bilateral filter edge threshold (8.0 vs 15.0)</li>
         </ul>
-
-        <div class="challenge-visual" style="margin-top: 16px;">
-          [IMG: dark-skin-handling.png]
-          <br>Before/After adaptive gating improvements
-        </div>
       </div>
 
       <div class="challenge-card">
@@ -1120,11 +1385,6 @@ Output:
           <li>Zero sample allocation for hidden cheek (avoid contamination)</li>
           <li>Fallback to forehead region if both cheeks fail quality checks</li>
         </ul>
-
-        <div class="challenge-visual" style="margin-top: 16px;">
-          [IMG: rotation-handling.png]
-          <br>Grid showing: 0°, 15°, 25°, 40° yaw with ROI adaptation
-        </div>
       </div>
 
       <div class="challenge-card">
@@ -1139,11 +1399,6 @@ Output:
           <li>User taps to compare in real-time</li>
           <li>Fuses user selection with algorithm (50/50 weighted blend)</li>
         </ul>
-
-        <div class="challenge-visual" style="margin-top: 16px;">
-          [IMG: validation-ui.png]
-          <br>Full shade validation interface screenshot
-        </div>
 
         <div class="trade-off">
           <strong>Impact:</strong> 40% increase in user satisfaction + builds ground truth dataset for future ML
@@ -1205,7 +1460,7 @@ Output:
 
     <div class="callout">
       <div class="callout-title">Key Learnings</div>
-      <p><strong>Build for edge cases from day one.</strong> Initial version worked perfectly on medium skin tones but failed on very dark/light skin. Required 2 weeks of threshold retuning. Now I design adaptive systems with brightness-dependent parameters from the start.</p>
+      <p><strong>Build for edge cases from day one.</strong> Initial version worked perfectly on medium skin tones but failed on very dark/light skin. Required 5 weeks of threshold retuning. Now I design adaptive systems with brightness-dependent parameters from the start.</p>
 
       <p style="margin-top: 16px;"><strong>User perception matters more than metrics.</strong> Added validation UI when users said "I prefer this shade even if ΔE is higher." Result: 40% satisfaction increase + valuable ground truth data for future improvements.</p>
 
@@ -1216,7 +1471,6 @@ Output:
 </main>
 
 <script>
-  // Intersection Observer for fade-in animations
   const sections = document.querySelectorAll('section');
   
   const observerOptions = {
@@ -1237,7 +1491,6 @@ Output:
     observer.observe(section);
   });
 
-  // Active navigation highlighting
   const navLinks = document.querySelectorAll('.sidebar-nav a');
   
   window.addEventListener('scroll', () => {
@@ -1257,7 +1510,6 @@ Output:
     });
   });
 
-  // Smooth scrolling
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -1269,8 +1521,36 @@ Output:
       });
     });
   });
+
+  const carouselContainer = document.getElementById('carouselContainer');
+  const carouselDots = document.getElementById('carouselDots');
+  const slides = document.querySelectorAll('.carousel-slide');
+  let currentSlide = 0;
+
+  slides.forEach((_, index) => {
+    const dot = document.createElement('div');
+    dot.classList.add('carousel-dot');
+    if (index === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(index));
+    carouselDots.appendChild(dot);
+  });
+
+  function goToSlide(index) {
+    currentSlide = index;
+    carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    goToSlide(currentSlide);
+  }
+
+  setInterval(nextSlide, 4000);
 </script>
 
 </body>
 </html>
-</artifact>

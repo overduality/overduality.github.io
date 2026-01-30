@@ -19,10 +19,10 @@
       --text-secondary: #525252;
       --border: #e5e5e5;
       --bg-subtle: #fafafa;
-      --accent: #f97316;
-      --accent-light: #ffedd5;
-      --success: #22c55e;
-      --warning: #eab308;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --success: #10b981;
+      --warning: #f59e0b;
       --error: #ef4444;
     }
 
@@ -39,7 +39,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Sidebar */
     .sidebar {
       position: fixed;
       left: 0;
@@ -107,13 +106,13 @@
     }
 
     .demo-link:hover {
-      background: #ea580c;
-      border-color: #ea580c;
+      background: #1d4ed8;
+      border-color: #1d4ed8;
     }
 
     .sidebar-nav {
       list-style: none;
-      padding-left: 0rem;
+      padding-left: 0;
     }
 
     .sidebar-nav li {
@@ -123,7 +122,7 @@
     .sidebar-nav a {
       display: block;
       padding: 10px 16px;
-      color: var(--text-light);
+      color: var(--text-secondary);
       text-decoration: none;
       font-size: 15px;
       border-radius: 6px;
@@ -142,7 +141,6 @@
       font-weight: 600;
     }
 
-    /* Main Content */
     .main {
       margin-left: 280px;
       padding: 60px 80px 100px 80px;
@@ -202,7 +200,6 @@
       transform: translateY(0);
     }
 
-    /* Hero */
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -212,21 +209,65 @@
     }
 
     .hero-visual {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
+      background: transparent;
       border-radius: 12px;
-      padding: 80px 40px;
+      padding: 40px;
       text-align: center;
-      min-height: 400px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: var(--text-secondary);
-      font-size: 14px;
-      line-height: 1.8;
       position: sticky;
-      top: 40px;
+      top: 0px;
+    }
+
+    .image-carousel {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .carousel-container {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-dot.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 4px;
     }
 
     .achievement-box {
@@ -267,7 +308,6 @@
       font-weight: 600;
     }
 
-    /* Stats */
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -305,7 +345,6 @@
       font-weight: 500;
     }
 
-    /* Tech Tags */
     .tech-tags {
       display: flex;
       flex-wrap: wrap;
@@ -330,7 +369,6 @@
       color: var(--accent);
     }
 
-    /* Challenge Grid */
     .challenge-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -344,7 +382,6 @@
       border-radius: 12px;
       padding: 28px;
       transition: all 0.3s ease;
-      position: relative;
     }
 
     .challenge-card:hover {
@@ -352,44 +389,11 @@
       transform: translateY(-2px);
     }
 
-    .card-number {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 32px;
-      height: 32px;
-      background: var(--accent-light);
-      color: var(--accent);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
     .challenge-card h4 {
       font-size: 18px;
       font-weight: 600;
       margin-bottom: 16px;
       color: var(--text);
-      padding-right: 40px;
-    }
-
-    .challenge-visual {
-      background: var(--bg-subtle);
-      border: 2px dashed var(--border);
-      border-radius: 8px;
-      padding: 48px 24px;
-      margin: 20px 0;
-      min-height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 13px;
-      line-height: 1.7;
     }
 
     .section-label {
@@ -425,24 +429,6 @@
       font-weight: 600;
     }
 
-    /* Pipeline */
-    .pipeline-diagram {
-      background: var(--bg-subtle);
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      padding: 80px 40px;
-      margin: 48px 0;
-      min-height: 320px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    /* Stage Cards */
     .stage-card {
       background: white;
       border: 1px solid var(--border);
@@ -459,7 +445,6 @@
       color: var(--accent);
     }
 
-    /* Code */
     code {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -487,7 +472,6 @@
       border: none;
     }
 
-    /* Failure Card */
     .failure-card {
       background: #fef2f2;
       border: 1px solid #fecaca;
@@ -502,7 +486,6 @@
       margin-bottom: 20px;
     }
 
-    /* Success Card */
     .success-card {
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
@@ -517,7 +500,6 @@
       margin-bottom: 20px;
     }
 
-    /* Comparison Card */
     .comparison-card {
       background: white;
       border: 1px solid var(--border);
@@ -558,7 +540,6 @@
       color: var(--success);
     }
 
-    /* Trade-off */
     .trade-off {
       background: var(--bg-subtle);
       border-left: 3px solid var(--accent);
@@ -568,7 +549,6 @@
       font-size: 14px;
     }
 
-    /* Impact Section */
     .impact-section {
       background: var(--bg-subtle);
       border: 1px solid var(--border);
@@ -598,7 +578,6 @@
       color: var(--accent);
     }
 
-    /* Callout */
     .callout {
       background: white;
       border: 1px solid var(--border);
@@ -615,7 +594,6 @@
       color: var(--text);
     }
 
-    /* Lists */
     ul {
       margin: 20px 0;
       padding-left: 24px;
@@ -636,7 +614,460 @@
       margin: 80px 0;
     }
 
-    /* Mobile */
+    .audio-comparison {
+      background: var(--bg-subtle);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .audio-track {
+      background: white;
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+
+    .audio-track:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .audio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+    }
+
+    .audio-title {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .audio-duration {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .audio-play-btn {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .audio-play-btn:hover {
+      background: #f3f3f3;
+      border-color: var(--accent);
+    }
+
+    .audio-play-btn.playing {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .play-icon {
+      font-size: 16px;
+      width: 16px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .audio-caption {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-style: italic;
+    }
+
+    .big-demo-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px 48px;
+      background: linear-gradient(135deg, #2a91d5 0%, #2563eb 100%);
+      border-radius: 16px;
+      text-decoration: none;
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 40px auto;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .big-demo-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transition: left 0.6s;
+    }
+
+    .big-demo-button:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 14px 36px rgba(37, 99, 235, 0.4);
+    }
+
+    .big-demo-button:hover::before {
+      left: 100%;
+    }
+
+    .big-demo-button:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .big-demo-button .demo-icon {
+      font-size: 42px;
+      font-weight: bold;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .big-demo-button:hover .demo-icon {
+      transform: translateX(4px) scale(1.15);
+    }
+
+    .big-demo-button-wrapper {
+      text-align: center;
+      margin: 60px 0;
+    }
+
+    .phrases-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 24px 0;
+    }
+
+    .phrase-category {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .category-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .phrase-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    .phrase-card:hover {
+      border-color: var(--accent);
+      background: var(--bg-subtle);
+      transform: translateX(4px);
+    }
+
+    .config-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .config-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .config-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      transform: translateY(-2px);
+    }
+
+    .config-card-title {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .config-card-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 4px;
+    }
+
+    .config-card-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .model-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .model-card {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .model-card:hover {
+      border-color: var(--accent);
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .model-card-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .model-card-category {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .model-card-classes {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .tech-stack-images {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tech-stack-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .tech-images-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .tech-image-card {
+      background: white;
+      /* border: 1px solid var(--border); */
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      aspect-ratio: 1 / 1;
+    }
+
+    .tech-image-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .tech-image-card img {
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    .tech-image-card:hover img {
+      filter: grayscale(0%);
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .challenge-visual {
+      background: var(--bg-subtle);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .challenge-visual img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .sidebar-logo-container {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px 0;
+      animation: slideUpLogo 0.6s ease-out 0.3s forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .sidebar-logo-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes slideUpLogo {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-wrapper {
+      width: auto;
+      height: auto;
+      background: linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .logo-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+      transform: scale(0);
+      transition: transform 0.5s ease;
+    }
+
+    .logo-wrapper:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.5);
+    }
+
+    .logo-wrapper:hover::before {
+      transform: scale(1);
+    }
+
+    .sidebar-logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+      transition: all 0.3s ease;
+    }
+
+    .logo-wrapper:hover .sidebar-logo {
+      transform: scale(1.1);
+    }
+
+    .logo-label {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: slideUpLogoText 0.4s ease-out 0.5s forwards;
+    }
+
+    @keyframes slideUpLogoText {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes logoPulse {
+      0%, 100% {
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+      }
+      50% {
+        box-shadow: 0 8px 32px rgba(37, 99, 235, 0.6);
+      }
+    }
+
+    .sidebar-logo-container:hover .logo-wrapper {
+      animation: logoPulse 1.5s ease-in-out;
+    }
+
     @media (max-width: 1024px) {
       .sidebar {
         display: none;
@@ -665,11 +1096,9 @@
         position: static;
       }
 
-      .challenge-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .comparison-grid {
+      .challenge-grid,
+      .comparison-grid,
+      .impact-grid {
         grid-template-columns: 1fr;
       }
 
@@ -678,7 +1107,39 @@
         gap: 16px;
       }
 
-      .impact-grid {
+      .tech-images-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .audio-comparison {
+        padding: 24px;
+      }
+
+      .phrases-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .audio-track {
+        padding: 20px;
+      }
+
+      .audio-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .audio-duration {
+        align-self: flex-end;
+      }
+
+      .config-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .model-cards-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -692,12 +1153,18 @@
         font-size: 28px;
       }
 
-      .stats-bar {
+      .stats-bar,
+      .config-cards-grid,
+      .tech-images-grid {
         grid-template-columns: 1fr;
       }
 
       .stat-value {
         font-size: 28px;
+      }
+
+      .tech-image-card {
+        padding: 20px;
       }
     }
   </style>
@@ -728,10 +1195,16 @@
       <li><a href="#attempt">First Attempt</a></li>
       <li><a href="#failure">Why It Failed</a></li>
       <li><a href="#solution">Hybrid Solution</a></li>
-      <li><a href="#pipeline">Data Pipeline</a></li>
       <li><a href="#impact">Impact</a></li>
     </ul>
   </nav>
+
+  <div class="sidebar-logo-container">
+    <div class="logo-wrapper">
+      <img src="./images/logo_muvo.png" alt="Muvo Logo" class="sidebar-logo">
+    </div>
+    <div class="logo-label">Muvo</div>
+  </div>
 </aside>
 
 <main class="main">
@@ -764,16 +1237,49 @@
           <span class="tech-tag">Librosa</span>
           <span class="tech-tag">Python</span>
         </div>
-      </div>
 
+        <div class="tech-stack-images">
+          <div class="tech-images-grid">
+            <div class="tech-image-card">
+              <img src="./images/8Y8pNGvXNyntsjraJrQWCk-1200-80.png" alt="Swift Logo">
+            </div>
+            <div class="tech-image-card">
+              <img src="./images/create-ml-96x96_2x.png" alt="Create ML Logo">
+            </div>
+            <div class="tech-image-card">
+              <img src="./images/Python-logo-notext.svg.png" alt="Python Logo">
+            </div>
+            <div class="tech-image-card">
+              <img src="./images/librosa_logo_text.png" alt="Librosa Logo">
+            </div>
+          </div>
+        </div>
+      </div>
+  
       <div class="hero-visual">
-        <div>
-          [IMG: muvo-app-mockup.png]
-          <br><br>
-          iPhone showing practice screen:
-          <br>• Sentence prompt with audio playback
-          <br>• Real-time waveform during recording
-          <br>• Instant feedback (Perfect/Almost/Try Again)
+        <div class="image-carousel">
+          <div class="carousel-container" id="carouselContainer">
+            <div class="carousel-slide">
+              <img src="./images/9e68ad1f7a7ae7bc40443d2072d3ddcfa67016a4.png" alt="Muvo app interface showing pronunciation practice">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/deck1.png" alt="Muvo app hotel phrases screen">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/mock1.png" alt="Muvo app airport phrases screen">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/mock05.png" alt="Muvo app practice interface", style: width="auto", height="100%">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/mock2.png" alt="Muvo app practice interface", style: width="auto", height="100%">
+            </div>
+            <div class="carousel-slide">
+              <img src="./images/mock3.png" alt="Muvo app practice interface", style: width="auto", height="100%">
+            </div>
+
+          </div>
+          <div class="carousel-dots" id="carouselDots"></div>
         </div>
       </div>
     </div>
@@ -798,15 +1304,21 @@
     </div>
   </section>
 
-  <div class="divider"></div>
+  <div class="big-demo-button-wrapper">
+    <a href="https://drive.google.com/file/d/1hHul2_ebSVWzl7s6mMVc3v5QfPE2FBhb/view" class="big-demo-button">
+      <span class="demo-icon">▶</span>
+      <span>Watch Full Demo</span>
+    </a>
+  </div>
 
+  <div class="divider"></div>
+  
   <section id="problem">
     <h2>The Problem</h2>
     <p>Language learners struggle to know if their pronunciation is correct when practicing alone. Traditional methods rely on:</p>
 
     <div class="challenge-grid">
       <div class="challenge-card">
-        <div class="card-number">1</div>
         <h4>Human Tutors</h4>
         <ul class="solution-list">
           <li>Expensive ($20-50/hour)</li>
@@ -817,7 +1329,6 @@
       </div>
 
       <div class="challenge-card">
-        <div class="card-number">2</div>
         <h4>Existing Apps</h4>
         <ul class="solution-list">
           <li>Generic scoring algorithms</li>
@@ -837,26 +1348,31 @@
   <div class="divider"></div>
 
   <section id="attempt">
-    <h2>First Attempt: Pure Machine Learning</h2>
-    <p>I started with Create ML's Sound Classification, training a model to recognize correct pronunciation patterns.</p>
+    <h2>First Attempt: Pure ML Approach</h2>
 
     <div class="stage-card">
       <h4>Data Collection Strategy</h4>
       <p><strong>10 practical phrases</strong> across 2 categories:</p>
       
-      <pre><code>Hotel (5 phrases):
-- "I have a reservation under my name"
-- "I'd like to check in please"
-- "Is breakfast included?"
-- "There is a problem with my room"
-- "I need a non-smoking room please"
-
-Airport (5 phrases):
-- "My luggage is missing"
-- "Where is the immigration counter?"
-- "I missed my flight"
-- "Here is my passport and ticket"
-- "I lost my boarding pass"</code></pre>
+      <div class="phrases-grid">
+        <div class="phrase-category">
+          <div class="category-title">Hotel (5 phrases)</div>
+          <div class="phrase-card">I have a reservation under my name</div>
+          <div class="phrase-card">I'd like to check in please</div>
+          <div class="phrase-card">Is breakfast included?</div>
+          <div class="phrase-card">There is a problem with my room</div>
+          <div class="phrase-card">I need a non-smoking room please</div>
+        </div>
+        
+        <div class="phrase-category">
+          <div class="category-title">Airport (5 phrases)</div>
+          <div class="phrase-card">My luggage is missing</div>
+          <div class="phrase-card">Where is the immigration counter?</div>
+          <div class="phrase-card">I missed my flight</div>
+          <div class="phrase-card">Here is my passport and ticket</div>
+          <div class="phrase-card">I lost my boarding pass</div>
+        </div>
+      </div>
 
       <p style="margin-top: 24px;"><strong>Recording Process:</strong></p>
       <ul class="solution-list">
@@ -873,20 +1389,13 @@ Airport (5 phrases):
       <pre><code>import librosa
 import numpy as np
 
-# Configuration
 SAMPLE_RATE = 16000
-N_MFCC = 13  # Standard for speech recognition
+N_MFCC = 13
 
-# Extract MFCC features
 def extract_mfcc(audio_path):
     y, sr = librosa.load(audio_path, sr=SAMPLE_RATE)
     mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=N_MFCC)
     return mfccs</code></pre>
-
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: mfcc-visualization.png]
-        <br>MFCC feature map showing frequency bands over time
-      </div>
     </div>
 
     <div class="stage-card">
@@ -906,9 +1415,34 @@ def extract_mfcc(audio_path):
         </li>
       </ul>
 
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: augmentation-examples.png]
-        <br>Waveform comparison: original vs augmented audio
+      <div class="audio-comparison">
+        <div class="audio-track">
+          <div class="audio-header">
+            <div class="audio-title">Original Audio</div>
+            <div class="audio-duration">2.4s</div>
+          </div>
+          <button class="audio-play-btn" data-target="original">
+            <span class="play-icon">▶</span>
+            <span class="play-label">Play sample</span>
+          </button>
+          <audio id="audio-original" src="./audio/2.4_original.wav" preload="auto"></audio>
+        </div>
+        
+        <div class="audio-track">
+          <div class="audio-header">
+            <div class="audio-title">Augmented Audio (-15% speed)</div>
+            <div class="audio-duration">2.1s</div>
+          </div>
+          <button class="audio-play-btn" data-target="augmented">
+            <span class="play-icon">▶</span>
+            <span class="play-label">Play sample</span>
+          </button>
+          <audio id="audio-augmented" src="./audio/2.4_aug_stretch.wav" preload="auto"></audio>
+        </div>
+        
+        <div class="audio-caption">
+          Audio comparison: Original vs time-stretched audio (-15% speed variation)
+        </div>
       </div>
     </div>
 
@@ -916,24 +1450,64 @@ def extract_mfcc(audio_path):
       <h4>Model Training</h4>
       <p>Create ML configuration:</p>
 
-      <pre><code>Model: Sound Classifier (Create ML)
-Feature Extractor: Audio Feature Print
-- Optimized for speech classification accuracy
-- Window Duration: 0.5 seconds
-- Window Overlap: 50%
+      <div class="config-cards-grid">
+        <div class="config-card">
+          <div class="config-card-title">Model Type</div>
+          <div class="config-card-value">Sound Classifier</div>
+          <div class="config-card-subtitle">Create ML</div>
+        </div>
 
-Training Configuration:
-- Iterations: 75 (converged at iteration 35)
-- Validation Split: Auto
-- Model Availability: iOS 15.0+
+        <div class="config-card">
+          <div class="config-card-title">Feature Extractor</div>
+          <div class="config-card-value">Audio Feature Print</div>
+          <div class="config-card-subtitle">Optimized for speech</div>
+        </div>
 
-Output: 2 separate models
-- soundclafHOT (Hotel - 5 classes)
-- soundclafAIR (Airport - 5 classes)</code></pre>
+        <div class="config-card">
+          <div class="config-card-title">Window Duration</div>
+          <div class="config-card-value">0.5 seconds</div>
+        </div>
 
-      <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: createml-training.png]
-        <br>Screenshot from Create ML showing training metrics
+        <div class="config-card">
+          <div class="config-card-title">Window Overlap</div>
+          <div class="config-card-value">50%</div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-title">Iterations</div>
+          <div class="config-card-value">75</div>
+          <div class="config-card-subtitle">Converged at iteration 35</div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-title">Validation Split</div>
+          <div class="config-card-value">Auto</div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-title">Platform</div>
+          <div class="config-card-value">iOS 15.0+</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+        <h5 style="margin-bottom: 16px; color: var(--accent);">Output Models</h5>
+        <div class="model-cards-grid">
+          <div class="model-card">
+            <div class="model-card-name">soundclafHOT</div>
+            <div class="model-card-category">Hotel</div>
+            <div class="model-card-classes">5 classes</div>
+          </div>
+          <div class="model-card">
+            <div class="model-card-name">soundclafAIR</div>
+            <div class="model-card-category">Airport</div>
+            <div class="model-card-classes">5 classes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge-visual" style="margin-top: 32px;">
+        <img src="./images/Pasted Graphic 3.png" alt="Create ML training results">
       </div>
     </div>
   </section>
@@ -948,31 +1522,31 @@ Output: 2 separate models
       <p>The model couldn't reliably distinguish between correct and incorrect pronunciations.</p>
 
       <div class="challenge-visual" style="margin-top: 24px;">
-        [IMG: training-accuracy-graph.png]
-        <br>Graph showing 62.4% training accuracy plateau
+        <img src="./images/Pasted Graphic 2.png" alt="Model accuracy results">
       </div>
     </div>
 
     <div class="challenge-grid">
       <div class="challenge-card">
-        <div class="card-number">1</div>
-        <h4>Class Imbalance</h4>
-        <p class="section-label">Problem</p>
-        <p>"I have a reservation under my name" was severely underrepresented in the dataset—only 3 recordings vs 10+ for other phrases.</p>
+        <h4>Low Recall for Specific Phrase</h4>
 
-        <p class="section-label" style="margin-top: 20px;">Why It Happened</p>
+        <p class="section-label">Problem</p>
+        <p>
+          The phrase <em>"I have a reservation under my name"</em> exhibits consistently low recall during evaluation, with many true instances being missed by the model.
+        </p>
+
+        <p class="section-label">Why It Happened</p>
         <ul class="solution-list">
-          <li>Recording session time constraints</li>
-          <li>Participants struggled with longer sentences</li>
-          <li>Didn't validate dataset balance before training</li>
+          <li>Declarative nature lacks strong intent-specific keywords</li>
+          <li>Strong acoustic prefix overlap with other commands (e.g., "I need…", "I'd like…")</li>
+          <li>Key semantic information ("reservation") appears mid-sentence</li>
         </ul>
 
-        <p class="section-label" style="margin-top: 20px;">Impact</p>
-        <p>Model learned to <strong>ignore this class entirely</strong>, always predicting other phrases even when correct.</p>
+        <p class="section-label">Impact</p>
+        <p>Model frequently defaulted to more action-oriented phrases, leading to systematic misclassification.</p>
       </div>
 
       <div class="challenge-card">
-        <div class="card-number">2</div>
         <h4>Small Dataset</h4>
         
         <p class="section-label">Problem</p>
@@ -984,12 +1558,11 @@ Output: 2 separate models
           <li>Controlled recording environment (no real-world noise)</li>
         </ul>
 
-        <p class="section-label" style="margin-top: 20px;">Result</p>
+        <p class="section-label">Result</p>
         <p>Model <strong>overfitted</strong> to the training speakers—failed on new voices with different accents or speaking styles.</p>
       </div>
 
       <div class="challenge-card">
-        <div class="card-number">3</div>
         <h4>Binary Classification Limitation</h4>
         
         <p class="section-label">Problem</p>
@@ -1001,12 +1574,11 @@ Output: 2 separate models
           <li>Which <em>specific words</em> need improvement?</li>
         </ul>
 
-        <p class="section-label" style="margin-top: 20px;">Insight</p>
+        <p class="section-label">Insight</p>
         <p>We were using <strong>the wrong model architecture</strong> for the task. Sound classification answers "what was said," not "how well was it said."</p>
       </div>
 
       <div class="challenge-card">
-        <div class="card-number">4</div>
         <h4>Create ML Constraints</h4>
         
         <p class="section-label">Limitations</p>
@@ -1064,21 +1636,8 @@ Output: 2 separate models
 
     <div class="stage-card">
       <h4>Hybrid Architecture</h4>
-      
-      <div class="pipeline-diagram">
-        [IMG: hybrid-architecture.png]
-        <br><br>
-        Flowchart showing:
-        <br>User Audio → ML Classifier (high confidence?) YES → Perfect
-        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ NO
-        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Speech-to-Text → Word Matching
-        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓
-        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;≥60% words correct? → Almost
-        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<60% → Try Again
-      </div>
 
-      <pre><code>// Hybrid Scoring Logic
-func evaluatePronunciation(
+      <pre><code>func evaluatePronunciation(
     mlClassification: String?, 
     recognizedText: String
 ) -> PronunciationAccuracy {
@@ -1086,13 +1645,11 @@ func evaluatePronunciation(
     let target = normalizeText(currentSentence)
     let recognized = normalizeText(recognizedText)
     
-    // Path 1: ML Model is confident
     if let mlResult = mlClassification, 
        mlResult == target {
-        return .perfect  // ✓ Model recognized exact sentence
+        return .perfect
     }
     
-    // Path 2: Fallback to STT word matching
     let targetWords = target.components(separatedBy: " ")
     let matchingWords = countMatchingWords(
         recognized: recognized, 
@@ -1102,10 +1659,10 @@ func evaluatePronunciation(
     let matchRate = Double(matchingWords) / Double(targetWords.count)
     
     if matchRate >= 0.6 {
-        return .almost   // ≥60% words correct
+        return .almost
     }
     
-    return .tryAgain     // <60% words correct
+    return .tryAgain
 }</code></pre>
     </div>
 
@@ -1135,125 +1692,12 @@ func evaluatePronunciation(
         <li>Both reject <em>incorrect</em> pronunciation (neither confident)</li>
       </ul>
 
-      <div class="trade-off">
-        <strong>Trade-off:</strong> Requires internet for STT fallback (~200ms latency)<br>
-        <strong>Mitigation:</strong> Show loading indicator, cache common results
-      </div>
+    
     </div>
 
     <div class="callout">
       <div class="callout-title">Key Learning #2</div>
       <p><strong>When pure ML fails, intelligent fusion wins.</strong> Instead of collecting more data or trying different architectures, I leveraged existing robust systems (Apple STT) to complement my weak model. Result: 85% accuracy with <100 hours of work.</p>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <section id="pipeline">
-    <h2>Complete Data Pipeline</h2>
-
-    <div class="stage-card">
-      <h4>Stage 1: Data Collection</h4>
-      <ul class="solution-list">
-        <li>Recruited 6 participants (mix of male/female, ages 20-30)</li>
-        <li>Provided written + audio reference for each phrase</li>
-        <li>Recorded in quiet room with Shure SM7B microphone</li>
-        <li>10 takes per person per phrase (best 1-2 kept)</li>
-      </ul>
-
-      <div class="trade-off">
-        <strong>Lesson Learned:</strong> Record more than you think you need—many takes had background noise, stutters, or mispronunciations that had to be discarded.
-      </div>
-    </div>
-
-    <div class="stage-card">
-      <h4>Stage 2: Preprocessing</h4>
-      <pre><code>from pydub import AudioSegment
-import torchaudio
-
-TARGET_SAMPLE_RATE = 16000
-
-def preprocess_audio(input_path, output_path):
-    # Load and normalize
-    audio = AudioSegment.from_file(input_path)
-    audio = audio.set_channels(1)  # Mono
-    audio = audio.set_frame_rate(TARGET_SAMPLE_RATE)
-    
-    # Normalize volume
-    normalized = audio.normalize()
-    
-    # Trim silence (start/end)
-    trimmed = normalized.strip_silence(
-        silence_thresh=-40,  # dB
-        padding=100  # ms
-    )
-    
-    # Export
-    trimmed.export(output_path, format="wav")</code></pre>
-    </div>
-
-    <div class="stage-card">
-      <h4>Stage 3: Augmentation</h4>
-      <pre><code>import librosa
-import numpy as np
-
-def augment_audio(audio_path, output_dir):
-    y, sr = librosa.load(audio_path, sr=16000)
-    
-    # 1. Time stretching (±15%)
-    faster = librosa.effects.time_stretch(y, rate=1.15)
-    slower = librosa.effects.time_stretch(y, rate=0.85)
-    
-    # 2. Pitch shifting (±2 semitones)
-    higher = librosa.effects.pitch_shift(y, sr=sr, n_steps=2)
-    lower = librosa.effects.pitch_shift(y, sr=sr, n_steps=-2)
-    
-    # 3. Add delay/echo
-    delayed = add_echo(y, delay_ms=100, decay=0.3)
-    
-    # 4. Background noise injection
-    for noise_type in ['airport', 'hotel', 'street']:
-        noise = load_noise(noise_type)
-        noisy = y + 0.05 * noise  # SNR ~20dB
-        
-    # Save all variants...</code></pre>
-    </div>
-
-    <div class="stage-card">
-      <h4>Stage 4: Feature Extraction</h4>
-      <p>Extracted MFCCs for Create ML training:</p>
-
-      <pre><code>def extract_and_save_mfcc(audio_path, output_path):
-    y, sr = librosa.load(audio_path, sr=16000)
-    
-    # Extract 13 MFCC coefficients
-    mfccs = librosa.feature.mfcc(
-        y=y, 
-        sr=sr, 
-        n_mfcc=13,
-        n_fft=2048,
-        hop_length=512
-    )
-    
-    # Save as .npy for Create ML
-    np.save(output_path, mfccs)</code></pre>
-    </div>
-
-    <div class="stage-card">
-      <h4>Stage 5: Model Training</h4>
-      <p>Create ML automatically handled training from the augmented dataset:</p>
-
-      <div class="challenge-visual">
-        [IMG: createml-results.png]
-        <br>Final training results showing 62.4% accuracy
-      </div>
-
-      <ul class="solution-list">
-        <li>Training Data: 9,299 audio files (5 classes × ~1,860 each)</li>
-        <li>Validation: Auto-split from training data</li>
-        <li>Iterations: 75 (early stopping at 35)</li>
-        <li>Model Size: 17KB per model (very efficient)</li>
-      </ul>
     </div>
   </section>
 
@@ -1334,7 +1778,6 @@ def augment_audio(audio_path, output_dir):
 </main>
 
 <script>
-  // Intersection Observer for fade-in animations
   const sections = document.querySelectorAll('section');
   
   const observerOptions = {
@@ -1355,7 +1798,6 @@ def augment_audio(audio_path, output_dir):
     observer.observe(section);
   });
 
-  // Active navigation highlighting
   const navLinks = document.querySelectorAll('.sidebar-nav a');
   
   window.addEventListener('scroll', () => {
@@ -1375,7 +1817,6 @@ def augment_audio(audio_path, output_dir):
     });
   });
 
-  // Smooth scrolling
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -1387,9 +1828,91 @@ def augment_audio(audio_path, output_dir):
       });
     });
   });
+
+  // Image carousel functionality
+  const carouselContainer = document.getElementById('carouselContainer');
+  const carouselDots = document.getElementById('carouselDots');
+  const slides = document.querySelectorAll('.carousel-slide');
+  let currentSlide = 0;
+
+  slides.forEach((_, index) => {
+    const dot = document.createElement('div');
+    dot.classList.add('carousel-dot');
+    if (index === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(index));
+    carouselDots.appendChild(dot);
+  });
+
+  function goToSlide(index) {
+    currentSlide = index;
+    carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    goToSlide(currentSlide);
+  }
+
+  setInterval(nextSlide, 4000);
+
+  // Audio player functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const players = document.querySelectorAll('.audio-play-btn');
+    
+    players.forEach(button => {
+      button.addEventListener('click', () => {
+        const target = button.getAttribute('data-target');
+        const audio = document.getElementById(`audio-${target}`);
+        
+        if (audio.paused) {
+          document.querySelectorAll('audio').forEach(a => {
+            if (a !== audio) {
+              a.pause();
+              const otherBtn = document.querySelector(`.audio-play-btn[data-target="${a.id.split('-')[1]}"]`);
+              if (otherBtn) {
+                otherBtn.classList.remove('playing');
+                otherBtn.querySelector('.play-icon').textContent = '▶';
+                otherBtn.querySelector('.play-label').textContent = 'Play sample';
+              }
+            }
+          });
+          
+          audio.play();
+          button.classList.add('playing');
+          button.querySelector('.play-icon').textContent = '❚❚';
+          button.querySelector('.play-label').textContent = 'Playing...';
+        } else {
+          audio.pause();
+          button.classList.remove('playing');
+          button.querySelector('.play-icon').textContent = '▶';
+          button.querySelector('.play-label').textContent = 'Play sample';
+        }
+        
+        audio.onended = () => {
+          button.classList.remove('playing');
+          button.querySelector('.play-icon').textContent = '▶';
+          button.querySelector('.play-label').textContent = 'Play sample';
+        };
+      });
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target === document.body) {
+        e.preventDefault();
+        const playingBtn = document.querySelector('.audio-play-btn.playing');
+        if (playingBtn) {
+          playingBtn.click();
+        } else {
+          document.querySelector('.audio-play-btn')?.click();
+        }
+      }
+    });
+  });
 </script>
 
 </body>
 </html>
-</artifact>
-
