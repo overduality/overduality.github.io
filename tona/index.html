@@ -208,14 +208,20 @@
     .hero-visual {
       background: transparent;
       border-radius: 12px;
-      padding: 40px;
+      padding: 0 40px 40px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       position: sticky;
       top: 0px;
+      margin-top: 0px;
+    }
+
+    /* Add this to control image spacing */
+    .hero-visual > .image-carousel {
+      margin-top: 0px; /* Remove any top margin from the carousel */
     }
 
     .image-carousel {

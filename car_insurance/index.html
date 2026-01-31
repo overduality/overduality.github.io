@@ -280,15 +280,28 @@
       border: none;
     }
 
-    .viz-placeholder {
-      background: var(--bg-light);
-      border: 2px dashed var(--border);
+    .viz-container {
+      background: var(--transparent);
       border-radius: 8px;
-      padding: 60px 40px;
+      padding: 20px;
       text-align: center;
       margin: 40px 0;
-      color: var(--text-light);
-      font-style: italic;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .viz-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .viz-image:hover {
+      transform: scale(1.02);
     }
 
     table {
@@ -393,6 +406,10 @@
       .stats-grid {
         grid-template-columns: 1fr;
       }
+      
+      .viz-container {
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -431,20 +448,20 @@
     <section id="overview" class="visible">
       <h1>Car Insurance Claim Prediction & Risk Quantification</h1>
       <p class="lead">
-        A two-stage machine learning system that predicts claim probability and severity, enabling risk-based premium pricing with 45% of total loss concentrated in top 10% risk segment.
+        A two-stage machine learning system combining CatBoost classification with SGD regression to identify high-risk policyholders. The model concentrates 47% of total claim losses in the top 10% risk segment, enabling data-driven premium pricing.
       </p>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <span class="stat-value">45.5%</span>
+          <span class="stat-value">47%</span>
           <span class="stat-label">Loss in Top 10%</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">0.86</span>
-          <span class="stat-label">ROC-AUC Score</span>
+          <span class="stat-value">76%</span>
+          <span class="stat-label">Claim Recall</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">$3.8K</span>
+          <span class="stat-value">$5.7K</span>
           <span class="stat-label">Avg Claim Severity</span>
         </div>
       </div>
@@ -452,19 +469,18 @@
       <div class="result-box">
         <h3>What This System Delivers</h3>
         <p>
-          A production-ready dual-model pipeline: (1) CatBoost classifier predicts claim probability with 86% AUC, and (2) SGD regressor estimates claim severity (dollar amount). Combined, they compute expected loss per policyholder, enabling actuarial risk segmentation where top decile accounts for 45.48% of total payouts—allowing insurers to price risk accurately while maintaining portfolio profitability.
+          A dual-model pipeline that quantifies expected loss per policyholder: CatBoost classifier (83% ROC-AUC) predicts claim probability with optimized threshold (0.2922) prioritizing recall (76%) over precision (55%), while SGD regressor estimates claim severity. The combined system successfully concentrates 47.03% of total losses in the top 10% risk segment, proving the model can separate high-risk from low-risk drivers for actuarial pricing.
         </p>
       </div>
 
-      <p><strong>The Problem:</strong> Insurance companies lose money when premiums don't reflect actual risk. Flat-rate or demographic-only pricing subsidizes high-risk drivers at the expense of safe drivers, leading to adverse selection (safe drivers leave for competitors). Traditional actuarial models rely on simplistic rules that miss complex feature interactions.</p>
+      <p><strong>The Problem:</strong> Insurance companies lose money when premiums don't reflect actual risk. Flat-rate pricing subsidizes high-risk drivers at the expense of safe drivers, leading to adverse selection. Traditional actuarial models miss complex feature interactions that predict claims.</p>
 
-      <p><strong>The Solution:</strong> Machine learning models that learn non-linear relationships between driver/vehicle characteristics and claim outcomes, then quantify expected financial loss per policy to enable risk-based pricing.</p>
+      <p><strong>The Solution:</strong> Machine learning models learn non-linear relationships between driver characteristics and claim outcomes, then quantify expected financial loss per policy, enabling risk-based premium adjustments that improve profitability while retaining safe drivers.</p>
 
       <div class="tech-tags">
         <span class="tech-tag">Python</span>
         <span class="tech-tag">Scikit-learn</span>
         <span class="tech-tag">CatBoost</span>
-        <span class="tech-tag">XGBoost</span>
         <span class="tech-tag">Feature Engineering</span>
         <span class="tech-tag">Imbalanced Learning</span>
         <span class="tech-tag">Pipeline Automation</span>
@@ -476,28 +492,28 @@
     <section id="problem">
       <h2>Problem Statement</h2>
       
-      <p>Auto insurance faces the dual-prediction challenge:</p>
+      <p>Auto insurance requires solving two interdependent prediction problems:</p>
 
       <h3>Challenge 1: Claim Occurrence (Classification)</h3>
       <ul>
-        <li><strong>Class Imbalance:</strong> Only 26% of policies result in claims (2.78:1 ratio)—standard models overfit to majority class</li>
+        <li><strong>Class Imbalance:</strong> Only 26.48% of policies result in claims (2.78:1 ratio), standard models overfit to the majority class</li>
         <li><strong>Binary Outcome:</strong> Will this driver file a claim? (Yes/No)</li>
-        <li><strong>Optimization Goal:</strong> Maximize precision-recall balance (F1 score) since false positives = wasted reserves, false negatives = underpriced risk</li>
+        <li><strong>Business Trade-off:</strong> False negatives (missed claims) cost more than false positives (over-cautious reserves)</li>
       </ul>
 
       <h3>Challenge 2: Claim Severity (Regression)</h3>
       <ul>
-        <li><strong>Extreme Skew:</strong> Claims range from $500 (minor dent) to $50,000 (total loss)—linear models fail</li>
-        <li><strong>Conditional Distribution:</strong> Only predict severity for those who claim (avoids learning from zeros)</li>
-        <li><strong>Outlier Sensitivity:</strong> Single catastrophic claim can dominate loss function</li>
+        <li><strong>Extreme Skew:</strong> Claims range from $500 (minor dent) to $50,000+ (total loss)</li>
+        <li><strong>Conditional Prediction:</strong> Only train on policyholders who actually claimed</li>
+        <li><strong>Outlier Volatility:</strong> Single catastrophic claim can skew predictions, requires robust regression</li>
       </ul>
 
       <h3>Business Requirements</h3>
       <ol>
-        <li>Identify top 10% riskiest drivers (for premium surcharges or policy rejection)</li>
-        <li>Quantify expected loss in dollars (not just probability) for actuarial reserve planning</li>
-        <li>Maintain fairness: avoid proxy discrimination through correlated features</li>
-        <li>Interpretable features: regulators require explainability for rate adjustments</li>
+        <li>Identify top 10% riskiest drivers for premium surcharges</li>
+        <li>Quantify expected loss in dollars for reserve planning</li>
+        <li>Maintain regulatory compliance and fairness</li>
+        <li>Provide interpretable features for actuarial review</li>
       </ol>
     </section>
 
@@ -507,7 +523,7 @@
       <h2>Data Engineering & Feature Engineering</h2>
 
       <h3>Dataset Overview</h3>
-      <p>Real-world car insurance dataset with 10,296 policies (after deduplication) containing 26 features:</p>
+      <p>Real-world car insurance dataset with <strong>10,301 policies</strong> (after deduplication) containing 26 features plus 2 target variables:</p>
       
       <p><strong>Demographics (6):</strong> age, gender, marital_status, education, occupation, single_parent</p>
       <p><strong>Financial (3):</strong> income, home_value, vehicle_value</p>
@@ -529,7 +545,7 @@ imputed_num = knn_imputer.fit_transform(numerical_features)
 simple_imputer = SimpleImputer(strategy='most_frequent')
 imputed_cat = simple_imputer.fit_transform(categorical_features)</code></pre>
 
-      <p><strong>Why KNN for numerics?</strong> Testing showed 2.3% improvement in CV score vs mean/median imputation because KNN preserves feature correlations (e.g., high-income drivers typically have higher home values).</p>
+      <p><strong>Why KNN for numerics?</strong> KNN preserves feature correlations (e.g., high-income drivers typically have higher home values), providing more realistic imputation than mean/median.</p>
 
       <p><strong>2. Encoding Strategy</strong></p>
       <table>
@@ -544,7 +560,7 @@ imputed_cat = simple_imputer.fit_transform(categorical_features)</code></pre>
           <tr>
             <td>highest_education</td>
             <td>Ordinal</td>
-            <td>Clear ranking: <High School < Bachelors < Masters < PhD</td>
+            <td>Clear ranking: &lt;High School &lt; Bachelors &lt; Masters &lt; PhD</td>
           </tr>
           <tr>
             <td>gender, married, single_parent, type_of_use, licence_revoked, address_type</td>
@@ -561,15 +577,11 @@ imputed_cat = simple_imputer.fit_transform(categorical_features)</code></pre>
 
       <div class="callout">
         <div class="callout-title">Multicollinearity Check</div>
-        <p>Initial one-hot encoding produced VIF > 100 for occupation/vehicle type (perfect multicollinearity). Solution: Drop reference categories ("Blue Collar", "Minivan") to break dependency. Post-correction VIF < 10 for all features.</p>
+        <p>Initial one-hot encoding produced VIF &gt; 100 for occupation/vehicle type (perfect multicollinearity). Solution: Drop reference categories ("Blue Collar", "Minivan") to break dependency. Post-correction VIF &lt; 10 for all features.</p>
       </div>
 
       <p><strong>3. Distribution Correction</strong></p>
-      <p>Six features exhibited severe right skew (skewness > 2.0):</p>
-      <ul>
-        <li>income, home_value, vehicle_value → financial metrics</li>
-        <li>commute_dist, policy_tenure, license_points → behavioral metrics</li>
-      </ul>
+      <p>Six features exhibited severe right skew, requiring square root transformation:</p>
 
       <pre><code># Square root transformation (gentler than log for moderate skew)
 skewed_features = ['income', 'value_of_home', 'commute_dist', 
@@ -578,7 +590,7 @@ skewed_features = ['income', 'value_of_home', 'commute_dist',
 for feature in skewed_features:
     X[feature] = np.sqrt(X[feature])</code></pre>
 
-      <p>Result: Reduced skewness from avg 3.2 → 1.1, improving gradient-based model convergence by 2.3% in CV accuracy.</p>
+      <p><strong>Result:</strong> Improved model convergence and reduced influence of extreme values in gradient-based algorithms.</p>
     </section>
 
     <div class="divider"></div>
@@ -595,26 +607,26 @@ for feature in skewed_features:
         <li><strong>policy_tenure:</strong> Negative correlation (loyal customers = safer)</li>
       </ul>
 
-      <div class="viz-placeholder">
-        [Visualization: Correlation Heatmap - Single column heatmap showing correlation of all features with 'is_claim' target, sorted by correlation strength]
+      <div class="viz-container">
+        <img src="./images/corr_matrix.png" alt="Correlation Matrix of Features" class="viz-image">
       </div>
 
       <h3>Feature Distribution Analysis</h3>
       <p>Examined distributions of all numerical features before and after square root transformation:</p>
-      
-      <div class="viz-placeholder">
-        [Visualization: Feature Distribution Grid - 4x4 FacetGrid showing histograms of 16 numerical features before transformation, highlighting severe right skew in financial metrics]
+
+      <div class="viz-container">
+        <img src="./images/hist.png" alt="Feature Distribution Before Transformation" class="viz-image">
       </div>
 
-      <div class="viz-placeholder">
-        [Visualization: Feature Distribution Grid (After Transformation) - Same 4x4 grid showing normalized distributions after square root transformation, demonstrating improved symmetry]
+      <div class="viz-container">
+        <img src="./images/hist_skewed.png" alt="Feature Distribution After Transformation" class="viz-image">
       </div>
 
       <h3>Claim Value Distribution</h3>
       <p>Analysis of claim severity showed extreme right skew with long tail extending to $50K+, justifying log-transformation for regression modeling.</p>
 
-      <div class="viz-placeholder">
-        [Visualization: Claim Value Histogram - Distribution of new_claim_value showing concentration around $2-5K with long tail to $50K]
+      <div class="viz-container">
+        <img src="./images/new_claim_value.png" alt="Distribution of Claim Values" class="viz-image">
       </div>
     </section>
 
@@ -627,8 +639,8 @@ for feature in skewed_features:
 
       <p><strong>Model Selection via 10-Fold Cross-Validation:</strong></p>
 
-      <div class="viz-placeholder">
-        [Visualization: Model Comparison Boxplot - Boxplot showing CV accuracy distributions for 10 classifiers: Logistic Regression, KNN, Decision Tree, Random Forest, Linear SVM, XGBoost, AdaBoost, Gradient Boost, Bagging, and CatBoost]
+      <div class="viz-container">
+        <img src="./images/cv_diff_claf.png" alt="Comparison of Classification Models" class="viz-image">
       </div>
 
       <table>
@@ -637,46 +649,35 @@ for feature in skewed_features:
             <th>Model</th>
             <th>CV Accuracy</th>
             <th>Std Dev</th>
-            <th>Training Time</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Logistic Regression</td>
-            <td>74.2%</td>
-            <td>±1.8%</td>
-            <td>0.3s</td>
-          </tr>
-          <tr>
-            <td>Random Forest</td>
-            <td>78.5%</td>
-            <td>±2.1%</td>
-            <td>12s</td>
-          </tr>
-          <tr>
-            <td>XGBoost</td>
-            <td>79.1%</td>
-            <td>±1.9%</td>
-            <td>8s</td>
+          <tr class="highlight">
+            <td>CatBoost</td>
+            <td>79.44%</td>
+            <td>±1.80%</td>
           </tr>
           <tr>
             <td>Gradient Boost</td>
-            <td>79.8%</td>
+            <td>~79.5%</td>
             <td>±1.7%</td>
-            <td>10s</td>
           </tr>
-          <tr class="highlight">
-            <td>CatBoost</td>
-            <td>80.3%</td>
-            <td>±1.5%</td>
-            <td>15s</td>
+          <tr>
+            <td>XGBoost</td>
+            <td>~78.8%</td>
+            <td>±1.9%</td>
+          </tr>
+          <tr>
+            <td>Random Forest</td>
+            <td>~78.7%</td>
+            <td>±2.1%</td>
           </tr>
         </tbody>
       </table>
 
       <p><strong>CatBoost selected due to:</strong></p>
       <ul>
-        <li>Highest accuracy with lowest variance (most stable)</li>
+        <li>Competitive accuracy with excellent stability (low variance)</li>
         <li>Built-in categorical handling (no manual encoding needed for production)</li>
         <li>Ordered boosting reduces overfitting vs traditional gradient boosting</li>
       </ul>
@@ -708,49 +709,18 @@ random_search = RandomizedSearchCV(
 
 best_model = random_search.fit(X_train, y_train).best_estimator_</code></pre>
 
-      <p><strong>Key finding:</strong> <code>scale_pos_weight=2.78</code> (inverse of class ratio) improved recall from 67% → 79% without sacrificing precision.</p>
+      <p><strong>Key finding:</strong> <code>scale_pos_weight=2.78</code> (inverse of class ratio) significantly improved recall on the minority class (claims).</p>
 
       <h3>Phase 2: Claim Severity Model (Regression)</h3>
 
-      <p>Trained <strong>only on policyholders who filed claims</strong> (N=2,657 from 10,296 total):</p>
+      <p>Trained <strong>only on policyholders who filed claims</strong> (N=2,657 from 10,301 total):</p>
 
-      <div class="viz-placeholder">
-        [Visualization: Regressor Comparison Boxplot - Boxplot showing CV RMSE distributions for 6 regressors: Linear Regression, SGD Regressor, Random Forest, XGBRegressor, HistGradientBoosting, and CatBoost Regressor]
+      <div class="viz-container">
+        <img src="./images/cv_regressor.png" alt="Comparison of Regression Models" class="viz-image">
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Regressor</th>
-            <th>CV RMSE</th>
-            <th>Handling Outliers</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Linear Regression</td>
-            <td>$4,823</td>
-            <td>Poor</td>
-          </tr>
-          <tr class="highlight">
-            <td>SGD Regressor</td>
-            <td>$4,612</td>
-            <td>Good (L1/L2 regularization)</td>
-          </tr>
-          <tr>
-            <td>Random Forest</td>
-            <td>$4,890</td>
-            <td>Moderate</td>
-          </tr>
-          <tr>
-            <td>XGBoost</td>
-            <td>$5,147</td>
-            <td>Overfits to outliers</td>
-          </tr>
-        </tbody>
-      </table>
 
-      <p><strong>Why SGD outperformed tree methods:</strong> Claim severity has extreme outliers ($50K total losses). Tree-based models create narrow splits around these extremes, overfitting. SGD's regularization generalizes better.</p>
+      <p><strong>For insurance severity with extreme skew, simplicity wins. Linear models avoid chasing outliers that dominate tree-based splits—critical for portfolio-level risk estimation where relative ranking matters more than absolute precision.</p>
 
       <pre><code># Log-transform target to handle skew
 wrapped_sgd = TransformedTargetRegressor(
@@ -776,21 +746,27 @@ best_params = {
       <h3>Classification Results (Claim Occurrence)</h3>
 
       <div class="result-box">
-        <h3>Test Set Performance</h3>
+        <h3>Test Set Performance (Optimized Threshold: 0.2922)</h3>
         <ul>
-          <li><strong>ROC-AUC:</strong> 0.862 (excellent discrimination)</li>
-          <li><strong>Precision:</strong> 82% (of predicted claims, 82% actually claimed)</li>
-          <li><strong>Recall:</strong> 79% (caught 79% of all actual claimants)</li>
-          <li><strong>F1 Score:</strong> 0.805 (optimal threshold: 0.42)</li>
+          <li><strong>ROC-AUC:</strong> 0.8289 (good discrimination ability)</li>
+          <li><strong>Precision:</strong> 55% (accepts false positives to maximize claim detection)</li>
+          <li><strong>Recall:</strong> 76% (catches 76% of all actual claimants)</li>
+          <li><strong>F1 Score:</strong> 0.64 (maximized via threshold tuning)</li>
+          <li><strong>Overall Accuracy:</strong> 76%</li>
         </ul>
       </div>
 
-      <p><strong>Threshold Optimization:</strong> Default 0.5 threshold yielded F1=0.76. Precision-recall curve analysis identified optimal threshold=0.42, improving F1 to 0.805 by balancing false positives/negatives.</p>
+      <p><strong>Threshold Optimization Strategy:</strong> Default 0.5 threshold produced poor recall (45%), missing 55% of claims. Precision-recall curve analysis identified optimal threshold of <strong>0.2922</strong>, which maximizes F1 score at 0.6358 by prioritizing recall (76%) over precision (55%).</p>
+
+      <div class="callout">
+        <div class="callout-title">Business Justification for Low Threshold</div>
+        <p>In insurance, <strong>missing a claim costs far more than being over-cautious.</strong> A false negative means unexpected payouts and underpriced risk, while a false positive merely overestimates reserves. The 0.2922 threshold accepts 45% false positive rate to achieve 76% claim detection, a worthwhile trade-off for loss prevention.</p>
+      </div>
 
       <h3>Confusion Matrix Analysis</h3>
 
-      <div class="viz-placeholder">
-        [Visualization: Confusion Matrix - 2x2 heatmap showing model predictions vs actual labels at optimal threshold (0.42), with counts for TN, FP, FN, TP]
+      <div class="viz-container">
+        <img src="./images/conf_cat_thres.png" alt="Confusion Matrix at Optimal Threshold" class="viz-image">
       </div>
 
       <table>
@@ -799,40 +775,72 @@ best_params = {
             <th></th>
             <th>Predicted: No Claim</th>
             <th>Predicted: Claim</th>
+            <th>Total</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Actual: No Claim</strong></td>
-            <td>1,423 (TN)</td>
-            <td>98 (FP)</td>
+            <td>1,147 (TN)</td>
+            <td>350 (FP)</td>
+            <td>1,497</td>
           </tr>
           <tr>
             <td><strong>Actual: Claim</strong></td>
-            <td>112 (FN)</td>
-            <td>427 (TP)</td>
+            <td>138 (FN)</td>
+            <td>426 (TP)</td>
+            <td>564</td>
           </tr>
         </tbody>
       </table>
 
       <p><strong>Business interpretation:</strong></p>
       <ul>
-        <li>98 false positives = Slight overestimation of reserves (acceptable vs underestimation)</li>
-        <li>112 false negatives = $428K in unexpected payouts (20% of total claim volume)</li>
+        <li><strong>350 false positives:</strong> Overestimation of reserves by ~$1.7M (manageable with conservative actuarial practices)</li>
+        <li><strong>138 false negatives:</strong> Approximately $770K in unexpected payouts, reduced from 310 FN at default threshold</li>
+        <li><strong>Trade-off accepted:</strong> Increased false positives are acceptable given substantial reduction in catastrophic missed claims</li>
       </ul>
 
       <h3>Regression Results (Claim Severity)</h3>
 
       <ul>
-        <li><strong>RMSE:</strong> $4,612 on test set</li>
-        <li><strong>MAE:</strong> $2,847 (more interpretable: avg prediction error)</li>
-        <li><strong>R² Score:</strong> 0.42 (low due to extreme variance in claims—expected)</li>
+        <li><strong>Test RMSE:</strong> $8,353 (actual performance on held-out test set)</li>
+        <li><strong>Test MAE:</strong> $2,968 (average prediction error per claim)</li>
       </ul>
 
       <div class="callout">
-        <div class="callout-title">Why Low R²?</div>
-        <p>Claim amounts are inherently noisy—identical drivers can have $1K (fender bender) vs $40K (rollover) accidents due to random factors. R²=0.42 is acceptable because we're predicting <em>expected value</em> for portfolio-level risk, not individual precision.</p>
+        <div class="callout-title">Why High RMSE?</div>
+        <p>Claim amounts are inherently volatile, identical drivers can have $1K (fender bender) vs $40K (rollover) accidents due to random factors like weather, collision angle, and vehicle damage mechanics. The model predicts <em>expected value</em> for portfolio-level risk aggregation, not individual precision. RMSE of $8,353 is acceptable for actuarial reserve planning where we aggregate thousands of policies.</p>
       </div>
+
+      <h3>Threshold Comparison</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Threshold</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0.5 (Default)</td>
+            <td>70%</td>
+            <td>45%</td>
+            <td>0.55</td>
+            <td>Conservative (avoids false alarms)</td>
+          </tr>
+          <tr class="highlight">
+            <td>0.2922 (Optimal)</td>
+            <td>55%</td>
+            <td>76%</td>
+            <td>0.64</td>
+            <td><strong>Production:</strong> Maximizes claim detection</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <div class="divider"></div>
@@ -855,8 +863,8 @@ risk_deciles = pd.qcut(expected_loss, 10, labels=range(10, 0, -1))</code></pre>
 
       <h3>Decile Performance Analysis</h3>
 
-      <div class="viz-placeholder">
-        [Visualization: Decile Analysis Bar Chart - Bar chart showing percentage of total actual claims value captured by each risk decile, with Decile 1 (highest risk) showing 45.48%]
+      <div class="viz-container">
+        <img src="./images/decile.png" alt="Decile Analysis Showing Percentage of Total Loss by Risk Segment" class="viz-image">
       </div>
 
       <table>
@@ -873,7 +881,7 @@ risk_deciles = pd.qcut(expected_loss, 10, labels=range(10, 0, -1))</code></pre>
             <td>1 (Highest)</td>
             <td>206</td>
             <td>$1,247,000</td>
-            <td>45.48%</td>
+            <td>47.03%</td>
           </tr>
           <tr>
             <td>2</td>
@@ -905,13 +913,20 @@ risk_deciles = pd.qcut(expected_loss, 10, labels=range(10, 0, -1))</code></pre>
       <div class="result-box">
         <h3>Key Business Insights</h3>
         <ul>
-          <li><strong>Concentration of Risk:</strong> Top 10% of policyholders account for 45.48% of total dollar payouts</li>
-          <li><strong>Safe Driver Subsidy Elimination:</strong> Bottom 30% contribute only 5.9% of losses—currently overpaying under flat pricing</li>
-          <li><strong>Premium Adjustment Levers:</strong> 20% surcharge on top decile + 15% discount on bottom 3 deciles = revenue neutral with better risk alignment</li>
+          <li><strong>Extreme Risk Concentration:</strong> Top 10% of policyholders (206 drivers) account for 47.03% of total dollar payouts ($1.25M of $2.65M total)</li>
+          <li><strong>Top 20% Dominance:</strong> Top two deciles (412 drivers) represent 64.46% of all losses, enabling targeted premium adjustments</li>
+          <li><strong>Safe Driver Subsidy:</strong> Bottom 30% (618 drivers) contribute only 5.9% of losses, currently overpaying under flat pricing</li>
+          <li><strong>Model Validation:</strong> This extreme lift curve proves the model successfully separates expensive drivers from safe ones, essential for risk-based pricing</li>
         </ul>
       </div>
 
-      <p><strong>Validation:</strong> This lift curve (45% loss in 10% population) indicates the model successfully separates expensive drivers from safe ones—critical for risk-based pricing.</p>
+      <p><strong>Actuarial Application:</strong> The 47% concentration enables precise pricing strategies:</p>
+      <ul>
+        <li>Apply 30-40% premium surcharge to top decile (or decline coverage for ultra-high-risk)</li>
+        <li>Offer 10-15% discount to bottom 3 deciles to prevent churn to competitors</li>
+        <li>Standard pricing for middle deciles (40-70th percentile)</li>
+        <li>Result: Simulated revenue-neutral adjustment assuming static customer behavior, real-world elasticity requires validation</li>
+      </ul>
     </section>
 
     <div class="divider"></div>
@@ -948,18 +963,18 @@ risk_deciles = pd.qcut(expected_loss, 10, labels=range(10, 0, -1))</code></pre>
         </tbody>
       </table>
 
-      <p><strong>Result:</strong> $6M additional profit (7.5 percentage point margin improvement) by:</p>
+      <p><strong>Result:</strong> Hypothetical simulation suggests potential for 5-7% loss ratio improvement with risk-based pricing. Actual impact requires 6-month A/B testing to account for customer churn elasticity and competitor responses</p>
       <ul>
-        <li>Surcharging high-risk drivers (reduces adverse selection)</li>
+        <li>Surcharging high-risk drivers (reduces adverse selection when they leave)</li>
         <li>Discounting low-risk drivers (prevents churn to competitors)</li>
-        <li>Rejecting ultra-high-risk applicants (top 2% with expected loss > $5K)</li>
+        <li>Declining ultra-high-risk applicants (top 2% with expected loss &gt; 2× premium)</li>
       </ul>
 
       <h3>Production Deployment Strategy</h3>
 
       <ol>
         <li><strong>Pipeline Automation:</strong> Scikit-learn pipeline handles all preprocessing (imputation, encoding, scaling) for consistent train/inference</li>
-        <li><strong>API Integration:</strong> REST endpoint accepts policy application JSON, returns risk score + expected loss in 200ms</li>
+        <li><strong>API Integration:</strong> REST endpoint accepts policy application JSON, returns risk score + expected loss in &lt;200ms</li>
         <li><strong>A/B Testing:</strong> Roll out to 10% of new policies, compare loss ratios vs control group over 6 months</li>
         <li><strong>Monitoring:</strong> Track feature drift (e.g., inflation affecting vehicle values), retrain quarterly</li>
       </ol>
@@ -1013,14 +1028,14 @@ preprocess_pipeline = ColumnTransformer([
         <li><strong>Explainability:</strong> SHAP values provided to underwriters for manual review of borderline cases</li>
       </ul>
 
-      <h3>Technical Contributions</h3>
+      <h3>Key Technical Achievements</h3>
 
       <ul>
-        <li>Demonstrated dual-model approach (classification + regression) for expected value estimation</li>
-        <li>Validated KNN imputation superiority (2.3% CV improvement) over mean/median for correlated financial features</li>
-        <li>Established threshold optimization protocol (F1=0.76 → 0.805) for imbalanced classification in insurance domain</li>
-        <li>Showed SGD outperforms tree methods for heavy-tailed target distributions (RMSE $5,147 → $4,612)</li>
-        <li>Built production-ready sklearn pipeline with custom transformers for deployment consistency</li>
+        <li>Demonstrated dual-model approach (classification + regression) for expected value estimation in insurance domain</li>
+        <li>Established threshold optimization protocol that prioritizes business objectives (recall) over traditional ML metrics (accuracy)</li>
+        <li>Validated that SGD with log-transform outperforms tree methods for heavy-tailed financial distributions</li>
+        <li>Built reproducible sklearn pipeline with custom transformers ensuring train/inference consistency, suitable for production after validation testing.</li>
+        <li>Achieved 47% loss concentration in top decile, proving model can identify high-risk segments for actuarial pricing</li>
       </ul>
 
       <h3>Future Enhancements</h3>

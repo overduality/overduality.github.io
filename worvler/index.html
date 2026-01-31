@@ -68,7 +68,7 @@
       color: var(--text);
       font-size: 14px;
       font-weight: 500;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       transition: all 0.2s ease;
     }
 
@@ -90,7 +90,7 @@
       color: white;
       font-size: 14px;
       font-weight: 500;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
       transition: all 0.2s ease;
     }
 
@@ -102,10 +102,6 @@
     .sidebar-nav {
       list-style: none;
       padding-left: 0;
-    }
-
-    .sidebar-nav {
-      list-style: none;
     }
 
     .sidebar-nav li {
@@ -132,6 +128,27 @@
       background: rgba(22, 163, 74, 0.12);
       color: var(--accent);
       font-weight: 600;
+    }
+
+
+    @keyframes slideUpLogoText {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes logoPulse {
+      0%, 100% {
+        box-shadow: 0 8px 24px rgba(22, 163, 74, 0.3);
+      }
+      50% {
+        box-shadow: 0 8px 32px rgba(22, 163, 74, 0.6);
+      }
+    }
+
+    .sidebar-logo-container:hover .logo-wrapper {
+      animation: logoPulse 1.5s ease-in-out;
     }
 
     .main {
@@ -190,6 +207,78 @@
     section.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 6fr fr;
+      gap: 60px;
+      margin: 48px 0 60px 0;
+      align-items: start;
+    }
+
+    .hero-visual {
+      background: transparent;
+      border-radius: 12px;
+      padding: 0px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0px;
+      margin-top: 40px;
+    }
+
+    .image-carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .carousel-container {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-dot.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 4px;
     }
 
     .result-box {
@@ -396,6 +485,15 @@
         margin: 60px 0 24px 0;
       }
 
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .hero-visual {
+        position: static;
+      }
+
       .stats-grid {
         grid-template-columns: 1fr;
       }
@@ -411,13 +509,16 @@
       </svg>
       Back to Projects
     </a>
+
     <div class="sidebar-title">Worvler: Wordle Solver</div>
+
     <a href="https://github.com/overduality/worvler-wordle-solver" target="_blank" rel="noopener noreferrer" class="github-link">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
       </svg>
       View on GitHub
     </a>
+
     <nav>
       <ul class="sidebar-nav">
         <li><a href="#overview" class="active">Overview</a></li>
@@ -428,6 +529,7 @@
         <li><a href="#results">Results</a></li>
       </ul>
     </nav>
+
   </aside>
 
   <main class="main">
@@ -435,16 +537,57 @@
     <section id="overview" class="visible">
       <h1>Worvler: Information-Theoretic Wordle Solver</h1>
       <p class="lead">
-        A React web application implementing Shannon entropy-based optimal Wordle strategy through Web Workers and precomputed pattern matrices, achieving 100% solve rate with 3.42 average guesses.
+        A React web application implementing Shannon entropy-based optimal Wordle strategy through Web Workers and precomputed pattern matrices, achieving 100% solve rate with 3.62 average guesses in 13 games.
       </p>
+
+      <div class="hero-grid">
+        <div class="hero-content">
+           <div class="hero-visual">
+          <div class="image-carousel">
+            <div class="carousel-container" id="carouselContainer">
+              <div class="carousel-slide">
+                <img src="./images/preview1.png" alt="Worvler main interface" style="width: 100%; height: auto">
+              </div>
+              <div class="carousel-slide">
+                <img src="./images/preview2.png" alt="Worvler entropy calculations">
+              </div>
+              <div class="carousel-slide">
+                <img src="./images/preview3.png" alt="Worvler strategic mode">
+              </div>
+              <div class="carousel-slide">
+                <img src="./images/preview4.png" alt="Worvler candidate suggestions">
+              </div>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+          </div>
+        </div>
+
+          <div class="result-box">
+            <h3>What This System Delivers</h3>
+            <p>
+              A production-grade Wordle assistant computing optimal guesses via Shannon's information entropy. Features two modes: Strategic (maximum information gain using "burner words") and Greedy (only guesses solutions). Built with React, Web Workers for non-blocking computation, and a precomputed 13,000×2,309 pattern matrix for instant feedback filtering.
+            </p>
+          </div>
+
+          <div class="tech-tags">
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Web Workers</span>
+            <span class="tech-tag">Information Theory</span>
+            <span class="tech-tag">Shannon Entropy</span>
+            <span class="tech-tag">JavaScript</span>
+          </div>
+        </div>
+
+       
+      </div>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <span class="stat-value">3.42</span>
-          <span class="stat-label">Avg Guesses</span>
+          <span class="stat-value">3.62</span>
+          <span class="stat-label">Avg Guesses on 13 games</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">6.35</span>
+          <span class="stat-value">5.95</span>
           <span class="stat-label">Bits (TARSE)</span>
         </div>
         <div class="stat-card">
@@ -453,24 +596,9 @@
         </div>
       </div>
 
-      <div class="result-box">
-        <h3>What This System Delivers</h3>
-        <p>
-          A production-grade Wordle assistant computing optimal guesses via Shannon's information entropy. Features two modes: Strategic (maximum information gain using "burner words") and Greedy (only guesses solutions). Built with React, Web Workers for non-blocking computation, and a precomputed 13,000×2,309 pattern matrix for instant feedback filtering.
-        </p>
-      </div>
-
       <p><strong>The Problem:</strong> Average players take 4-5 guesses using intuition and trial-and-error. Optimal strategy requires evaluating 13,000+ words per turn—impossible for humans, computationally expensive for naive implementations.</p>
 
       <p><strong>The Solution:</strong> Apply information theory to mathematically determine which guess maximizes expected information gain. Precompute all feedback patterns, use Web Workers for parallelization, deliver recommendations in &lt;1 second.</p>
-
-      <div class="tech-tags">
-        <span class="tech-tag">React</span>
-        <span class="tech-tag">Web Workers</span>
-        <span class="tech-tag">Information Theory</span>
-        <span class="tech-tag">Shannon Entropy</span>
-        <span class="tech-tag">JavaScript</span>
-      </div>
     </section>
 
     <div class="divider"></div>
@@ -482,7 +610,7 @@
       <ul>
         <li><strong>Solution Space:</strong> 2,309 possible answer words</li>
         <li><strong>Guess Space:</strong> 12,972 valid dictionary words</li>
-        <li><strong>Feedback:</strong> 3^5 = 243 possible patterns per guess</li>
+        <li><strong>Feedback:</strong> 3⁵ = 243 possible patterns per guess</li>
         <li><strong>Goal:</strong> Identify solution in ≤6 guesses</li>
       </ul>
 
@@ -504,7 +632,7 @@
 
       <div class="callout">
         <div class="callout-title">Why TARSE Beats ADIEU</div>
-        <p>TARSE (6.35 bits) partitions solutions more evenly than ADIEU (4.82 bits). TARSE eliminates 81% of possibilities per guess vs ADIEU's 71%—that's 10% more information!</p>
+        <p>TARSE (5.95 bits) partitions solutions more evenly than ADIEU (4.82 bits). TARSE eliminates 81% of possibilities per guess vs ADIEU's 71%, that's 10% more information!</p>
       </div>
     </section>
 
@@ -568,7 +696,7 @@
           <tr>
             <td>Greedy</td>
             <td>Only solutions</td>
-            <td>Gambling—always guess answer</td>
+            <td>Always guess possible answer</td>
           </tr>
         </tbody>
       </table>
@@ -584,7 +712,7 @@
       <h3>1. Pattern Matrix Precomputation</h3>
 
       <pre><code>// Precompute ALL patterns (30M combinations)
-const matrix = new Uint8Array(13000 * 2309);
+const matrix = new Uint8Array(12972 * 2309);
 
 for (let g = 0; g < dictionary.length; g++) {
   for (let s = 0; s < solutions.length; s++) {
@@ -596,7 +724,7 @@ for (let g = 0; g < dictionary.length; g++) {
 // Result: O(1) lookup vs O(n) per-turn</code></pre>
 
       <p><strong>Base-3 Encoding:</strong> Gray=0, Yellow=1, Green=2</p>
-      <p>Pattern = Σᵢ feedback[i] × 3^i (fits in 1 byte)</p>
+      <p>Pattern = Σᵢ feedback[i] × 3ⁱ (fits in 1 byte)</p>
 
       <h3>2. Web Worker Architecture</h3>
 
@@ -655,7 +783,7 @@ for (const guessIdx of candidates) {
   // Only ~50 words in endgame
   candidatesToSearch = possibleSolutions;
 } else {
-  // Full 13,000 word search
+  // Full 12,972 word search
   candidatesToSearch = allWords;
 }</code></pre>
 
@@ -696,46 +824,40 @@ for (const guessIdx of candidates) {
           <tr>
             <th>Word</th>
             <th>Entropy (bits)</th>
-            <th>Avg Solutions Left</th>
           </tr>
         </thead>
         <tbody>
           <tr class="highlight">
             <td>TARSE</td>
-            <td>6.35</td>
-            <td>28.9</td>
+            <td>5.95</td>
           </tr>
-          <tr class="highlight">
-            <td>SALET</td>
-            <td>6.30</td>
-            <td>30.1</td>
+            <td>RAISE</td>
+            <td>5.88</td>
           </tr>
           <tr>
-            <td>SLATE</td>
-            <td>6.28</td>
-            <td>30.7</td>
+            <td>CRATE</td>
+            <td>5.83</td>
           </tr>
           <tr>
-            <td>CRANE</td>
-            <td>6.15</td>
-            <td>34.8</td>
+            <td>IRATE</td>
+            <td>5.83</td>
           </tr>
           <tr>
-            <td>ADIEU</td>
-            <td>4.82</td>
-            <td>67.2</td>
+            <td>ARISE</td>
+            <td>5.82</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Simulated Performance (2,309 solutions)</h3>
+      <h3>Simulated Performance (15 solutions)</h3>
       <ul>
-        <li><strong>Average guesses:</strong> 3.42</li>
+        <li><strong>Average guesses:</strong> 3.62</li>
         <li><strong>Max guesses:</strong> 5</li>
         <li><strong>Solve rate:</strong> 100% within 6 guesses</li>
-        <li><strong>2-guess wins:</strong> 12.3%</li>
-        <li><strong>3-guess wins:</strong> 58.7%</li>
-        <li><strong>4-guess wins:</strong> 24.1%</li>
+        <li><strong>2-guess wins:</strong> 7.7%</li>
+        <li><strong>3-guess wins:</strong> 30.8%</li>
+        <li><strong>4-guess wins:</strong> 38.5%</li>
+        <li><strong>5-guess wins:</strong> 23.1%</li>
       </ul>
 
       <h3>vs Human Performance</h3>
@@ -761,8 +883,8 @@ for (const guessIdx of candidates) {
           </tr>
           <tr class="highlight">
             <td>Worvler (Strategic)</td>
-            <td>3.42</td>
-            <td>100%</td>
+            <td>3.62</td>
+            <td>100% (13 games)</td>
           </tr>
         </tbody>
       </table>
@@ -779,7 +901,7 @@ for (const guessIdx of candidates) {
 
       <div class="callout">
         <div class="callout-title">Educational Tool</div>
-        <p>Worvler serves as a learning resource for information theory. The modal explains entropy calculations with live data—showing why TARSE outperforms ADIEU mathematically.</p>
+        <p>Worvler serves as a learning resource for information theory. The modal explains entropy calculations with live data, showing why TARSE outperforms ADIEU mathematically.</p>
       </div>
     </section>
 
@@ -836,6 +958,36 @@ for (const guessIdx of candidates) {
         });
       });
     });
+
+    // Image carousel functionality
+    const carouselContainer = document.getElementById('carouselContainer');
+    const carouselDots = document.getElementById('carouselDots');
+    const slides = document.querySelectorAll('.carousel-slide');
+    let currentSlide = 0;
+
+    slides.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('carousel-dot');
+      if (index === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goToSlide(index));
+      carouselDots.appendChild(dot);
+    });
+
+    function goToSlide(index) {
+      currentSlide = index;
+      carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+      
+      document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      goToSlide(currentSlide);
+    }
+
+    setInterval(nextSlide, 4000);
   </script>
 
 </body>

@@ -42,7 +42,7 @@
       width: 260px;
       background: var(--bg-light);
       border-right: 1px solid var(--border);
-      padding: 48px 24px;
+      padding: 48px 24px 200px 24px;
       overflow-y: auto;
       z-index: 100;
     }
@@ -132,6 +132,108 @@
       background: rgba(220, 38, 38, 0.12);
       color: var(--accent);
       font-weight: 600;
+    }
+
+    .sidebar-logo-container {
+      position: absolute;
+      bottom: 0px;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px 0;
+      animation: slideUpLogo 0.6s ease-out 0.3s forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .sidebar-logo-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes slideUpLogo {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-wrapper {
+      width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .logo-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: transparent;
+      transform: scale(0);
+      transition: transform 0.5s ease;
+    }
+
+    .logo-wrapper:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-wrapper:hover::before {
+      transform: scale(1);
+    }
+
+    .sidebar-logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
+
+    .logo-wrapper:hover .sidebar-logo {
+      transform: scale(1.05);
+    }
+
+    .logo-label {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: slideUpLogoText 0.4s ease-out 0.5s forwards;
+    }
+
+    @keyframes slideUpLogoText {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes logoPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+    }
+
+    .sidebar-logo-container:hover .logo-wrapper {
+      /* Removed pulse animation */
     }
 
     .main {
@@ -364,15 +466,28 @@
       margin: 80px 0;
     }
 
-    .viz-placeholder {
-      background: var(--bg-light);
-      border: 2px dashed var(--border);
+    .viz-container {
+      background: var(--transparent);
       border-radius: 8px;
-      padding: 60px 40px;
+      padding: 20px;
       text-align: center;
       margin: 40px 0;
-      color: var(--text-light);
-      font-style: italic;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .viz-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .viz-image:hover {
+      transform: scale(1.02);
     }
 
     @media (max-width: 1024px) {
@@ -397,6 +512,10 @@
       .stats-grid {
         grid-template-columns: 1fr;
       }
+
+      .viz-container {
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -410,7 +529,7 @@
       Back to Projects
     </a>
     <div class="sidebar-title">ByeFraud: Phishing Detection</div>
-    <a href="https://github.com/overduality/byefraud-phishing-detection" target="_blank" rel="noopener noreferrer" class="github-link">
+    <a href="https://github.com/overduality/byeFraud-ML" target="_blank" rel="noopener noreferrer" class="github-link">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
       </svg>
@@ -428,6 +547,12 @@
         <li><a href="#deployment">Deployment</a></li>
       </ul>
     </nav>
+
+    <div class="sidebar-logo-container">
+      <div class="logo-wrapper">
+        <img src="./logos/logo lightmode.png" alt="ByeFraud Logo" class="sidebar-logo">
+      </div>
+    </div>
   </aside>
 
   <main class="main">
@@ -435,20 +560,20 @@
     <section id="overview" class="visible">
       <h1>ByeFraud: Real-Time Phishing Detection</h1>
       <p class="lead">
-        A production-grade LightGBM classifier achieving 99.81% accuracy on 1.5M URLs through advanced feature engineering, TF-IDF vectorization, and domain impersonation detection.
+        This project explores phishing URL detection at scale using a LightGBM classifier with lexical, character-level TF-IDF, and domain impersonation features, with particular attention to evaluation design and data leakage risks common in security datasets.
       </p>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <span class="stat-value">99.81%</span>
-          <span class="stat-label">Accuracy</span>
+          <span class="stat-value">99.60%</span>
+          <span class="stat-label">Precision</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">99.22%</span>
-          <span class="stat-label">F1-Score</span>
+          <span class="stat-value">98.85%</span>
+          <span class="stat-label">Recall</span>
         </div>
         <div class="stat-card">
-          <span class="stat-value">1.54M</span>
+          <span class="stat-value">1.2M</span>
           <span class="stat-label">URLs Trained</span>
         </div>
       </div>
@@ -456,13 +581,13 @@
       <div class="result-box">
         <h3>What This System Delivers</h3>
         <p>
-          An enterprise-ready phishing detection API combining 20 handcrafted lexical features, 1,500 TF-IDF n-grams, and 4 novel domain impersonation indicators. Achieves 99.60% precision and 98.85% recall on phishing URLs while maintaining &lt;50ms inference latency—enabling real-time browser protection against zero-day attacks.
+          An enterprise-ready phishing detection API combining 20 handcrafted lexical features, 1,500 TF-IDF features (1,000 char n-grams + 500 word n-grams), and 4 novel domain impersonation indicators. Achieves 99.60% precision and 98.85% recall on phishing URLs while maintaining &lt;50ms inference latency—enabling real-time browser protection against zero-day attacks.
         </p>
       </div>
 
-      <p><strong>The Problem:</strong> Phishing attacks cost $12.5B annually (FBI IC3 2023). Traditional blacklists fail against zero-day sites, while legacy heuristics produce 15-20% false positive rates, blocking legitimate banking URLs and eroding user trust.</p>
+      <p><strong>The Problem:</strong> Phishing attacks cost $12.5B annually (FBI IC3 2023 Report). Traditional blacklists fail against zero-day sites, requiring ML-based detection that can identify novel phishing patterns.</p>
 
-      <p><strong>The Solution:</strong> ML classifier trained on URL structure patterns rather than reputation databases, detecting novel phishing sites while maintaining &lt;0.4% false positive rate on financial institutions.</p>
+      <p><strong>The Solution:</strong> ML classifier trained on URL structure patterns rather than reputation databases, detecting novel phishing sites while maintaining low false positive rate (0.06%).</p>
 
       <div class="tech-tags">
         <span class="tech-tag">Python</span>
@@ -481,7 +606,7 @@
       
       <h3>The Phishing Threat Landscape</h3>
       <ul>
-        <li><strong>Volume:</strong> 255M phishing attacks in 2022 (APWG), 61% YoY growth</li>
+        <li><strong>Volume:</strong> 4.74M phishing attacks in 2022 (APWG Quarterly Reports)</li>
         <li><strong>Zero-Day Gap:</strong> Blacklists lag 24-48hrs behind new sites—attackers exploit this window</li>
         <li><strong>Sophistication:</strong> Domain impersonation (paypa1.com, apple-support.phishing.com)</li>
         <li><strong>Legitimate Platforms Abused:</strong> Google Docs, Weebly, GitHub Pages host phishing content</li>
@@ -567,10 +692,10 @@ tfidf_word = TfidfVectorizer(
 # Char: "ps:", "ttp", "log", "sec", "upd"
 # Word: "login verify", "account suspended"</code></pre>
 
-      <p><strong>Why TF-IDF?</strong> The substring "login" appears in 15% of phishing URLs vs 0.3% of legitimate—TF-IDF assigns high discriminative weight to these phishing-specific vocabularies.</p>
+      <p><strong>Why TF-IDF?</strong> TF-IDF assigns high discriminative weight to phishing-specific vocabularies, capturing character and word-level patterns that distinguish phishing from legitimate URLs.</p>
 
-      <div class="viz-placeholder">
-        [Visualization: Feature Distribution Analysis - Histograms showing url_length, hostname_length, dot_count, hyphen_count, digit_ratio, and subdomain_suspicion_score distributions comparing phishing vs legitimate URLs]
+      <div class="viz-container">
+        <img src="./images/dist.png" alt="Feature Distribution Analysis" class="viz-image">
       </div>
     </section>
 
@@ -624,8 +749,8 @@ tfidf_word = TfidfVectorizer(
         <li><code>login.secure.verify.phishing.com</code> → Depth 4 (phishing)</li>
       </ul>
 
-      <div class="viz-placeholder">
-        [Visualization: Feature Correlation Heatmap - Matrix showing correlation coefficients between all 20 lexical features, demonstrating low intercorrelation of advanced features]
+      <div class="viz-container">
+        <img src="./images/conf_lex.png" alt="Feature Correlation Heatmap" class="viz-image">
       </div>
     </section>
 
@@ -643,8 +768,6 @@ X_balanced, y_balanced = smote.fit_resample(X_train, y_train)
 # Before: 1,076,582 legit, 153,512 phishing (7:1)
 # After:  1,076,582 legit, 1,076,582 phishing (1:1)</code></pre>
 
-      <p><strong>Impact:</strong> Recall improved from 78% → 98.85%</p>
-
       <h3>LightGBM Hyperparameters</h3>
       <table>
         <thead>
@@ -658,7 +781,7 @@ X_balanced, y_balanced = smote.fit_resample(X_train, y_train)
           <tr>
             <td>n_estimators</td>
             <td>300</td>
-            <td>Sufficient boosting rounds for 1.5M samples</td>
+            <td>Sufficient boosting rounds for 2.1M samples</td>
           </tr>
           <tr>
             <td>max_depth</td>
@@ -751,16 +874,16 @@ optimal_threshold = 0.686  # Maximizes F1</code></pre>
         </tbody>
       </table>
 
-      <div class="viz-placeholder">
-        [Visualization: Feature Importance Bar Chart - Top 20 features ranked by LightGBM importance scores, highlighting the dominance of url_length and subdomain_depth]
-      </div>
+      <!-- <div class="viz-container">
+        <img src="https://picsum.photos/900/550?random=3" alt="Feature Importance Bar Chart" class="viz-image">
+      </div> -->
 
       <h3>Cross-Validation Stability</h3>
       <p>5-fold stratified cross-validation demonstrates consistent performance across data splits:</p>
       <ul>
-        <li><strong>CV F1 Scores:</strong> [0.9918, 0.9921, 0.9919, 0.9923, 0.9920]</li>
-        <li><strong>Mean F1:</strong> 0.9920 (±0.0002 std)</li>
-        <li><strong>Stability:</strong> Standard deviation of 0.0002 confirms robust generalization</li>
+        <li><strong>CV F1 Scores:</strong> [0.9980, 0.9981, 0.9980, 0.9981, 0.9981]</li>
+        <li><strong>Mean F1:</strong> 0.9981 (±0.0001 std)</li>
+        <li><strong>Stability:</strong> Standard deviation of 0.0001 confirms robust generalization</li>
       </ul>
       <p>This minimal variance proves the model's reliability across different data subsets and protects against overfitting.</p>
     </section>
@@ -774,15 +897,16 @@ optimal_threshold = 0.686  # Maximizes F1</code></pre>
         <h3>Test Set Performance (307,524 URLs)</h3>
         <ul>
           <li><strong>Accuracy:</strong> 99.81%</li>
-          <li><strong>Precision:</strong> 99.60% (99.6% of flagged are truly phishing)</li>
-          <li><strong>Recall:</strong> 98.85% (caught 98.85% of all phishing)</li>
+          <li><strong>Precision:</strong> 99.60% (99.6% of flagged URLs are truly phishing)</li>
+          <li><strong>Recall:</strong> 98.85% (caught 98.85% of all phishing URLs)</li>
           <li><strong>F1-Score:</strong> 99.22%</li>
           <li><strong>AUC-ROC:</strong> 99.84%</li>
+          <li><strong>False Positive Rate:</strong> 0.06% (152 FP out of 269,146 legitimate URLs)</li>
         </ul>
       </div>
 
-      <div class="viz-placeholder">
-        [Visualization: Confusion Matrix - 2x2 heatmap showing True Negatives, False Positives, False Negatives, and True Positives with 99.81% accuracy]
+      <div class="viz-container">
+        <img src="./images/conf.png" alt="Confusion Matrix" class="viz-image">
       </div>
 
       <h3>Real-World Test Cases</h3>
@@ -850,10 +974,10 @@ optimal_threshold = 0.686  # Maximizes F1</code></pre>
 
       <p><strong>Whitelist Features:</strong></p>
       <ul>
-        <li>Instant approval for 10,000+ trusted domains (banks, e-commerce, government)</li>
+        <li>Instant approval for trusted domains (banks, e-commerce, government)</li>
         <li>Special handling for shared platforms (GitHub Pages, Weebly, Carrd)</li>
         <li>Subdomain validation prevents abuse of trusted domains</li>
-        <li>Reduces API latency by 40% for whitelisted domains</li>
+        <li>Reduces API latency for whitelisted domains</li>
       </ul>
 
       <h3>Inference Pipeline (&lt;50ms)</h3>
@@ -931,13 +1055,11 @@ chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
 
 joblib.dump(model_artifacts, 'lightgbm_advanced_model.pkl')</code></pre>
 
-      <h3>Business Impact</h3>
+      <h3>Production Metrics</h3>
       <ul>
-        <li><strong>Detection speed:</strong> 18hrs faster than blacklist updates</li>
-        <li><strong>False positive rate:</strong> 0.4% (vs 15-20% industry average)</li>
-        <li><strong>Whitelist acceleration:</strong> 40% latency reduction for trusted domains</li>
-        <li><strong>User trust:</strong> 97% approval rating</li>
-        <li><strong>Prevented losses:</strong> 15,000+ blocked attacks in first month</li>
+        <li><strong>Detection speed:</strong> &lt;50ms inference latency</li>
+        <li><strong>False positive rate:</strong> 0.06% on test set</li>
+        <li><strong>Real-time capability:</strong> Suitable for browser extension deployment</li>
       </ul>
     </section>
 
@@ -993,6 +1115,14 @@ joblib.dump(model_artifacts, 'lightgbm_advanced_model.pkl')</code></pre>
           behavior: 'smooth'
         });
       });
+    });
+
+    // Initialize logo visibility
+    window.addEventListener('load', () => {
+      const logoContainer = document.querySelector('.sidebar-logo-container');
+      if (logoContainer) {
+        logoContainer.classList.add('visible');
+      }
     });
   </script>
 
