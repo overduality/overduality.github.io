@@ -378,6 +378,60 @@
       color: var(--accent);
     }
 
+    .tech-stack-images {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tech-stack-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .tech-images-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .tech-image-card {
+      background: white;
+      border-radius: 12px;
+      padding: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      aspect-ratio: 1 / 1;
+    }
+
+    .tech-image-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(8, 145, 178, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .tech-image-card img {
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    .tech-image-card:hover img {
+      filter: grayscale(0%);
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
     .divider {
       height: 1px;
       background: var(--border);
@@ -409,6 +463,10 @@
       
       .viz-container {
         padding: 15px;
+      }
+
+      .tech-images-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -484,6 +542,23 @@
         <span class="tech-tag">Feature Engineering</span>
         <span class="tech-tag">Imbalanced Learning</span>
         <span class="tech-tag">Pipeline Automation</span>
+      </div>
+
+      <div class="tech-stack-images">
+        <div class="tech-images-grid">
+          <div class="tech-image-card">
+            <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python Logo">
+          </div>
+          <div class="tech-image-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="Scikit-learn Logo">
+          </div>
+          <div class="tech-image-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/CatBoostLogo.png" alt="CatBoost Logo">
+          </div>
+          <div class="tech-image-card">
+            <img src="https://numpy.org/images/logo.svg" alt="NumPy Logo">
+          </div>
+        </div>
       </div>
     </section>
 

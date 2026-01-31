@@ -145,6 +145,8 @@
       border-radius: 8px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
     }
 
     .contact-links a:hover {
@@ -157,6 +159,19 @@
     .contact-links a:focus {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
+    }
+
+    .contact-links a.cv-link {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .contact-links a.cv-link:hover {
+      background: var(--accent-hover);
+      color: var(--bg-primary);
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
     }
 
     .projects {
@@ -434,6 +449,13 @@
         <a href="mailto:emmanuelbobba3@gmail.com">Email</a>
         <a href="https://github.com/overduality" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://www.linkedin.com/in/emmanuelbobba/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="/CV_EmmanuelRienoBobba.pdf" target="_blank" rel="noopener noreferrer" class="cv-link">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+            <path d="M9 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9 0zm0 1v3.5A.5.5 0 0 0 9.5 5H13v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5z"/>
+            <path d="M4.5 7a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
+          </svg>
+          CV
+        </a>
       </div>
     </header>
 
@@ -476,7 +498,7 @@
 
           <div style="display: flex; gap: 12px;">
             <a href="/age_estimation/" class="project-link">View Project →</a>
-            <a href="https://github.com/overduality/dental-age-estimation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+            <a href="https://github.com/overduality/dental_age_estimation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
               </svg>
@@ -578,7 +600,7 @@
           <div class="project-meta">Core ML Model Deployment • Automated Audio ML Pipeline • Hybrid Multi-Modal Architecture</div>
           <h2 class="project-title">Muvo</h2>
           <p class="project-description">
-            Muvo is an edge-AI speech assessment engine designed to bridge the gap between textbook learning and real-world communication confidence in high-stakes travel scenarios. Built with a Multi-Modal Decision Fusion architecture, the system overcomes the accuracy plateaus of traditional sound classification by intelligently pairing Core ML prosodic analysis with Apple's Speech Framework for lexical validation, successfully elevating system accuracy from 62% to 85%. By engineering a robust pipeline that processes over 9,300 augmented samples with sub-200ms latency via Accelerate (vDSP), I transformed a technical challenge into a high-performance, empathetic product that provides instant,
+            Muvo is an edge-AI speech assessment engine designed to bridge the gap between textbook learning and real-world communication confidence in high-stakes travel scenarios. Built with a Multi-Modal Decision Fusion architecture, the system overcomes the accuracy plateaus of traditional sound classification by intelligently pairing Core ML prosodic analysis with Apple's Speech Framework for lexical validation.
           encouraging feedback while preserving user privacy through entirely on-device processing.
           </p>
 
@@ -664,7 +686,7 @@
           <div class="project-meta">Machine Learning • Risk Analysis • Insurance Tech</div>
           <h2 class="project-title">Car Insurance Claim Prediction & Risk Quantification</h2>
           <p class="project-description">
-            Two-stage ML system combining CatBoost classifier (0.86 ROC-AUC) and SGD regressor for claim severity prediction. 
+            Two-stage ML system combining CatBoost classifier (0.83 ROC-AUC) and SGD regressor for claim severity prediction. 
             Enables risk-based pricing with 47.03% of total loss concentrated in top 10% risk segment, optimizing premium 
             allocation and preventing adverse selection.
           </p>
@@ -711,8 +733,7 @@
           <h2 class="project-title">Worvler: Information-Theoretic Wordle Solver</h2>
           <p class="project-description">
             React web app implementing Shannon entropy-based optimal Wordle strategy through Web Workers and precomputed 
-            pattern matrices. Achieves 100% solve rate with 3.62 average guesses (13 games) using strategic information gain 
-            maximization—outperforming human players by 30%.
+            pattern matrices. Achieves 100% solve rate with 3.62 average guesses (13 games).
           </p>
 
           <div class="project-stats">
