@@ -6,7 +6,7 @@
   <title>Emmanuel Rieno Bobba Pratmaa - Data Science Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -14,30 +14,28 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     :root {
-      /* SOFTENED DARK MODE */
-      --bg-primary: #0D0D0D;
-      --bg-secondary: #111827;
-      --card-bg: #181818;
-      
-      /* ACCESSIBILITY-COMPLIANT TEXT */
-      --text: #FFFFFF;
-      --text-secondary: #E5E7EB;
-      --text-body: #D1D5DB;
-      --text-muted: #9CA3AF;
-      
-      /* PROFESSIONAL ACCENT SYSTEM */
-      --accent: #38BDF8;
-      --accent-hover: #0EA5E9;
-      --border: #252525;
+      --deep-space: #050505;
+      --electric-blue: #38bdf8;
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --text-primary: #FFFFFF;
+      --text-secondary: #A0A0A0;
+      --text-muted: #6B7280;
     }
 
     body {
       font-family: 'Inter', sans-serif;
-      color: var(--text);
-      background: var(--bg-primary);
-      line-height: 1.6;
+      background: var(--deep-space);
+      color: var(--text-primary);
+      overflow-x: hidden;
       position: relative;
+      min-height: 100vh;
+      line-height: 1.6;
     }
 
     body::before {
@@ -47,63 +45,55 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-      background-size: 40px 40px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='6.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
       opacity: 0.5;
     }
 
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: var(--accent);
-      color: var(--bg-primary);
-      padding: 8px 16px;
-      z-index: 1000;
-      text-decoration: none;
-      font-weight: 600;
+    .cursor-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      will-change: transform;
     }
 
-    .skip-link:focus {
-      top: 0;
+    .cursor-glow.active {
+      opacity: 1;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 100px 60px;
+      padding: 80px 40px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     header {
       text-align: center;
-      margin-bottom: 120px;
+      margin-bottom: 100px;
       padding: 60px 0;
-      position: relative;
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      opacity: 0;
+      animation: fadeSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     }
 
-    header.scrolled {
-      opacity: 0.95;
-    }
-
-    header::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 4px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      border-radius: 2px;
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h1 {
@@ -111,22 +101,20 @@
       font-size: 72px;
       font-weight: 700;
       margin-bottom: 16px;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
-      background-size: 200% 200%;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #FFFFFF 0%, #888888 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      transition: background-position 0.5s ease;
+      line-height: 1.1;
     }
 
     .tagline {
-      font-size: 22px;
-      color: var(--text-muted);
-      margin-bottom: 48px;
-      font-weight: 400;
-      letter-spacing: -0.01em;
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      font-weight: 300;
+      letter-spacing: 0.01em;
     }
 
     .contact-links {
@@ -136,58 +124,67 @@
       margin-top: 40px;
     }
 
-    .contact-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-      padding: 12px 24px;
-      border-radius: 8px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid var(--border);
+    .contact-link {
       display: inline-flex;
       align-items: center;
+      padding: 12px 24px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .contact-links a:hover {
-      color: var(--accent);
-      background: var(--bg-secondary);
-      border-color: var(--accent);
+    .contact-link:hover {
+      border-color: var(--electric-blue);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
       transform: translateY(-2px);
     }
 
-    .contact-links a:focus {
-      outline: 2px solid var(--accent);
+    .contact-link:focus {
+      outline: 2px solid var(--electric-blue);
       outline-offset: 2px;
     }
 
-    .contact-links a.cv-link {
-      background: var(--accent);
-      color: var(--bg-primary);
-      border-color: var(--accent);
+    .contact-link.cv-link {
+      background: var(--electric-blue);
+      color: #000;
+      border-color: var(--electric-blue);
       font-weight: 600;
     }
 
-    .contact-links a.cv-link:hover {
-      background: var(--accent-hover);
-      color: var(--bg-primary);
-      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
+    .contact-link.cv-link:hover {
+      background: #0EA5E9;
+      box-shadow: 0 0 32px rgba(56, 189, 248, 0.4);
     }
 
     .projects {
       display: grid;
-      gap: 60px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
     }
 
     .project-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      background: var(--card-bg);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      position: relative;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 48px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px);
+      will-change: transform, opacity;
+    }
+
+    .project-card.hero {
+      grid-column: span 2;
     }
 
     .project-card.visible {
@@ -196,15 +193,20 @@
     }
 
     .project-card:hover {
-      transform: translateY(-8px);
+      border-color: var(--electric-blue);
       box-shadow: 
-        0 20px 50px rgba(56, 189, 248, 0.15),
-        0 5px 15px rgba(0, 0, 0, 0.3);
-      border-color: var(--accent);
+        0 0 48px rgba(56, 189, 248, 0.15),
+        0 20px 40px rgba(0, 0, 0, 0.3);
+      transform: scale(1.015) translateY(-8px);
     }
 
-    .project-content {
-      padding: 56px;
+    .project-meta {
+      font-size: 11px;
+      color: var(--electric-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+      font-weight: 600;
     }
 
     .project-title {
@@ -212,244 +214,224 @@
       font-size: 32px;
       font-weight: 700;
       margin-bottom: 16px;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      transition: background-position 0.5s ease;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--text-primary);
     }
 
-    .project-card:hover .project-title {
-      background-position: 100% 100%;
-    }
-
-    .project-meta {
-      font-size: 13px;
-      color: var(--accent);
-      margin-bottom: 24px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 600;
+    .project-card.hero .project-title {
+      font-size: 40px;
     }
 
     .project-description {
-      font-size: 17px;
-      color: var(--text-body);
-      line-height: 1.8;
-      margin-bottom: 40px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      font-weight: 300;
     }
 
     .project-stats {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      margin: 40px 0;
+      margin: 32px 0;
     }
 
     .stat {
-      flex: 1;
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: 8px;
       text-align: center;
-      border: 1px solid var(--border);
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
       transition: all 0.3s ease;
     }
 
     .stat:hover {
-      background: var(--bg-primary);
-      border-color: var(--accent);
-      transform: translateY(-2px);
+      background: rgba(56, 189, 248, 0.05);
+      border-color: var(--electric-blue);
     }
 
     .stat-value {
       display: block;
+      font-family: 'Space Grotesk', sans-serif;
       font-size: 28px;
-      font-weight: 800;
-      color: var(--accent);
-      font-family: 'Space Grotesk', monospace;
-      margin-bottom: 4px;
+      font-weight: 700;
+      color: var(--electric-blue);
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
     }
 
     .stat-label {
       font-size: 11px;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-weight: 500;
     }
 
     .tech-stack {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 40px;
+      gap: 8px;
+      margin-bottom: 32px;
     }
 
     .tech-tag {
-      font-size: 13px;
-      padding: 8px 14px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
+      font-size: 12px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 6px;
       color: var(--text-secondary);
       font-weight: 500;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tech-tag::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .tech-tag:hover::before {
-      left: 100%;
     }
 
     .tech-tag:hover {
-      border-color: var(--accent);
-      background: var(--bg-primary);
-      transform: translateY(-2px);
+      background: rgba(56, 189, 248, 0.08);
+      border-color: var(--electric-blue);
+      color: var(--electric-blue);
+    }
+
+    .project-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .project-link {
-      display: inline-block;
-      padding: 14px 32px;
-      background: var(--accent);
-      color: var(--bg-primary);
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: var(--electric-blue);
+      color: #000;
       text-decoration: none;
       border-radius: 8px;
       font-weight: 600;
+      font-size: 14px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 15px;
     }
 
     .project-link:hover {
-      background: var(--accent-hover);
-      transform: translateX(4px);
-      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
+      background: #0EA5E9;
+      transform: translateX(3px);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.35);
     }
 
     .project-link:focus {
-      outline: 2px solid var(--accent);
+      outline: 2px solid var(--electric-blue);
       outline-offset: 2px;
     }
 
     .project-link-secondary {
       display: inline-flex;
       align-items: center;
-      padding: 14px 28px;
+      padding: 10px 20px;
       background: transparent;
       color: var(--text-secondary);
       text-decoration: none;
-      border: 1px solid var(--border);
+      border: 1px solid var(--glass-border);
       border-radius: 8px;
       font-weight: 600;
+      font-size: 14px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 15px;
     }
 
     .project-link-secondary:hover {
-      background: var(--bg-secondary);
-      border-color: var(--accent);
-      transform: translateY(-2px);
+      background: rgba(56, 189, 248, 0.08);
+      border-color: var(--electric-blue);
+      color: var(--electric-blue);
     }
 
     .project-link-secondary:focus {
-      outline: 2px solid var(--accent);
+      outline: 2px solid var(--electric-blue);
       outline-offset: 2px;
     }
 
     footer {
       text-align: center;
-      margin-top: 120px;
-      padding-top: 48px;
-      border-top: 1px solid var(--border);
+      margin-top: 100px;
+      padding: 32px 0;
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 13px;
+      font-weight: 300;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* REDUCED MOTION PREFERENCE */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-      
-      .project-card {
-        transform: none !important;
+    @media (max-width: 1024px) {
+      .projects {
+        grid-template-columns: 1fr;
       }
 
-      .tech-tag::before {
-        display: none;
+      .project-card.hero {
+        grid-column: span 1;
       }
     }
 
     @media (max-width: 768px) {
       .container {
-        padding: 60px 32px;
+        padding: 60px 24px;
       }
 
       h1 {
-        font-size: 40px;
+        font-size: 48px;
       }
 
       .tagline {
-        font-size: 18px;
+        font-size: 16px;
+      }
+
+      .project-card {
+        padding: 36px;
+      }
+
+      .project-card.hero .project-title {
+        font-size: 32px;
       }
 
       .project-title {
         font-size: 26px;
       }
 
-      .project-description {
-        font-size: 17px;
-        line-height: 1.8;
-      }
-
       .project-stats {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .stat {
-        padding: 20px;
+        grid-template-columns: 1fr;
       }
 
       .contact-links {
         flex-direction: column;
-        gap: 12px;
       }
+    }
 
-      .project-content {
-        padding: 40px 32px;
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
       }
+    }
+
+    body.loading .project-card,
+    body.loading header {
+      opacity: 0;
     }
   </style>
 </head>
-<body>
+<body class="loading">
 
-  <!-- <a href="#main-content" class="skip-link">Skip to main content</a> -->
+  <div class="cursor-glow"></div>
 
   <div class="container">
     <header>
       <h1>Emmanuel Rieno Bobba P.</h1>
       <p class="tagline">Data Science & Machine Learning Projects</p>
       <div class="contact-links">
-        <a href="mailto:emmanuelbobba3@gmail.com">Email</a>
-        <a href="https://github.com/overduality" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://www.linkedin.com/in/emmanuelbobba/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="/CV_EmmanuelRienoBobba.pdf" target="_blank" rel="noopener noreferrer" class="cv-link">
+        <a href="mailto:emmanuelbobba3@gmail.com" class="contact-link">Email</a>
+        <a href="https://github.com/overduality" target="_blank" rel="noopener noreferrer" class="contact-link">GitHub</a>
+        <a href="https://www.linkedin.com/in/emmanuelbobba/" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
+        <a href="/CV_EmmanuelRienoBobba.pdf" target="_blank" rel="noopener noreferrer" class="contact-link cv-link">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
             <path d="M9 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9 0zm0 1v3.5A.5.5 0 0 0 9.5 5H13v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5z"/>
             <path d="M4.5 7a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
@@ -459,314 +441,291 @@
       </div>
     </header>
 
-    <div class="projects" id="main-content">
+    <div class="projects">
       
-      <!-- Project 1: Dental Age Estimation -->
-      <div class="project-card">
-        <div class="project-content">
-          <div class="project-meta">Deep Learning • Computer Vision • Medical AI</div>
-          <h2 class="project-title">Dental Age Estimation Using Deep Learning</h2>
-          <p class="project-description">
-            Automated age prediction from panoramic dental radiographs using EfficientNet-B3 and CBAM attention mechanism. 
-            Achieved 0.690 years MAE on Indonesian pediatric population, outperforming traditional manual methods while 
-            providing clinical interpretability through Grad-CAM visualization.
-          </p>
+      <div class="project-card hero">
+        <div class="project-meta">Deep Learning • Computer Vision • Medical AI</div>
+        <h2 class="project-title">Dental Age Estimation Using Deep Learning</h2>
+        <p class="project-description">
+          Automated age prediction from panoramic dental radiographs using EfficientNet-B3 and CBAM attention mechanism. 
+          Achieved 0.690 years MAE on Indonesian pediatric population, outperforming traditional manual methods while 
+          providing clinical interpretability through Grad-CAM visualization.
+        </p>
 
-          <div class="project-stats">
-            <div class="stat">
-              <span class="stat-value" data-target="0.690">0.690</span>
-              <span class="stat-label">MAE (years)</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="478">478</span>
-              <span class="stat-label">Images</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="83">83%</span>
-              <span class="stat-label">within ±1 year</span>
-            </div>
+        <div class="project-stats">
+          <div class="stat">
+            <span class="stat-value" data-target="0.690">0</span>
+            <span class="stat-label">MAE (years)</span>
           </div>
+          <div class="stat">
+            <span class="stat-value" data-target="478">0</span>
+            <span class="stat-label">Images</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="83">0</span>
+            <span class="stat-label">within ±1 year</span>
+          </div>
+        </div>
 
-          <div class="tech-stack">
-            <span class="tech-tag">PyTorch</span>
-            <span class="tech-tag">EfficientNet-B3</span>
-            <span class="tech-tag">YOLOv8-OBB</span>
-            <span class="tech-tag">CBAM</span>
-            <span class="tech-tag">Grad-CAM</span>
-            <span class="tech-tag">Computer Vision</span>
-          </div>
+        <div class="tech-stack">
+          <span class="tech-tag">PyTorch</span>
+          <span class="tech-tag">EfficientNet-B3</span>
+          <span class="tech-tag">YOLOv8-OBB</span>
+          <span class="tech-tag">CBAM</span>
+          <span class="tech-tag">Grad-CAM</span>
+          <span class="tech-tag">Computer Vision</span>
+        </div>
 
-          <div style="display: flex; gap: 12px;">
-            <a href="/age_estimation/" class="project-link">View Project →</a>
-            <a href="https://github.com/overduality/dental_age_estimation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
+        <div class="project-links">
+          <a href="/age_estimation/" class="project-link">View Project →</a>
+          <a href="https://github.com/overduality/dental_age_estimation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            GitHub
+          </a>
         </div>
       </div>
 
-      <!-- Project 2: Tona -->
-      <div class="project-card">
-        <div class="project-content">
-          <div class="project-meta">Apple Intelligence • iOS Development • Color Analysis</div>
-          <h2 class="project-title">Tona: Skin Tone Analysis Engine</h2>
-          <p class="project-description">
-            A sophisticated iOS-based spectral estimation engine that analyzes human skin tone with medical-grade precision. Rather than relying on standard RGB approximations, the system utilizes a multi-stage Computational Imaging pipeline to map 4,500+ facial data points into the CIELAB perceptual color space, 
-            ensuring accuracy across the full Fitzpatrick scale (I-VI).
-          </p>
+      <div class="project-card hero">
+        <div class="project-meta">Apple Intelligence • iOS Development • Color Analysis</div>
+        <h2 class="project-title">Tona: Skin Tone Analysis Engine</h2>
+        <p class="project-description">
+          A sophisticated iOS-based spectral estimation engine that analyzes human skin tone with medical-grade precision. 
+          Utilizes a multi-stage Computational Imaging pipeline to map 4,500+ facial data points into the CIELAB perceptual 
+          color space, ensuring accuracy across the full Fitzpatrick scale (I-VI).
+        </p>
 
-          <div class="project-stats">
-            <div class="stat">
-              <span class="stat-value" data-target="22500">22+</span>
-              <span class="stat-label">Statistical Samples</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="150">150+</span>
-              <span class="stat-label">Calibrated References</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="2.0">ΔE &lt; 2.0</span>
-              <span class="stat-label">Target Accuracy</span>
-            </div>
+        <div class="project-stats">
+          <div class="stat">
+            <span class="stat-value" data-target="22500">0</span>
+            <span class="stat-label">Statistical Samples</span>
           </div>
+          <div class="stat">
+            <span class="stat-value" data-target="150">0</span>
+            <span class="stat-label">Calibrated References</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="2.0">0</span>
+            <span class="stat-label">ΔE Target Accuracy</span>
+          </div>
+        </div>
 
-          <div class="tech-stack">
-            <span class="tech-tag">Vision Framework</span>
-            <span class="tech-tag">Accelerate (vImage)</span>
-            <span class="tech-tag">Core Image</span>
-            <span class="tech-tag">SwiftUI and SwiftData</span>
-            <span class="tech-tag">CIEDE2000</span>
-            <span class="tech-tag">AVFoundation</span>
-          </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Vision Framework</span>
+          <span class="tech-tag">Accelerate (vImage)</span>
+          <span class="tech-tag">Core Image</span>
+          <span class="tech-tag">SwiftUI</span>
+          <span class="tech-tag">CIEDE2000</span>
+          <span class="tech-tag">AVFoundation</span>
+        </div>
 
-          <div style="display: flex; gap: 12px;">
-            <a href="/tona/" class="project-link">View Project →</a>
-          </div>
+        <div class="project-links">
+          <a href="/tona/" class="project-link">View Project →</a>
         </div>
       </div>
 
-      <!-- Project 3: ByeFraud -->
       <div class="project-card">
-        <div class="project-content">
-          <div class="project-meta">Cybersecurity • Machine Learning • Feature Engineering</div>
-          <h2 class="project-title">ByeFraud: Real-Time Phishing Detection System</h2>
-          <p class="project-description">
-            Production-grade LightGBM classifier achieving 99.81% accuracy on 1.5M URLs through advanced feature engineering. 
-            Combines 20 lexical features, 1,500 TF-IDF n-grams, and 4 domain impersonation indicators for real-time phishing 
-            detection with &lt;50ms inference latency.
-          </p>
+        <div class="project-meta">Cybersecurity • Machine Learning • Feature Engineering</div>
+        <h2 class="project-title">ByeFraud: Real-Time Phishing Detection System</h2>
+        <p class="project-description">
+          Production-grade LightGBM classifier achieving 99.81% accuracy on 1.5M URLs through advanced feature engineering. 
+          Combines 20 lexical features, 1,500 TF-IDF n-grams, and 4 domain impersonation indicators.
+        </p>
 
-          <div class="project-stats">
-            <div class="stat">
-              <span class="stat-value" data-target="99.60">99.60%</span>
-              <span class="stat-label">Precision</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="1.2">1.2M</span>
-              <span class="stat-label">URLs trained</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="98.85">98.85%</span>
-              <span class="stat-label">Recall</span>
-            </div>
+        <div class="project-stats">
+          <div class="stat">
+            <span class="stat-value" data-target="99.60">0</span>
+            <span class="stat-label">Precision</span>
           </div>
+          <div class="stat">
+            <span class="stat-value" data-target="1200000">0</span>
+            <span class="stat-label">URLs trained</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="98.85">0</span>
+            <span class="stat-label">Recall</span>
+          </div>
+        </div>
 
-          <div class="tech-stack">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">LightGBM</span>
-            <span class="tech-tag">TF-IDF</span>
-            <span class="tech-tag">SMOTE</span>
-            <span class="tech-tag">Scikit-learn</span>
-          </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">LightGBM</span>
+          <span class="tech-tag">TF-IDF</span>
+          <span class="tech-tag">SMOTE</span>
+          <span class="tech-tag">Scikit-learn</span>
+        </div>
 
-          <div style="display: flex; gap: 12px;">
-            <a href="/byefraud-ml/" class="project-link">View Project →</a>
-            <a href="https://github.com/overduality/byeFraud-ML" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
+        <div class="project-links">
+          <a href="/byefraud-ml/" class="project-link">View Project →</a>
+          <a href="https://github.com/overduality/byeFraud-ML" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            GitHub
+          </a>
         </div>
       </div>
 
-      <!-- Project 4: Muvo -->
       <div class="project-card">
-        <div class="project-content">
-          <div class="project-meta">Core ML Model Deployment • Automated Audio ML Pipeline • Hybrid Multi-Modal Architecture</div>
-          <h2 class="project-title">Muvo</h2>
-          <p class="project-description">
-            Muvo is an edge-AI speech assessment engine designed to bridge the gap between textbook learning and real-world communication confidence in high-stakes travel scenarios. Built with a Multi-Modal Decision Fusion architecture, the system overcomes the accuracy plateaus of traditional sound classification by intelligently pairing Core ML prosodic analysis with Apple's Speech Framework for lexical validation.
-          encouraging feedback while preserving user privacy through entirely on-device processing.
-          </p>
+        <div class="project-meta">Core ML • Audio ML Pipeline • Multi-Modal Architecture</div>
+        <h2 class="project-title">Muvo: Speech Assessment Engine</h2>
+        <p class="project-description">
+          Edge-AI speech assessment engine designed to bridge the gap between textbook learning and real-world communication 
+          confidence. Built with a Multi-Modal Decision Fusion architecture.
+        </p>
 
-          <div class="project-stats">
-            <div class="stat">
-              <span class="stat-value" data-target="9200">9+</span>
-              <span class="stat-label">Augmented Samples</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="85">85%</span>
-              <span class="stat-label">System Accuracy</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="200"> &lt;200ms</span>
-              <span class="stat-label">Inference Latency</span>
-            </div>
+        <div class="project-stats">
+          <div class="stat">
+            <span class="stat-value" data-target="9200">0</span>
+            <span class="stat-label">Augmented Samples</span>
           </div>
+          <div class="stat">
+            <span class="stat-value" data-target="85">0</span>
+            <span class="stat-label">System Accuracy</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="200">0</span>
+            <span class="stat-label">Inference Latency (ms)</span>
+          </div>
+        </div>
 
-          <div class="tech-stack">
-            <span class="tech-tag">Core ML / Create ML</span>
-            <span class="tech-tag">AVFoundation / SoundAnalysis</span>
-            <span class="tech-tag">Speech Framework</span>
-            <span class="tech-tag">Accelerate</span>
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">SwiftUI</span>
-          </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Core ML</span>
+          <span class="tech-tag">AVFoundation</span>
+          <span class="tech-tag">Speech Framework</span>
+          <span class="tech-tag">Accelerate</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">SwiftUI</span>
+        </div>
 
-          <div style="display: flex; gap: 12px;">
-            <a href="/muvo/" class="project-link">View Project →</a>
-          </div>
+        <div class="project-links">
+          <a href="/muvo/" class="project-link">View Project →</a>
         </div>
       </div>
 
-      <!-- Project 5: MovieLens -->
       <div class="project-card">
-        <div class="project-content">
-          <div class="project-meta">Recommendation Systems • Time Series • Data Analysis</div>
-          <h2 class="project-title">Dynamic Popularity-Based Recommendation System</h2>
-          <p class="project-description">
-            Multi-window volatility and surge analysis detecting trending movies in real-time using 32 million ratings. 
-            Identifies unusual activity spikes by comparing 7-day windows against 90-day baselines, achieving 3.5x average 
-            surge intensity for real-time content recommendations.
-          </p>
+        <div class="project-meta">Recommendation Systems • Time Series • Data Analysis</div>
+        <h2 class="project-title">Dynamic Popularity-Based Recommendation System</h2>
+        <p class="project-description">
+          Multi-window volatility and surge analysis detecting trending movies in real-time using 32 million ratings. 
+          Identifies unusual activity spikes by comparing 7-day windows against 90-day baselines.
+        </p>
 
-          <div class="project-stats">
-            <div class="stat">
-              <span class="stat-value" data-target="32">32M</span>
-              <span class="stat-label">Ratings</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="3.5">3.5x</span>
-              <span class="stat-label">Avg Surge</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="7">7-day</span>
-              <span class="stat-label">Window</span>
-            </div>
+        <div class="project-stats">
+          <div class="stat">
+            <span class="stat-value" data-target="32000000">0</span>
+            <span class="stat-label">Ratings</span>
           </div>
+          <div class="stat">
+            <span class="stat-value" data-target="3.5">0</span>
+            <span class="stat-label">Avg Surge</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="7">0</span>
+            <span class="stat-label">7-day Window</span>
+          </div>
+        </div>
 
-          <div class="tech-stack">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">Pandas</span>
-            <span class="tech-tag">NumPy</span>
-            <span class="tech-tag">Matplotlib</span>
-            <span class="tech-tag">Time Series</span>
-          </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Pandas</span>
+          <span class="tech-tag">NumPy</span>
+          <span class="tech-tag">Matplotlib</span>
+          <span class="tech-tag">Time Series</span>
+        </div>
 
-          <div style="display: flex; gap: 12px;">
-            <a href="/movielens-recommendation/" class="project-link">View Project →</a>
-            <a href="https://github.com/overduality/movielens-recommendation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
+        <div class="project-links">
+          <a href="/movielens-recommendation/" class="project-link">View Project →</a>
+          <a href="https://github.com/overduality/movielens-recommendation" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            GitHub
+          </a>
         </div>
       </div>
 
-      <!-- Project 6: Insurance -->
       <div class="project-card">
-        <div class="project-content">
-          <div class="project-meta">Machine Learning • Risk Analysis • Insurance Tech</div>
-          <h2 class="project-title">Car Insurance Claim Prediction & Risk Quantification</h2>
-          <p class="project-description">
-            Two-stage ML system combining CatBoost classifier (0.83 ROC-AUC) and SGD regressor for claim severity prediction. 
-            Enables risk-based pricing with 47.03% of total loss concentrated in top 10% risk segment, optimizing premium 
-            allocation and preventing adverse selection.
-          </p>
+        <div class="project-meta">Machine Learning • Risk Analysis • Insurance Tech</div>
+        <h2 class="project-title">Car Insurance Claim Prediction & Risk Quantification</h2>
+        <p class="project-description">
+          Two-stage ML system combining CatBoost classifier (0.83 ROC-AUC) and SGD regressor for claim severity prediction. 
+          Enables risk-based pricing with 47.03% of total loss concentrated in top 10% risk segment.
+        </p>
 
-          <div class="project-stats">
-            <div class="stat">
-              <span class="stat-value" data-target="47.03">47.03%</span>
-              <span class="stat-label">Loss in Top 10%</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="76%">76%</span>
-              <span class="stat-label">Claim Recall</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="5.7">$5.7K</span>
-              <span class="stat-label">Avg Severity</span>
-            </div>
+        <div class="project-stats">
+          <div class="stat">
+            <span class="stat-value" data-target="47.03">0</span>
+            <span class="stat-label">Loss in Top 10%</span>
           </div>
+          <div class="stat">
+            <span class="stat-value" data-target="76">0</span>
+            <span class="stat-label">Claim Recall</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="5700">0</span>
+            <span class="stat-label">Avg Severity ($)</span>
+          </div>
+        </div>
 
-          <div class="tech-stack">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">CatBoost</span>
-            <span class="tech-tag">XGBoost</span>
-            <span class="tech-tag">Scikit-learn</span>
-            <span class="tech-tag">SMOTE</span>
-          </div>
+        <div class="tech-stack">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">CatBoost</span>
+          <span class="tech-tag">XGBoost</span>
+          <span class="tech-tag">Scikit-learn</span>
+          <span class="tech-tag">SMOTE</span>
+        </div>
 
-          <div style="display: flex; gap: 12px;">
-            <a href="/car_insurance/" class="project-link">View Project →</a>
-            <a href="https://github.com/overduality/car_insurance" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
+        <div class="project-links">
+          <a href="/car_insurance/" class="project-link">View Project →</a>
+          <a href="https://github.com/overduality/car_insurance" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            GitHub
+          </a>
         </div>
       </div>
 
-      <!-- Project 7: Worvler -->
       <div class="project-card">
-        <div class="project-content">
-          <div class="project-meta">Information Theory • Web Development • Algorithms</div>
-          <h2 class="project-title">Worvler: Information-Theoretic Wordle Solver</h2>
-          <p class="project-description">
-            React web app implementing Shannon entropy-based optimal Wordle strategy through Web Workers and precomputed 
-            pattern matrices. Achieves 100% solve rate with 3.62 average guesses (13 games).
-          </p>
+        <div class="project-meta">Information Theory • Web Development • Algorithms</div>
+        <h2 class="project-title">Worvler: Information-Theoretic Wordle Solver</h2>
+        <p class="project-description">
+          React web app implementing Shannon entropy-based optimal Wordle strategy through Web Workers and precomputed 
+          pattern matrices. Achieves 100% solve rate with 3.62 average guesses across 13 games.
+        </p>
 
-          <div class="project-stats">
-            <div class="stat">
-              <span class="stat-value" data-target="3.62">3.62</span>
-              <span class="stat-label">Avg Guesses (13 games)</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="5.95">5.95</span>
-              <span class="stat-label">Bits Entropy</span>
-            </div>
-            <div class="stat">
-              <span class="stat-value" data-target="100">100%</span>
-              <span class="stat-label">Solve Rate</span>
-            </div>
+        <div class="project-stats">
+          <div class="stat">
+            <span class="stat-value" data-target="3.62">0</span>
+            <span class="stat-label">Avg Guesses</span>
           </div>
+          <div class="stat">
+            <span class="stat-value" data-target="5.95">0</span>
+            <span class="stat-label">Bits Entropy</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" data-target="100">0</span>
+            <span class="stat-label">Solve Rate</span>
+          </div>
+        </div>
 
-          <div class="tech-stack">
-            <span class="tech-tag">React</span>
-            <span class="tech-tag">Web Workers</span>
-            <span class="tech-tag">JavaScript</span>
-            <span class="tech-tag">Information Theory</span>
-          </div>
+        <div class="tech-stack">
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">Web Workers</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">Information Theory</span>
+        </div>
 
-          <div style="display: flex; gap: 12px;">
-            <a href="/worvler/" class="project-link">View Project →</a>
-            <a href="https://github.com/overduality/worlver-WordleSolver" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
+        <div class="project-links">
+          <a href="/worvler/" class="project-link">View Project →</a>
+          <a href="https://github.com/overduality/worlver-WordleSolver" target="_blank" rel="noopener noreferrer" class="project-link-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 6px;">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            GitHub
+          </a>
         </div>
       </div>
 
@@ -778,127 +737,91 @@
   </div>
 
   <script>
-    // SCROLL-TRIGGERED CARD ENTRANCE
-    const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.project-card').forEach(card => {
-      cardObserver.observe(card);
+    window.addEventListener('load', () => {
+      document.body.classList.remove('loading');
     });
 
-    // METRIC COUNTER ANIMATION
-   // METRIC COUNTER ANIMATION
-    function animateCounter(element) {
-      const originalText = element.textContent.trim();
-      const targetAttr = element.getAttribute('data-target');
-      
-      // If no data-target, skip animation
-      if (!targetAttr) {
-        return;
-      }
-      
-      // Parse the target value (always a number)
-      const targetValue = parseFloat(targetAttr);
-      if (isNaN(targetValue)) {
-        return;
-      }
-      
-      // Extract suffix/prefix from original text
-      let prefix = '';
-      let suffix = '';
-      
-      // Handle special formats
-      if (originalText.includes('ΔE < ')) {
-        prefix = 'ΔE < ';
-        suffix = '';
-      } else if (originalText.startsWith('<') && originalText.includes('ms')) {
-        prefix = '<';
-        suffix = 'ms';
-      } else if (originalText.startsWith('<')) {
-        prefix = '<';
-        suffix = '';
-      } else {
-        // Extract suffix after the number
-        const numMatch = originalText.match(/(\d+\.?\d*)/);
-        if (numMatch) {
-          const numStr = numMatch[0];
-          const parts = originalText.split(numStr);
-          prefix = parts[0] || '';
-          suffix = parts[1] || '';
+    const cursorGlow = document.querySelector('.cursor-glow');
+    let mouseX = 0;
+    let mouseY = 0;
+    let glowX = 0;
+    let glowY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorGlow.classList.add('active');
+    });
+
+    function animateGlow() {
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      cursorGlow.style.left = `${glowX}px`;
+      cursorGlow.style.top = `${glowY}px`;
+      requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          const delay = Array.from(projectCards).indexOf(entry.target) * 100;
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, delay);
+          revealObserver.unobserve(entry.target);
         }
-      }
-      
-      // Determine decimal places from target value
-      const isDecimal = targetValue % 1 !== 0;
-      const decimalPlaces = isDecimal ? Math.max(2, (targetValue.toString().split('.')[1] || '').length) : 0;
-      
-      let currentValue = 0;
-      const duration = 2500; // Slower: 2.5 seconds instead of 1.5
-      const frames = duration / 16; // ~60fps
-      const increment = targetValue / frames;
-      
+      });
+    }, { threshold: 0.15 });
+
+    projectCards.forEach(card => {
+      revealObserver.observe(card);
+    });
+
+    function animateCounter(element) {
+      const target = parseFloat(element.getAttribute('data-target'));
+      const isDecimal = target % 1 !== 0;
+      const duration = 1800;
+      const increment = target / (duration / 16);
+      let current = 0;
+
       const timer = setInterval(() => {
-        currentValue += increment;
-        
-        if (currentValue >= targetValue) {
-          // Final value
-          if (prefix.includes('ΔE < ')) {
-            element.textContent = prefix + targetValue.toFixed(decimalPlaces);
-          } else if (prefix === '<' && suffix === 'ms') {
-            element.textContent = '<' + targetValue + 'ms';
-          } else if (prefix === '<') {
-            element.textContent = '<' + targetValue.toFixed(decimalPlaces);
-          } else if (isDecimal) {
-            element.textContent = prefix + targetValue.toFixed(decimalPlaces) + suffix;
+        current += increment;
+        if (current >= target) {
+          if (isDecimal) {
+            element.textContent = target.toFixed(2);
+          } else if (target >= 1000) {
+            element.textContent = Math.floor(target).toLocaleString();
           } else {
-            element.textContent = prefix + Math.floor(targetValue).toLocaleString('en-US') + suffix;
+            element.textContent = Math.floor(target);
           }
           clearInterval(timer);
         } else {
-          // Intermediate value
-          if (prefix.includes('ΔE < ')) {
-            element.textContent = prefix + currentValue.toFixed(decimalPlaces);
-          } else if (prefix === '<' && suffix === 'ms') {
-            element.textContent = '<' + Math.floor(currentValue) + 'ms';
-          } else if (prefix === '<') {
-            element.textContent = '<' + currentValue.toFixed(decimalPlaces);
-          } else if (isDecimal) {
-            element.textContent = prefix + currentValue.toFixed(decimalPlaces) + suffix;
+          if (isDecimal) {
+            element.textContent = current.toFixed(2);
+          } else if (target >= 1000) {
+            element.textContent = Math.floor(current).toLocaleString();
           } else {
-            element.textContent = prefix + Math.floor(currentValue).toLocaleString('en-US') + suffix;
+            element.textContent = Math.floor(current);
           }
         }
       }, 16);
     }
 
-    const statObserver = new IntersectionObserver((entries) => {
+    const counterObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.querySelectorAll('.stat-value[data-target]').forEach(stat => {
-            animateCounter(stat);
-          });
-          statObserver.unobserve(entry.target);
+          const stats = entry.target.querySelectorAll('.stat-value[data-target]');
+          stats.forEach(stat => animateCounter(stat));
+          counterObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.5 });
 
-    document.querySelectorAll('.project-stats').forEach(stats => {
-      statObserver.observe(stats);
-    });
-
-    // HEADER FADE ON SCROLL
-    window.addEventListener('scroll', () => {
-      const header = document.querySelector('header');
-      if (window.scrollY > 100) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+    document.querySelectorAll('.project-card').forEach(card => {
+      counterObserver.observe(card);
     });
   </script>
 
